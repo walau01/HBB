@@ -5,7 +5,7 @@ banner:
   image: ""
   button:
     enable: true
-    label: "Start here"
-    link: "/start-here"
+    label: "Mula di sini"
+    link: "/ms/start-here"
 features: []
 ---

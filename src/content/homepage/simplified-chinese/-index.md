@@ -5,7 +5,7 @@ banner:
   image: ""
   button:
     enable: true
-    label: "Start here"
-    link: "/start-here"
+    label: "从这里开始"
+    link: "/zh/start-here"
 features: []
 ---
