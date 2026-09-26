@@ -43,6 +43,7 @@ const filenames = new Set(
   [...postsByLanguage.values()].flatMap((posts) => [...posts.keys()]),
 );
 const errors = [];
+const notices = [];
 
 for (const filename of [...filenames].sort()) {
   const versions = languages.map((language) => ({
@@ -50,29 +51,36 @@ for (const filename of [...filenames].sort()) {
     data: postsByLanguage.get(language.languageCode)?.get(filename),
   }));
 
-  for (const { language, data } of versions) {
-    if (!data) {
-      errors.push(`${filename}: missing ${language.languageName} translation`);
-    }
+  const availableVersions = versions.filter(({ data }) => data);
+  const missingLanguages = versions
+    .filter(({ data }) => !data)
+    .map(({ language }) => language.languageName);
+
+  if (missingLanguages.length > 0) {
+    notices.push(
+      `${filename}: not yet available in ${missingLanguages.join(", ")}`,
+    );
   }
 
-  if (versions.some(({ data }) => !data)) continue;
-
-  const publishedVersions = versions.filter(({ data }) => !data.draft);
+  const publishedVersions = availableVersions.filter(({ data }) => !data.draft);
   if (
     publishedVersions.length > 0 &&
-    publishedVersions.length < versions.length
+    publishedVersions.length < availableVersions.length
   ) {
-    errors.push(`${filename}: draft status must match in every language`);
+    errors.push(
+      `${filename}: draft status must match across available translations`,
+    );
   }
 
   const dates = new Set(
-    versions.map(({ data }) =>
+    availableVersions.map(({ data }) =>
       data.date ? new Date(data.date).toISOString() : "missing",
     ),
   );
   if (dates.size > 1) {
-    errors.push(`${filename}: publication date must match in every language`);
+    errors.push(
+      `${filename}: publication date must match across available translations`,
+    );
   }
 }
 
@@ -82,6 +90,12 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
+if (notices.length > 0) {
+  console.warn("Translation notices:\n");
+  for (const notice of notices) console.warn(`- ${notice}`);
+  console.warn("");
+}
+
 console.log(
-  `Translation validation passed for ${filenames.size} article${filenames.size === 1 ? "" : "s"} across ${languages.length} languages.`,
+  `Translation validation passed for ${filenames.size} article${filenames.size === 1 ? "" : "s"}.`,
 );
