@@ -1,0 +1,13 @@
+{
+  "main": [
+    { "name": "Utama", "url": "/" },
+    { "name": "Mula Di Sini", "url": "/start-here" },
+    { "name": "Artikel", "url": "/blog" },
+    { "name": "Alat", "url": "/tools" },
+    { "name": "Tentang", "url": "/about" }
+  ],
+  "footer": [
+    { "name": "Tentang", "url": "/about" },
+    { "name": "Dasar Privasi", "url": "/privacy-policy" }
+  ]
+}

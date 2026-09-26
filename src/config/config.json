@@ -1,15 +1,15 @@
 {
   "site": {
-    "title": "Astroplate",
-    "base_url": "https://astroplate-multilang.netlify.app",
+    "title": "walau01",
+    "base_url": "https://walau01.com",
     "base_path": "/",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
-    "logo": "/images/logo.png",
-    "logo_darkmode": "/images/logo-darkmode.png",
+    "logo": "",
+    "logo_darkmode": "",
     "logo_width": "150",
     "logo_height": "30",
-    "logo_text": "Astroplate"
+    "logo_text": "walau01"
   },
 
   "settings": {
@@ -17,7 +17,7 @@
     "sticky_header": true,
     "theme_switcher": true,
     "default_theme": "system",
-    "pagination": 2,
+    "pagination": 8,
     "summary_length": 200,
     "blog_folder": "blog",
     "default_language": "en",
@@ -26,19 +26,19 @@
   },
 
   "announcement": {
-    "enable": true,
+    "enable": false,
     "expire_days": 7
   },
 
   "params": {
     "contact_form_action": "#",
-    "copyright": "Designed And Developed by [Zeon Studio](https://zeon.studio)"
+    "copyright": "© 2026 walau01"
   },
 
   "navigation_button": {
-    "enable": true,
-    "label": "Github",
-    "link": "https://github.com/zeon-studio/astroplate/tree/multilingual"
+    "enable": false,
+    "label": "",
+    "link": ""
   },
 
   "google_tag_manager": {
@@ -47,15 +47,15 @@
   },
 
   "disqus": {
-    "enable": true,
-    "shortname": "themefisher-template",
+    "enable": false,
+    "shortname": "",
     "settings": {}
   },
 
   "metadata": {
-    "meta_author": "zeon.studio",
+    "meta_author": "walau01",
     "meta_image": "/images/og-image.png",
-    "meta_description": "astro and tailwind boilerplate"
+    "meta_description": "Personal writing about finance, ETFs, and evidence-based investing."
   },
 
   "llms": {

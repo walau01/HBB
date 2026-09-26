@@ -1,7 +1,7 @@
 ---
-title: "Blog Posts"
+title: "Articles"
 meta_title: ""
-description: "this is meta description"
+description: "Personal writing about finance, ETFs, and evidence-based investing."
 image: ""
 draft: false
 ---
