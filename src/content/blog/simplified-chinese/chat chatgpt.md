@@ -1,8 +1,8 @@
 \---
 
-title: "17岁：《富爸爸穷爸爸》第一次打开“钱”的世界"
+title: "开始"
 
-description: "误入歧途"
+description: "这篇文章的简短说明"
 
 date: 2026-09-26
 
@@ -10,9 +10,9 @@ image: ""
 
 author: "walau01"
 
-categories: \["ETFs"]
+categories: \["个人理财"]
 
-tags: \["etf", "investing"]
+tags: \["感想"]
 
 draft: false
 
