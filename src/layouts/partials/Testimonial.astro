@@ -7,11 +7,10 @@ import {
   SwiperSlide,
   SwiperWrapper,
 } from "astro-swiper";
-import type { SwiperOptions } from "swiper/types";
 
 const { testimonial } = Astro.props;
 
-const swiperOptions: SwiperOptions = {
+const swiperOptions = {
   spaceBetween: 24,
   loop: true,
   autoplay: {
@@ -20,7 +19,7 @@ const swiperOptions: SwiperOptions = {
   },
   pagination: {
     el: ".testimonial-slider-pagination",
-    type: "bullets",
+    type: "bullets" as const,
     clickable: true,
     dynamicBullets: false,
   },

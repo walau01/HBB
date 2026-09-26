@@ -1,0 +1,17 @@
+{
+  "full_name": "姓名",
+  "full_name_placeholder": "请输入您的姓名",
+  "mail_placeholder": "you@example.com",
+  "message": "留言",
+  "message_placeholder": "请输入您的留言……",
+  "submit": "提交",
+  "read_more": "阅读全文",
+  "page_not_found": "找不到页面",
+  "working_mail": "电子邮箱",
+  "anything_else": "我能如何帮助您？",
+  "contact_message_placeholder": "请输入您的留言……",
+  "page_not_found_content": "此页面可能已被删除、更名或暂时无法访问。",
+  "back_to_home": "返回首页",
+  "get_started": "从这里开始",
+  "announcement": ""
+}

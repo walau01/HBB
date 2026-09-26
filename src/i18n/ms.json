@@ -1,0 +1,17 @@
+{
+  "full_name": "Nama penuh",
+  "full_name_placeholder": "Masukkan nama penuh anda",
+  "mail_placeholder": "anda@example.com",
+  "message": "Mesej",
+  "message_placeholder": "Tulis mesej anda...",
+  "submit": "Hantar",
+  "read_more": "Baca selanjutnya",
+  "page_not_found": "Halaman tidak ditemukan",
+  "working_mail": "E-mel",
+  "anything_else": "Bagaimanakah saya boleh membantu?",
+  "contact_message_placeholder": "Tulis mesej anda...",
+  "page_not_found_content": "Halaman ini mungkin telah dipadamkan, dinamakan semula atau tidak tersedia buat sementara waktu.",
+  "back_to_home": "Kembali ke halaman utama",
+  "get_started": "Mula di sini",
+  "announcement": ""
+}
