@@ -1,0 +1,29 @@
+---
+import Base from '@/layouts/Base.astro';
+import PostCard from './PostCard.astro';
+import Icon from './Icon.astro';
+import { getCopy, getPosts, type Lang, type Category } from '@/lib/journal';
+const { lang } = Astro.props as { lang: Lang };
+const posts = await getPosts(lang);
+const c = await getCopy(lang);
+const categories: Category[]=['research','bridge','foundation','life'];
+---
+<Base lang={lang} title={c.articles} active="articles" currentPath="blog">
+  <div class="container archive">
+    <div class="archive-heading"><p class="eyebrow">{c.archiveEyebrow}</p><h1>{c.archiveTitle}</h1><p>{c.archiveText}</p></div>
+    <div class="archive-controls"><div class="filter-tabs" role="group" aria-label={c.filterLabel}><button class="active" data-filter="all" aria-pressed="true">{c.filterAll}</button>{categories.map(cat => <button data-filter={cat} aria-pressed="false">{c.categories[cat]}</button>)}</div><label class="archive-search"><Icon name="search"/><input type="search" id="archive-search" placeholder={c.searchPlaceholder} aria-label={c.search}/></label></div>
+    <p class="result-count" aria-live="polite"><span id="result-count">{posts.length}</span> {c.showing}</p>
+    <div class="post-grid archive-grid">{posts.map(p => <PostCard post={p} lang={lang} />)}</div>
+    <div id="archive-empty" class="archive-empty" hidden><Icon name="book" size={32}/><p>{c.searchEmpty}</p></div>
+  </div>
+  <script>
+    const buttons=document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const cards=document.querySelectorAll<HTMLElement>('.archive-grid .post-card');
+    const input=document.querySelector<HTMLInputElement>('#archive-search');
+    const valid=['all','research','bridge','foundation','life'];
+    const requested=new URLSearchParams(location.search).get('category') || 'all';
+    let selected=valid.includes(requested) ? requested : 'all';
+    const update=()=>{let count=0;buttons.forEach(b=>{const active=b.dataset.filter===selected;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});cards.forEach(card=>{const shown=(selected==='all'||card.dataset.category===selected)&&(card.dataset.search||'').includes(input?.value.toLocaleLowerCase().trim()||'');card.hidden=!shown;if(shown)count++;});const counter=document.querySelector('#result-count');if(counter)counter.textContent=String(count);const empty=document.querySelector<HTMLElement>('#archive-empty');if(empty)empty.hidden=count>0;};
+    buttons.forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.filter||'all';const next=new URL(location.href);if(selected==='all')next.searchParams.delete('category');else next.searchParams.set('category',selected);history.replaceState(null,'',next);update();}));input?.addEventListener('input',update);update();
+  </script>
+</Base>

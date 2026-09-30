@@ -1,13 +1,41 @@
 {
   "main": [
-    { "name": "首页", "url": "/" },
-    { "name": "从这里开始", "url": "/start-here" },
-    { "name": "文章", "url": "/blog" },
-    { "name": "工具", "url": "/tools" },
-    { "name": "关于", "url": "/about" }
+    {
+      "key": "home",
+      "name": "笔记",
+      "url": "/"
+    },
+    {
+      "key": "articles",
+      "name": "全部文章",
+      "url": "/blog"
+    },
+    {
+      "key": "foundation",
+      "name": "从这里开始",
+      "url": "/blog?category=foundation"
+    },
+    {
+      "key": "about",
+      "name": "关于",
+      "url": "/about"
+    }
   ],
   "footer": [
-    { "name": "关于", "url": "/about" },
-    { "name": "隐私政策", "url": "/privacy-policy" }
+    {
+      "key": "articles",
+      "name": "全部文章",
+      "url": "/blog"
+    },
+    {
+      "key": "foundation",
+      "name": "从这里开始",
+      "url": "/blog?category=foundation"
+    },
+    {
+      "key": "about",
+      "name": "关于",
+      "url": "/about"
+    }
   ]
 }

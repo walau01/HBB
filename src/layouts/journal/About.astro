@@ -1,0 +1,10 @@
+---
+import Base from '@/layouts/Base.astro';
+import {getCopy,url,type Lang} from '@/lib/journal';
+import {getListPage} from '@/lib/contentParser.astro';
+import {render} from 'astro:content';
+const {lang}=Astro.props as {lang:Lang};const c=await getCopy(lang);
+const [about]=await getListPage('about',lang);
+const {Content}=await render(about);
+---
+<Base lang={lang} title={c.about} description={about.data.description} active="about" currentPath="about"><div class="container about-page"><div class="about-header"><p class="eyebrow">{c.aboutEyebrow}</p><h1>{about.data.title}</h1><p>{about.data.description}</p></div><div class="about-layout"><div class="about-mark" aria-hidden="true"><span>walau<br/><em>01.</em></span><small>{c.place}</small></div><div class="about-prose"><div class="markdown-about"><Content /></div><ul class="principles">{(about.data.principles || []).map((p,i)=><li><span>0{i+1}</span>{p}</li>)}</ul><a class="button-primary" href={url(lang,'blog')}>{c.browse}</a></div></div></div></Base>

@@ -1,19 +1,12 @@
 ---
-title: "About walau01"
-meta_title: ""
-description: "About the purpose and approach behind walau01."
-image: ""
+title: "Still curious. Still learning."
+description: "I’m a Malaysian investor who wants to understand why an idea works before trusting it with my money."
 draft: false
+principles: ["Sources you can follow","Uncertainty you can see","A Malaysian perspective"]
 ---
 
-walau01 is a personal learning project about money, ETFs, and evidence-based investing. I am an amateur investor, not a financial professional.
+walau01 is where I share that process: the questions, the research, and the trade-offs that survive a closer look.
 
-## Why this site exists
+Most of the writing is about ETFs, portfolio decisions, factor investing, and the costs that are easy to miss. A smaller part is about fitness, AI, work, and everyday life.
 
-This site is a place to document what I learn, examine the evidence behind investing ideas, and explain financial concepts in plain language. It does not offer stock tips, market predictions, or personalised financial advice.
-
-## How I plan to write
-
-I will distinguish evidence from personal interpretation, make important assumptions visible, link to useful sources, and correct material when better information becomes available.
-
-More of the personal story behind walau01 will be added as the site develops.
+I’m sharing what I learn, with room to disagree and change my mind. The aim is a clearer decision, not a louder opinion.

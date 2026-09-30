@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+import Artwork from './Artwork.astro';
+import PostCard from './PostCard.astro';
+import { getCopy, url, getPosts, type Lang, type Category } from '@/lib/journal';
+const { lang } = Astro.props as { lang: Lang };
+const posts = await getPosts(lang);
+const c = await getCopy(lang), featured = posts[0], f = featured.text[lang];
+const categories: Category[] = ['research', 'bridge', 'foundation', 'life'];
+---
+<Base lang={lang}>
+  <div class="container">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="tiny-rule"></span>{c.eyebrow}</p>
+        <h1>{c.hero1}<br/><em>{c.hero2}</em></h1>
+        <p class="hero-intro">{c.intro}</p>
+        <a class="button-primary" href={url(lang,'blog')}>{c.browse}</a>
+        <a class="start-link" href={url(lang,'blog')+'?category=foundation'}>{c.start}</a>
+        <div class="hero-signoff"><span class="small-monogram" aria-hidden="true">w.</span><div><strong>walau01</strong><span>{c.place}</span></div></div>
+      </div>
+      <article class="featured-post">
+        <p class="featured-eyebrow"><span>{c.featured}</span><span>001</span></p>
+        <a href={url(lang,`blog/${featured.slug}`)} class="feature-main"><Artwork lang={lang} motif="costs" /><div class="feature-text"><div class="post-meta"><span>{c.categories.research}</span><span>{c.draft}</span></div><h2>{f.title}</h2><p>{f.summary}</p><span class="feature-read">{c.read}<span>{featured.minutes} {c.readTime}</span></span></div></a>
+      </article>
+    </section>
+    <section class="reading-paths" aria-labelledby="paths-title"><div class="path-intro"><p class="eyebrow">{c.paths}</p><h2 id="paths-title">{c.pathTitle}</h2></div><div class="path-links">{categories.map((cat,i) => <a href={url(lang,'blog')+`?category=${cat}`}><span class="path-number">0{i+1}</span><div><h3>{c.categories[cat]}</h3><p>{c.categoryNotes[cat]}</p></div><span class="path-mark" aria-hidden="true">+</span></a>)}</div></section>
+    <section class="recent-section" aria-labelledby="recent-title"><div class="section-header"><div><p class="eyebrow">{c.notebook}</p><h2 id="recent-title">{c.recent}</h2><p>{c.recentIntro}</p></div><a class="text-link" href={url(lang,'blog')}>{c.all}</a></div><div class="post-grid">{[posts[1],posts[2],posts[3]].map(p => <PostCard post={p} lang={lang} />)}</div></section>
+    <section class="method-section" aria-labelledby="method-title"><div class="method-heading"><p class="eyebrow">{c.method}</p><h2 id="method-title">{c.methodTitle}</h2><p>{c.researchLine}</p></div><div class="method-steps">{c.steps.map(step => <div><span>{step[0]}</span><h3>{step[1]}</h3><p>{step[2]}</p></div>)}</div></section>
+    <section class="life-section" aria-labelledby="life-title"><div><p class="eyebrow">{c.lifeEyebrow}</p><h2 id="life-title">{c.lifeTitle}</h2><p>{c.lifeText}</p><a class="text-link" href={url(lang,'blog')+'?category=life'}>{c.lifeLink}</a></div><a class="life-card" href={url(lang,`blog/${posts[4].slug}`)}><Artwork motif="life" lang={lang} compact /><h3>{posts[4].text[lang].title}</h3><span class="draft-label">{c.draft}</span></a></section>
+  </div>
+</Base>

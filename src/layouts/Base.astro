@@ -1,178 +1,112 @@
 ---
-import TwSizeIndicator from "@/components/TwSizeIndicator.astro";
-import config from "@/config/config.json";
-import theme from "@/config/theme.json";
-import { getLangFromUrl } from "@/lib/utils/languageParser";
-import { plainify } from "@/lib/utils/textConverter";
-import Footer from "@/partials/Footer.astro";
-import Header from "@/partials/Header.astro";
-import "@/styles/main.css";
-import {
-  GoogleTagmanager,
-  GoogleTagmanagerNoscript,
-} from "@digi4care/astro-google-tagmanager";
-import { Font } from "astro:assets";
-import { ClientRouter } from "astro:transitions";
-import Announcement from "./helpers/Announcement";
-import SearchModal from "./helpers/SearchModal";
-
-// font families - extract font names for Font component (filter out type keys)
-const fontEntries = Object.entries(theme.fonts.font_family).filter(
-  ([key]) => !key.includes("_type"),
-);
-
-// types for frontmatters
-export interface Props {
-  title?: string;
-  meta_title?: string;
-  description?: string;
-  image?: string;
-  noindex?: boolean;
-  canonical?: string;
-  lang?: string;
+import '@/styles/main.css';
+import '@/styles/journal.css';
+import Icon from '@/layouts/journal/Icon.astro';
+import config from '@/config/config.json';
+import theme from '@/config/theme.json';
+import { getTranslations } from '@/lib/utils/languageParser';
+import { getCopy, getPosts, normalizeLang, url, languages, languageNames, type Lang } from '@/lib/journal';
+import { GoogleTagmanager, GoogleTagmanagerNoscript } from '@digi4care/astro-google-tagmanager';
+interface Props {
+  lang?: string; title?: string; meta_title?: string; description?: string;
+  image?: string; noindex?: boolean; canonical?: string; active?: string; currentPath?: string;
 }
-
-// destructure frontmatter
-const { title, meta_title, description, image, noindex, canonical, lang } =
-  Astro.props;
-
-const language = lang || getLangFromUrl(Astro.url);
+const lang = normalizeLang(Astro.props.lang || Astro.params.lang);
+const c = await getCopy(lang);
+const { main: mainMenu, footer: footerMenu } = await getTranslations(lang);
+const posts = await getPosts(lang);
+const pathname = Astro.url.pathname.replace(/^\/(en|zh|ms)(?=\/|$)/, '/').replace(/\/{2,}/g, '/');
+const currentPath = Astro.props.currentPath ?? pathname.replace(/^\/|\/$/g, '');
+const active = Astro.props.active || (currentPath === '' ? 'home' : currentPath.startsWith('blog') ? 'articles' : currentPath === 'about' ? 'about' : '');
+const rawTitle = Astro.props.meta_title || Astro.props.title || 'walau01';
+const pageTitle = rawTitle === 'walau01' ? c.homeTitle : `${rawTitle} · walau01`;
+const description = Astro.props.description || c.intro;
+const canonical = Astro.props.canonical || new URL(url(lang, currentPath), config.site.base_url).href;
+const image = new URL(Astro.props.image || config.metadata.meta_image, config.site.base_url).href;
+const searchData = posts.map(p => ({ title: p.text[lang].title, summary: p.text[lang].summary, category: c.categories[p.category], href: url(lang, `blog/${p.slug}`) }));
+type NavItem = {key: string; name: string; url: string};
+const nav = (mainMenu as NavItem[]).map(n => ({key:n.key,text:n.name,href:url(lang,n.url)}));
+const footerNav = (footerMenu as NavItem[]).map(n => ({key:n.key,text:n.name,href:url(lang,n.url)}));
+const translatedPage = currentPath.startsWith('blog/') ? await Promise.all(languages.map(async l => ({ lang:l, exists:(await getPosts(l)).some(p => currentPath === `blog/${p.slug}`) }))) : languages.map(l => ({lang:l,exists:true}));
+const alternatePath = (l: Lang) => currentPath === '404' ? '' : /^(categories|tags)\//.test(currentPath) ? 'blog' : translatedPage.find(p => p.lang === l)?.exists ? currentPath : 'blog';
 ---
-
 <!doctype html>
-<html lang={language}>
+<html lang={lang === 'zh' ? 'zh-Hans' : lang}>
   <head>
-    <!-- google tag manager -->
-    {
-      config.google_tag_manager.enable && (
-        <GoogleTagmanager id={config.google_tag_manager.gtm_id} />
-      )
-    }
-    <!-- favicon -->
-    <link rel="shortcut icon" href={config.site.favicon} />
-    <!-- theme meta -->
-    <meta name="theme-name" content="walau01" />
-    <meta name="msapplication-TileColor" content="#000000" />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: light)"
-      content="#fff"
-    />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#000"
-    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content={description} />
+    {Astro.props.noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta name="theme-color" content={theme.colors.default.theme_color.navy} />
+    <title>{pageTitle}</title>
+    <link rel="icon" href={config.site.favicon} type="image/svg+xml" />
     <meta name="generator" content={Astro.generator} />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <!-- google font css - Astro 6 built-in Font API -->
-    {
-      fontEntries.map(([key]) => {
-        const cssVar = `--font-${key}` as any;
-        return <Font cssVariable={cssVar} preload />;
-      })
-    }
-
-    <!-- responsive meta -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=5"
-    />
-
-    <!-- title -->
-    <title>
-      {plainify(meta_title ? meta_title : title ? title : config.site.title)}
-    </title>
-
-    <!-- canonical url -->
-    {canonical && <link rel="canonical" href={canonical} item-prop="url" />}
-
-    <!-- noindex robots -->
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
-
-    <!-- meta-description -->
-    <meta
-      name="description"
-      content={plainify(
-        description ? description : config.metadata.meta_description,
-      )}
-    />
-
-    <ClientRouter />
-
-    <!-- author from config.json -->
     <meta name="author" content={config.metadata.meta_author} />
-
-    <!-- og-title -->
-    <meta
-      property="og:title"
-      content={plainify(
-        meta_title ? meta_title : title ? title : config.site.title,
-      )}
-    />
-
-    <!-- og-description -->
-    <meta
-      property="og:description"
-      content={plainify(
-        description ? description : config.metadata.meta_description,
-      )}
-    />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content={`${config.site.base_url}/${Astro.url.pathname.replace("/", "")}`}
-    />
-
-    <!-- twitter-title -->
-    <meta
-      name="twitter:title"
-      content={plainify(
-        meta_title ? meta_title : title ? title : config.site.title,
-      )}
-    />
-
-    <!-- twitter-description -->
-    <meta
-      name="twitter:description"
-      content={plainify(
-        description ? description : config.metadata.meta_description,
-      )}
-    />
-
-    <!-- og-image -->
-    <meta
-      property="og:image"
-      content={`${config.site.base_url}${
-        image ? image : config.metadata.meta_image
-      }`}
-    />
-
-    <!-- twitter-image -->
-    <meta
-      name="twitter:image"
-      content={`${config.site.base_url}${
-        image ? image : config.metadata.meta_image
-      }`}
-    />
+    <link rel="canonical" href={canonical} />
+    {translatedPage.filter(p => p.exists).map(p => <link rel="alternate" hreflang={p.lang === 'zh' ? 'zh-Hans' : p.lang} href={new URL(url(p.lang, alternatePath(p.lang)), config.site.base_url).href} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(url(normalizeLang(), alternatePath(normalizeLang())), config.site.base_url).href} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={currentPath.startsWith('blog/') ? 'article' : 'website'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    {config.google_tag_manager.enable && <GoogleTagmanager id={config.google_tag_manager.gtm_id} />}
+    <script is:inline>try { document.documentElement.dataset.theme = localStorage.getItem('walau01-theme') || 'light'; } catch { document.documentElement.dataset.theme = 'light'; }document.documentElement.classList.toggle('dark',document.documentElement.dataset.theme==='dark');</script>
   </head>
-  <body class="flex flex-col min-h-screen">
-    {/* google tag manager noscript */}
-    {
-      config.google_tag_manager.enable && (
-        <GoogleTagmanagerNoscript id={config.google_tag_manager.gtm_id} />
-      )
-    }
-
-    <Announcement lang={language} client:only="react" />
-    <Header />
-    <SearchModal lang={language} client:only="react" />
-    <main class="grow" id="main-content">
-      <slot />
-    </main>
-    <Footer />
-    <TwSizeIndicator />
+  <body>
+    {config.google_tag_manager.enable && <GoogleTagmanagerNoscript id={config.google_tag_manager.gtm_id} />}
+    <a class="skip-link" href="#main">{c.skip}</a>
+    <div class="topline"><div class="container"><span>{c.journal}</span><span>{c.place}</span></div></div>
+    <header class="header">
+      <div class="container header-inner">
+        <a href={url(lang)} class="brand" aria-label={c.brandHome}>walau<span>01</span><i aria-hidden="true"></i></a>
+        <nav class="desktop-nav" aria-label={c.menu}>{nav.map(n => <a href={n.href} aria-current={active === n.key ? 'page' : undefined}>{n.text}</a>)}</nav>
+        <div class="header-tools">
+          <button class="icon-button" data-search-open aria-label={c.search}><Icon name="search" /></button>
+          <button class="icon-button theme-button" data-theme-toggle aria-label={c.theme} aria-pressed="false"><span class="icon-moon"><Icon name="moon" /></span><span class="icon-sun"><Icon name="sun" /></span></button>
+          <details class="language-picker"><summary aria-label={c.language}>{languageNames[lang]}<span aria-hidden="true">⌄</span></summary><div class="language-menu">{languages.map(l => <a href={url(l,alternatePath(l))} lang={l} aria-current={l === lang ? 'true' : undefined}>{l === 'en' ? 'English' : l === 'zh' ? '简体中文' : 'Bahasa Melayu'}</a>)}</div></details>
+          <details class="mobile-menu"><summary aria-label={c.menu}><Icon name="menu" /></summary><nav aria-label={c.menu}>{nav.map(n => <a href={n.href} aria-current={active === n.key ? 'page' : undefined}>{n.text}</a>)}</nav></details>
+        </div>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="footer"><div class="container footer-main"><div><a href={url(lang)} class="brand">walau<span>01</span><i aria-hidden="true"></i></a><p>{c.footerLine}</p></div><nav aria-label={c.footerNav}>{footerNav.map(n => <a href={n.href}>{n.text}</a>)}</nav></div><div class="container footer-bottom"><span>{config.params.copyright}</span><p>{c.footerNote}</p><span class="prototype-note">{c.preview}</span></div></footer>
+    <dialog class="search-dialog" aria-labelledby="search-title">
+      <div class="search-head"><h2 id="search-title">{c.search}</h2><button class="icon-button" data-search-close aria-label={c.close}><Icon name="close" /></button></div>
+      <div class="search-input-wrap"><Icon name="search" /><input id="journal-search" type="search" placeholder={c.searchPlaceholder} autocomplete="off" aria-label={c.search} /></div>
+      <div id="search-results" class="search-results" aria-live="polite"></div>
+      <p class="search-hint"><kbd>Esc</kbd> {c.escape}</p>
+    </dialog>
+    <script is:inline id="search-data" type="application/json" set:html={JSON.stringify({posts:searchData,empty:c.searchEmpty,initial:c.searchInitial}).replace(/</g, '\u003c')} />
+    <script>
+      const root = document.documentElement;
+      const themeButton = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+      const syncTheme = () => { themeButton?.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));root.classList.toggle('dark',root.dataset.theme==='dark'); };
+      syncTheme();
+      themeButton?.addEventListener('click', () => { root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('walau01-theme', root.dataset.theme); } catch {} syncTheme(); });
+      const dialog = document.querySelector<HTMLDialogElement>('.search-dialog');
+      const input = document.querySelector<HTMLInputElement>('#journal-search');
+      const results = document.querySelector<HTMLElement>('#search-results');
+      const data = JSON.parse(document.querySelector('#search-data')?.textContent || '{}');
+      function renderSearch() {
+        if (!results || !input) return;
+        const query = input.value.toLocaleLowerCase().trim();
+        results.replaceChildren();
+        const found = data.posts.filter((p: {title:string;summary:string;category:string}) => `${p.title} ${p.summary} ${p.category}`.toLocaleLowerCase().includes(query));
+        if (!found.length) { const p = document.createElement('p'); p.className='search-empty'; p.textContent=data.empty; results.append(p); return; }
+        found.forEach((p: {title:string;category:string;href:string}) => { const a=document.createElement('a'); a.href=p.href; const label=document.createElement('span');label.textContent=p.category;const title=document.createElement('strong');title.textContent=p.title;a.append(label,title);results.append(a); });
+      }
+      function openSearch() { if(dialog && !dialog.open) {dialog.showModal();renderSearch();input?.focus();} }
+      document.querySelector('[data-search-open]')?.addEventListener('click', openSearch);
+      document.querySelector('[data-search-close]')?.addEventListener('click', () => dialog?.close());
+      input?.addEventListener('input', renderSearch);
+      dialog?.addEventListener('click', event => { if(event.target === dialog) {const box=dialog.getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)dialog.close();} });
+      document.addEventListener('keydown', event => {const target=event.target as HTMLElement;if ((event.key === 'k' && (event.metaKey || event.ctrlKey)) || (event.key === '/' && !['INPUT','TEXTAREA'].includes(target.tagName) && !target.isContentEditable)) {event.preventDefault();openSearch();} });
+      document.querySelectorAll<HTMLDetailsElement>('.language-picker,.mobile-menu').forEach(details => document.addEventListener('click', e => {if(!details.contains(e.target as Node)) details.open=false;}));
+    </script>
   </body>
 </html>

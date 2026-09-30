@@ -25,6 +25,13 @@ const blogCollection = defineCollection({
     categories: z.array(z.string()).default(() => ["others"]),
     tags: z.array(z.string()).default(() => ["others"]),
     draft: z.boolean().optional(),
+    journal_category: z.enum(['research', 'bridge', 'foundation', 'life']).optional(),
+    minutes: z.number().positive().optional(),
+    motif: z.enum(['costs', 'ath', 'etf', 'factor', 'life']).optional(),
+    order: z.number().optional(),
+    issue: z.number().optional(),
+    sample_draft: z.boolean().optional(),
+    takeaway: z.string().optional(),
   }),
 });
 
@@ -62,6 +69,7 @@ const aboutCollection = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/about" }),
   schema: z.object({
     ...commonFields,
+    principles: z.array(z.string()).optional(),
   }),
 });
 

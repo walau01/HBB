@@ -1,13 +1,41 @@
 {
   "main": [
-    { "name": "Home", "url": "/" },
-    { "name": "Start Here", "url": "/start-here" },
-    { "name": "Articles", "url": "/blog" },
-    { "name": "Tools", "url": "/tools" },
-    { "name": "About", "url": "/about" }
+    {
+      "key": "home",
+      "name": "Journal",
+      "url": "/"
+    },
+    {
+      "key": "articles",
+      "name": "All writing",
+      "url": "/blog"
+    },
+    {
+      "key": "foundation",
+      "name": "Start here",
+      "url": "/blog?category=foundation"
+    },
+    {
+      "key": "about",
+      "name": "About",
+      "url": "/about"
+    }
   ],
   "footer": [
-    { "name": "About", "url": "/about" },
-    { "name": "Privacy Policy", "url": "/privacy-policy" }
+    {
+      "key": "articles",
+      "name": "All writing",
+      "url": "/blog"
+    },
+    {
+      "key": "foundation",
+      "name": "Start here",
+      "url": "/blog?category=foundation"
+    },
+    {
+      "key": "about",
+      "name": "About",
+      "url": "/about"
+    }
   ]
 }

@@ -1,19 +1,12 @@
 ---
-title: "Tentang walau01"
-meta_title: ""
-description: "Tentang tujuan dan pendekatan walau01."
-image: ""
+title: "Terus bertanya. Terus belajar."
+description: "Saya seorang pelabur Malaysia yang ingin memahami sesuatu idea sebelum mempercayainya dengan wang sendiri."
 draft: false
+principles: ["Sumber yang boleh disemak","Ketidakpastian yang jelas","Perspektif Malaysia"]
 ---
 
-walau01 ialah projek pembelajaran peribadi tentang kewangan, ETF dan pelaburan berasaskan bukti. Saya seorang pelabur amatur, bukannya profesional kewangan.
+walau01 ialah tempat saya berkongsi proses itu: soalan, kajian, dan pertimbangan yang masih masuk akal selepas diteliti.
 
-## Mengapa laman ini diwujudkan
+Kebanyakan tulisan membincangkan ETF, keputusan portfolio, pelaburan faktor, dan kos yang mudah terlepas pandang. Sebahagiannya tentang kecergasan, AI, kerja, dan kehidupan.
 
-Laman ini ialah tempat untuk mencatat perkara yang saya pelajari, meneliti bukti di sebalik idea pelaburan dan menerangkan konsep kewangan dalam bahasa yang mudah. Laman ini tidak menawarkan tip saham, ramalan pasaran atau nasihat kewangan peribadi.
-
-## Cara saya menulis
-
-Saya akan membezakan bukti daripada tafsiran peribadi, menyatakan andaian penting, memautkan sumber yang berguna dan membetulkan kandungan apabila maklumat yang lebih baik tersedia.
-
-Lebih banyak kisah peribadi di sebalik walau01 akan ditambah apabila laman ini berkembang.
+Saya berkongsi apa yang dipelajari, dengan ruang untuk tidak bersetuju dan menukar pandangan. Matlamatnya ialah keputusan yang lebih jelas, bukan pendapat yang lebih lantang.

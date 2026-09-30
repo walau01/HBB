@@ -1,0 +1,18 @@
+---
+import Base from '@/layouts/Base.astro';
+import Artwork from './Artwork.astro';
+import { render } from 'astro:content';
+import { getCopy, url, type Lang, type Post } from '@/lib/journal';
+const {lang,post}=Astro.props as {lang:Lang;post:Post};
+const c=await getCopy(lang),p=post.text[lang];
+const {Content,headings}=await render(post.entry);
+const sections=headings.filter(h=>h.depth===2);
+---
+<Base lang={lang} title={p.title} description={p.summary} active="articles" currentPath={`blog/${post.slug}`} noindex={post.sample}>
+  <div class="container article-page">
+    <a class="text-link back-link" href={url(lang,'blog')}>{c.back}</a>
+    <header class="article-heading"><div class="post-meta"><span>{c.categories[post.category]}</span>{post.sample && <span>{c.draft}</span>}</div><h1>{p.title}</h1><p class="article-deck">{p.summary}</p><div class="author-line"><span class="small-monogram" aria-hidden="true">w.</span><span><strong>{post.entry.data.author}</strong><span>{post.minutes} {c.readTime}</span></span><span class="article-issue">{c.issue} {String(post.issue).padStart(3,'0')}</span></div></header>
+    <Artwork lang={lang} motif={post.motif} />
+    <div class="article-layout"><aside class="article-toc"><p class="eyebrow">{c.toc}</p><nav aria-label={c.toc}>{sections.map((s,i)=><a href={`#${s.slug}`}><span>0{i+1}</span>{s.text}</a>)}</nav>{post.sample && <div class="toc-note">{c.sampleNotice}</div>}</aside><article class="prose"><div class="takeaway"><p class="eyebrow">{c.takeaway}</p><p>{p.takeaway}</p></div><div class="article-body"><Content /></div>{post.sample && <div class="source-box"><p class="eyebrow">{c.references}</p>{post.category==='life' ? <p>{c.sampleNotice}</p> : <><p>{c.sourceIntro}</p><a href="https://www.bursamalaysia.com/trade/our_products_services/equities/exchange_traded_funds" target="_blank" rel="noopener noreferrer">Bursa Malaysia · Exchange Traded Funds</a><a href="https://www.investor.gov/introduction-investing/investing-basics/investment-products/exchange-traded-funds-etfs" target="_blank" rel="noopener noreferrer">Investor.gov · Exchange-Traded Funds</a></>}</div>}<div class="article-end"><span class="small-monogram" aria-hidden="true">w.</span><div><strong>{post.entry.data.author}</strong><p>{c.footerLine}</p></div></div></article></div>
+  </div>
+</Base>

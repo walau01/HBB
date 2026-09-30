@@ -4,19 +4,18 @@
     "base_url": "https://walau01.com",
     "base_path": "/",
     "trailing_slash": false,
-    "favicon": "/images/favicon.png",
+    "favicon": "/favicon.svg",
     "logo": "",
     "logo_darkmode": "",
     "logo_width": "150",
     "logo_height": "30",
     "logo_text": "walau01"
   },
-
   "settings": {
     "search": true,
     "sticky_header": true,
     "theme_switcher": true,
-    "default_theme": "system",
+    "default_theme": "light",
     "pagination": 8,
     "summary_length": 200,
     "blog_folder": "blog",
@@ -24,40 +23,33 @@
     "disable_languages": [],
     "default_language_in_subdir": false
   },
-
   "announcement": {
     "enable": false,
     "expire_days": 7
   },
-
   "params": {
     "contact_form_action": "#",
     "copyright": "© 2026 walau01"
   },
-
   "navigation_button": {
     "enable": false,
     "label": "",
     "link": ""
   },
-
   "google_tag_manager": {
     "enable": false,
     "gtm_id": "GTM-XXXXXX"
   },
-
   "disqus": {
     "enable": false,
     "shortname": "",
     "settings": {}
   },
-
   "metadata": {
     "meta_author": "walau01",
     "meta_image": "/images/og-image.png",
     "meta_description": "Personal writing about finance, ETFs, and evidence-based investing."
   },
-
   "llms": {
     "generate_llms_txt": true,
     "generate_llms_full_txt": true,

@@ -1,43 +1,11 @@
 ---
-import Base from "@/layouts/Base.astro";
-import PostSingle from "@/layouts/PostSingle.astro";
-import { getSinglePage } from "@/lib/contentParser.astro";
-import { supportedLang } from "@/lib/utils/languageParser";
-
-
+import Article from '@/layouts/journal/Article.astro';
+import {supportedLang} from '@/lib/utils/languageParser';
+import {getPosts,normalizeLang} from '@/lib/journal';
 export async function getStaticPaths() {
-  const BLOG_FOLDER = "blog";
-
-  const paths = await Promise.all(
-    supportedLang.map(async (lang) => {
-      const posts = await getSinglePage(
-        BLOG_FOLDER,
-        lang
-      );
-
-      return posts.map((post) => ({
-        params: {
-          lang: lang || undefined,
-          single: post.id.split("/").pop(),
-        },
-        props: {
-          post,
-        },
-      }));
-    })
-  );
-  return paths.flat();
+  return (await Promise.all(supportedLang.map(async lang => (await getPosts(normalizeLang(lang))).map(post => ({params:{lang:lang||undefined,single:post.slug},props:{post}}))))).flat();
 }
-
-const { post } = Astro.props;
-const { title, meta_title, description, image } = post.data;
+const lang=normalizeLang(Astro.params.lang);
+const {post}=Astro.props;
 ---
-
-<Base
-  title={title}
-  meta_title={meta_title}
-  description={description}
-  image={image}
->
-  <PostSingle post={post} />
-</Base>
+<Article lang={lang} post={post}/>
