@@ -137,6 +137,115 @@
     },
     "notebook": "WALAU01 / THE NOTEBOOK",
     "issue": "FIELD NOTES /",
-    "notFoundKicker": "404 / AN UNWRITTEN PAGE"
+    "notFoundKicker": "404 / AN UNWRITTEN PAGE",
+    "mediaPlay": "播放动图",
+    "mediaPause": "暂停动图",
+    "toolsEyebrow": "把想法放进数字里",
+    "toolsTitle": "需要多少钱，才能让时间接手？",
+    "toolsText": "互动式 Coast FIRE 计算器。输入数字，调整假设，看看结果如何变化。",
+    "toolsLink": "探索 Coast FIRE",
+    "toolsNote": "马币 · 已调整通胀 · 由你设定假设",
+    "mediaLabel": "含图片与动图",
+    "coastArt1": "留一点",
+    "coastArt2": "时间。",
+    "coastArtKicker": "基础知识 / 看远一点",
+    "coastArtFoot": "示意计算，不是预测。"
+  },
+  "coast": {
+    "tag": "WALAU01 / 工具 01",
+    "title": "Coast FIRE",
+    "headline": "给时间空间，",
+    "emphasis": "让未来轻一点。",
+    "intro": "已经投入的资金，能否在未来长成退休所需的金额？试着算算这个里程碑。到那之前，日常生活仍然需要收入。",
+    "units": "RM · 以今天的购买力计算",
+    "privacy": "计算在你的浏览器内完成，输入不会发送出去。",
+    "example": "以下是虚构示例，请换成自己的数字。",
+    "inputsTitle": "从你的起点开始",
+    "inputsIntro": "几个数字，换一个更清晰的视角。",
+    "plan": "你的计划",
+    "assumptions": "计算假设",
+    "fields": {
+      "age": {
+        "label": "当前年龄",
+        "hint": "以整岁计算"
+      },
+      "retirementAge": {
+        "label": "退休年龄",
+        "hint": "何时开始用这笔资产支付退休生活"
+      },
+      "investments": {
+        "label": "现有退休投资",
+        "hint": "留作退休的资产；不包括应急现金"
+      },
+      "monthlySpending": {
+        "label": "退休后每月支出",
+        "hint": "以今天的马币计算，包含预计生活费用"
+      },
+      "monthlyContribution": {
+        "label": "每月追加退休投资",
+        "hint": "以今天的马币计算，假设实际购买力不变"
+      },
+      "returnRate": {
+        "label": "扣费后年回报",
+        "hint": "未扣通胀的假设回报"
+      },
+      "inflationRate": {
+        "label": "年通胀率",
+        "hint": "用来将回报换算成实际购买力"
+      },
+      "withdrawalRate": {
+        "label": "初始年提取率",
+        "hint": "年度支出占退休投资组合的比例"
+      }
+    },
+    "reset": "重设示例",
+    "stress": "试试 5% 回报",
+    "invalid": "请在显示的范围内输入数值，年龄须为整数。",
+    "invalidAge": "退休年龄必须大于当前年龄。",
+    "resultKicker": "你今天的 COAST FIRE 目标",
+    "resultCaption": "在这些假设下，今天需要投入的金额；之后不再追加，仍可在退休时达到目标。",
+    "progress": "现有投资占今天 Coast FIRE 目标的比例",
+    "gap": "距离今天目标的差额",
+    "retirementTarget": "完整退休目标",
+    "realReturn": "扣除通胀后的回报",
+    "years": "距离退休的年数",
+    "ready": "模型中的 Coast 目标已达成",
+    "future": "前方还有一个里程碑",
+    "notReached": "这份计划还需要调整",
+    "statusReady": "在这些假设下，现有投资已达到 Coast FIRE 目标。当前生活支出仍然需要收入支持。",
+    "statusFuture": "持续每月追加投资，模型预计约在 {age} 岁达到 Coast FIRE。",
+    "statusNotReached": "这一组数字无法在退休年龄前达到 Coast FIRE。可以尝试调整储蓄金额，或重新审视假设。",
+    "chartTitle": "从这里出发，两条路径。",
+    "chartIntro": "比较持续追加投资，与只让现有投资继续增长。",
+    "keepSaving": "继续每月投入",
+    "noDeposits": "今天起不再追加",
+    "targetLine": "退休目标",
+    "ageAxis": "年龄",
+    "moneyAxis": "今天的马币",
+    "chartAccessible": "从 {start} 岁到 {end} 岁，有追加和没有追加投资的预测金额，与退休目标的比较。",
+    "atAge": "到 {age} 岁时",
+    "table": "查看预测表格",
+    "ageColumn": "年龄",
+    "tableNote": "表格展示每年结果，计算采用按月复利。",
+    "methodTitle": "看懂计算，也看清假设。",
+    "methodIntro": "这是一个值得探索的里程碑，而不是提交辞职信的日期。",
+    "method1Title": "先算完整退休目标。",
+    "method1": "退休年度支出除以你选择的提取率。这是规划假设，不是保证安全的提取率。",
+    "method2Title": "换算成实际回报。",
+    "method2": "将扣费后回报按通胀调整，让所有结果保持在今天的购买力。",
+    "method3Title": "从退休目标往回算。",
+    "method3": "按剩余投资年数折算退休目标，得到今天需要的资金，假设之后不再追加。",
+    "method4Title": "再看看持续储蓄。",
+    "method4": "假设每月月底投入，金额的实际购买力保持不变。模型寻找首次能够停止追加、仍在退休时达标的月份。",
+    "limitations": "这是固定增长率的示意模型，未模拟税务、养老金收入及市场波动，也不检验提取率能否维持整个退休期。",
+    "sourcesTitle": "延伸阅读",
+    "sourceCoast": "Charles Schwab · FIRE 的不同形式",
+    "sourceWithdrawal": "Fidelity · 财务独立目标的估算",
+    "journalLink": "返回笔记",
+    "annualSpending": "年度支出",
+    "formulaReal": "实际回报",
+    "formulaCoast": "今天的 Coast 目标",
+    "formulaTarget": "退休目标",
+    "formulaYears": "剩余年数"
   }
 }

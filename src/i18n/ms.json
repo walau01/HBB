@@ -137,6 +137,115 @@
     },
     "notebook": "WALAU01 / THE NOTEBOOK",
     "issue": "FIELD NOTES /",
-    "notFoundKicker": "404 / AN UNWRITTEN PAGE"
+    "notFoundKicker": "404 / AN UNWRITTEN PAGE",
+    "mediaPlay": "Mainkan animasi",
+    "mediaPause": "Jeda animasi",
+    "toolsEyebrow": "UJI IDEA DENGAN ANGKA",
+    "toolsTitle": "Berapa cukup untuk memberi masa ruang bekerja?",
+    "toolsText": "Kalkulator Coast FIRE interaktif. Terokai angka, ubah andaian, dan lihat kesannya.",
+    "toolsLink": "Terokai Coast FIRE",
+    "toolsNote": "MYR · DILARAS INFLASI · ANDAIAN ANDA",
+    "mediaLabel": "DENGAN IMEJ & ANIMASI",
+    "coastArt1": "Beri",
+    "coastArt2": "masa.",
+    "coastArtKicker": "ASAS / PANDANGAN JAUH",
+    "coastArtFoot": "ILUSTRASI. BUKAN RAMALAN."
+  },
+  "coast": {
+    "tag": "WALAU01 / ALAT 01",
+    "title": "Coast FIRE",
+    "headline": "Biar masa memikul",
+    "emphasis": "sebahagian beban.",
+    "intro": "Bolehkah pelaburan yang sudah ada berkembang menjadi dana persaraan anda? Terokai pencapaian itu. Perbelanjaan hidup sebelum bersara masih memerlukan pendapatan.",
+    "units": "RM · NILAI WANG HARI INI",
+    "privacy": "Dikira dalam pelayar anda. Input kekal di sini.",
+    "example": "Input contoh rekaan. Gantikan dengan angka anda sendiri.",
+    "inputsTitle": "Titik permulaan anda",
+    "inputsIntro": "Beberapa angka. Gambaran lebih jelas.",
+    "plan": "Pelan anda",
+    "assumptions": "Andaian",
+    "fields": {
+      "age": {
+        "label": "Umur sekarang",
+        "hint": "Dalam tahun penuh"
+      },
+      "retirementAge": {
+        "label": "Umur persaraan",
+        "hint": "Bila portfolio mula membiayai persaraan"
+      },
+      "investments": {
+        "label": "Pelaburan persaraan sekarang",
+        "hint": "Aset untuk persaraan; tidak termasuk wang kecemasan"
+      },
+      "monthlySpending": {
+        "label": "Perbelanjaan persaraan bulanan",
+        "hint": "Dalam ringgit hari ini; termasuk kos sara hidup"
+      },
+      "monthlyContribution": {
+        "label": "Deposit persaraan bulanan",
+        "hint": "Dalam ringgit hari ini; kekal selepas pelarasan inflasi"
+      },
+      "returnRate": {
+        "label": "Pulangan tahunan selepas fi",
+        "hint": "Sebelum inflasi; andaian pertumbuhan sahaja"
+      },
+      "inflationRate": {
+        "label": "Inflasi tahunan",
+        "hint": "Untuk menukar pertumbuhan kepada kuasa beli"
+      },
+      "withdrawalRate": {
+        "label": "Kadar pengeluaran awal",
+        "hint": "Perbelanjaan tahunan sebagai bahagian portfolio persaraan"
+      }
+    },
+    "reset": "Tetapkan semula",
+    "stress": "Cuba pulangan 5%",
+    "invalid": "Masukkan nilai dalam had yang dipaparkan. Umur mestilah tahun penuh.",
+    "invalidAge": "Umur persaraan mesti melebihi umur sekarang.",
+    "resultKicker": "SASARAN COAST FIRE ANDA",
+    "resultCaption": "Amaun yang diperlukan hari ini, tanpa deposit tambahan, untuk mencapai sasaran persaraan mengikut andaian ini.",
+    "progress": "Kemajuan ke sasaran Coast FIRE hari ini",
+    "gap": "Baki ke sasaran hari ini",
+    "retirementTarget": "Sasaran persaraan penuh",
+    "realReturn": "Pulangan selepas inflasi",
+    "years": "Tahun hingga persaraan",
+    "ready": "Sasaran Coast dicapai dalam model ini",
+    "future": "Pencapaian di hadapan",
+    "notReached": "Pelan ini perlu dilihat semula",
+    "statusReady": "Pelaburan semasa mencapai sasaran Coast FIRE mengikut andaian ini. Kos hidup sekarang masih perlu dibiayai.",
+    "statusFuture": "Dengan deposit bulanan berterusan, model ini mencapai Coast FIRE sekitar umur {age}.",
+    "statusNotReached": "Senario ini tidak mencapai Coast FIRE menjelang persaraan. Cuba amaun simpanan lain atau semak andaian anda.",
+    "chartTitle": "Dua laluan dari sini.",
+    "chartIntro": "Bandingkan deposit bulanan berterusan dengan membiarkan pelaburan sedia ada berkembang.",
+    "keepSaving": "Teruskan deposit",
+    "noDeposits": "Hentikan deposit hari ini",
+    "targetLine": "Sasaran persaraan",
+    "ageAxis": "Umur",
+    "moneyAxis": "RM hari ini",
+    "chartAccessible": "Unjuran pelaburan dari umur {start} hingga {end}, dengan dan tanpa deposit baharu, berbanding sasaran persaraan.",
+    "atAge": "Pada umur {age}",
+    "table": "Lihat jadual unjuran",
+    "ageColumn": "Umur",
+    "tableNote": "Gambaran tahunan. Pengiraan dikompaun setiap bulan.",
+    "methodTitle": "Lihat kiraan. Fahami andaian.",
+    "methodIntro": "Pencapaian untuk diterokai, bukan tarikh menyerahkan notis berhenti kerja.",
+    "method1Title": "Cari sasaran persaraan.",
+    "method1": "Perbelanjaan persaraan tahunan dibahagi kadar pengeluaran pilihan anda. Ini andaian perancangan, bukan kadar selamat yang dijamin.",
+    "method2Title": "Gunakan pertumbuhan nyata.",
+    "method2": "Pulangan selepas fi dilaraskan untuk inflasi supaya semua hasil kekal dalam kuasa beli hari ini.",
+    "method3Title": "Kira semula ke hari ini.",
+    "method3": "Diskaunkan sasaran mengikut baki tahun pertumbuhan. Itulah amaun diperlukan hari ini jika tiada deposit tambahan.",
+    "method4Title": "Terokai simpanan berterusan.",
+    "method4": "Deposit ditambah pada hujung bulan dan kekal dalam nilai nyata. Model mencari bulan pertama anda boleh berhenti menambah dan masih mencapai sasaran.",
+    "limitations": "Ini ilustrasi pertumbuhan tetap. Cukai, pendapatan pencen dan turun naik pasaran tidak dimodelkan. Ia tidak menguji ketahanan kadar pengeluaran sepanjang persaraan.",
+    "sourcesTitle": "Bacaan lanjut",
+    "sourceCoast": "Charles Schwab · Gerakan FIRE",
+    "sourceWithdrawal": "Fidelity · Menganggar sasaran kebebasan kewangan",
+    "journalLink": "Kembali ke jurnal",
+    "annualSpending": "Belanja tahunan",
+    "formulaReal": "Pulangan nyata",
+    "formulaCoast": "Sasaran Coast hari ini",
+    "formulaTarget": "Sasaran persaraan",
+    "formulaYears": "Baki tahun"
   }
 }

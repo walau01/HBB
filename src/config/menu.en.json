@@ -16,6 +16,11 @@
       "url": "/blog?category=foundation"
     },
     {
+      "key": "coast",
+      "name": "Coast FIRE",
+      "url": "/coast-fire"
+    },
+    {
       "key": "about",
       "name": "About",
       "url": "/about"
@@ -31,6 +36,11 @@
       "key": "foundation",
       "name": "Start here",
       "url": "/blog?category=foundation"
+    },
+    {
+      "key": "coast",
+      "name": "Coast FIRE",
+      "url": "/coast-fire"
     },
     {
       "key": "about",

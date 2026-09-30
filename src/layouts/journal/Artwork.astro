@@ -22,6 +22,11 @@ const c = await getCopy(lang);
     <div class="art-kicker">{c.artwork.etfKicker}</div>
     <div class="etf-type">E<span>T</span>F</div>
     <div class="art-foot">{c.artwork.etfFoot}</div>
+  </> : motif === 'coast' ? <>
+    <div class="art-kicker">{c.coastArtKicker}</div>
+    <div class="coast-type">{c.coastArt1}<br/><em>{c.coastArt2}</em></div>
+    <div class="art-foot">{c.coastArtFoot}</div>
+    <span class="coast-art-ring"></span>
   </> : <>
     <div class="art-kicker">{c.artwork.lifeKicker}</div>
     <div class="life-type">{c.artwork.make}<br/><em>{c.artwork.room}</em></div>

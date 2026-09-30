@@ -1,0 +1,84 @@
+---
+import { getCopy, type Lang } from "@/lib/journal";
+interface Props {
+  src: string;
+  alt: string;
+  caption: string;
+  lang: Lang;
+  animated?: boolean;
+  poster?: string;
+}
+const { src, alt, caption, lang, animated = false, poster } = Astro.props;
+const c = await getCopy(lang);
+---
+
+<figure
+  class="article-media"
+  data-motion={animated || undefined}
+  data-gif-src={animated ? src : undefined}
+  data-poster={poster}
+>
+  <div class="media-frame">
+    <img
+      src={animated ? poster : src}
+      alt={alt}
+      width="1080"
+      height="630"
+      loading="lazy"
+      decoding="async"
+    />
+    {
+      animated && (
+        <button
+          class="motion-toggle"
+          type="button"
+          data-motion-toggle
+          data-play={c.mediaPlay}
+          data-pause={c.mediaPause}
+          aria-pressed="false"
+        >
+          {c.mediaPlay}
+        </button>
+      )
+    }
+  </div>
+  <figcaption>
+    <span class="media-kind">{animated ? "GIF" : "PNG"}</span>{caption}
+  </figcaption>
+</figure>
+<script>
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  document.querySelectorAll<HTMLElement>("[data-motion]").forEach((figure) => {
+    const image = figure.querySelector<HTMLImageElement>("img");
+    const button = figure.querySelector<HTMLButtonElement>(
+      "[data-motion-toggle]",
+    );
+    let playing = false,
+      manuallyPaused = false;
+    const setPlaying = (next: boolean) => {
+      if (!image || !button) return;
+      playing = next;
+      image.src =
+        (next ? figure.dataset.gifSrc : figure.dataset.poster) || image.src;
+      button.textContent =
+        (next ? button.dataset.pause : button.dataset.play) || "";
+      button.setAttribute("aria-pressed", String(next));
+    };
+    button?.addEventListener("click", () => {
+      manuallyPaused = playing;
+      setPlaying(!playing);
+    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries[0].isIntersecting;
+        if (!visible) setPlaying(false);
+        else if (!reducedMotion.matches && !manuallyPaused) setPlaying(true);
+      },
+      { threshold: 0.15 },
+    );
+    observer.observe(figure);
+    reducedMotion.addEventListener("change", () => {
+      if (reducedMotion.matches) setPlaying(false);
+    });
+  });
+</script>

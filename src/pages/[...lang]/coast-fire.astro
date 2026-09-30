@@ -1,0 +1,22 @@
+---
+import Base from "@/layouts/Base.astro";
+import CoastFire from "@/layouts/components/CoastFire";
+import "@/styles/coast-fire.css";
+import { getTranslations, supportedLang } from "@/lib/utils/languageParser";
+import { normalizeLang, url } from "@/lib/journal";
+export function getStaticPaths() {
+  return supportedLang.map((lang) => ({ params: { lang: lang || undefined } }));
+}
+const lang = normalizeLang(Astro.params.lang);
+const { coast } = await getTranslations(lang);
+---
+
+<Base
+  lang={lang}
+  title={coast.title}
+  description={coast.intro}
+  active="coast"
+  currentPath="coast-fire"
+>
+  <CoastFire copy={coast} lang={lang} journalHref={url(lang)} client:load />
+</Base>

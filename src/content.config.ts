@@ -27,11 +27,12 @@ const blogCollection = defineCollection({
     draft: z.boolean().optional(),
     journal_category: z.enum(['research', 'bridge', 'foundation', 'life']).optional(),
     minutes: z.number().positive().optional(),
-    motif: z.enum(['costs', 'ath', 'etf', 'factor', 'life']).optional(),
+    motif: z.enum(['costs', 'ath', 'etf', 'factor', 'life', 'coast']).optional(),
     order: z.number().optional(),
     issue: z.number().optional(),
     sample_draft: z.boolean().optional(),
     takeaway: z.string().optional(),
+    references: z.array(z.object({label: z.string(), url: z.url()})).optional(),
   }),
 });
 

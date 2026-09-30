@@ -13,7 +13,7 @@ interface Props {
 }
 const lang = normalizeLang(Astro.props.lang || Astro.params.lang);
 const c = await getCopy(lang);
-const { main: mainMenu, footer: footerMenu } = await getTranslations(lang);
+const { main: mainMenu, footer: footerMenu, coast } = await getTranslations(lang);
 const posts = await getPosts(lang);
 const pathname = Astro.url.pathname.replace(/^\/(en|zh|ms)(?=\/|$)/, '/').replace(/\/{2,}/g, '/');
 const currentPath = Astro.props.currentPath ?? pathname.replace(/^\/|\/$/g, '');
@@ -24,6 +24,7 @@ const description = Astro.props.description || c.intro;
 const canonical = Astro.props.canonical || new URL(url(lang, currentPath), config.site.base_url).href;
 const image = new URL(Astro.props.image || config.metadata.meta_image, config.site.base_url).href;
 const searchData = posts.map(p => ({ title: p.text[lang].title, summary: p.text[lang].summary, category: c.categories[p.category], href: url(lang, `blog/${p.slug}`) }));
+searchData.push({title:coast.title,summary:coast.intro,category:c.toolsEyebrow,href:url(lang,'coast-fire')});
 type NavItem = {key: string; name: string; url: string};
 const nav = (mainMenu as NavItem[]).map(n => ({key:n.key,text:n.name,href:url(lang,n.url)}));
 const footerNav = (footerMenu as NavItem[]).map(n => ({key:n.key,text:n.name,href:url(lang,n.url)}));

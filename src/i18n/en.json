@@ -137,6 +137,115 @@
     },
     "notebook": "WALAU01 / THE NOTEBOOK",
     "issue": "FIELD NOTES /",
-    "notFoundKicker": "404 / AN UNWRITTEN PAGE"
+    "notFoundKicker": "404 / AN UNWRITTEN PAGE",
+    "mediaPlay": "Play animation",
+    "mediaPause": "Pause animation",
+    "toolsEyebrow": "PUT AN IDEA TO WORK",
+    "toolsTitle": "How much is enough to let time do the rest?",
+    "toolsText": "An interactive Coast FIRE calculator. Explore the numbers, change the assumptions, and see what moves.",
+    "toolsLink": "Explore Coast FIRE",
+    "toolsNote": "MYR · INFLATION ADJUSTED · YOUR ASSUMPTIONS",
+    "mediaLabel": "WITH IMAGES & ANIMATION",
+    "coastArt1": "Give it",
+    "coastArt2": "time.",
+    "coastArtKicker": "FOUNDATION / A LONGER VIEW",
+    "coastArtFoot": "ILLUSTRATION. NOT A FORECAST."
+  },
+  "coast": {
+    "tag": "WALAU01 / TOOL 01",
+    "title": "Coast FIRE",
+    "headline": "Let time carry",
+    "emphasis": "more of the load.",
+    "intro": "What if the money you have already invested could grow into your retirement fund? Explore that milestone. You still need income for life along the way.",
+    "units": "RM · TODAY’S MONEY",
+    "privacy": "Calculated in your browser. Your inputs stay here.",
+    "example": "Fictional example inputs. Replace them with your own.",
+    "inputsTitle": "Your starting point",
+    "inputsIntro": "A few numbers. A clearer picture.",
+    "plan": "The plan",
+    "assumptions": "The assumptions",
+    "fields": {
+      "age": {
+        "label": "Current age",
+        "hint": "Whole years"
+      },
+      "retirementAge": {
+        "label": "Retirement age",
+        "hint": "When this portfolio starts funding retirement"
+      },
+      "investments": {
+        "label": "Retirement investments today",
+        "hint": "Assets earmarked for retirement; exclude emergency cash"
+      },
+      "monthlySpending": {
+        "label": "Monthly retirement spending",
+        "hint": "In today’s ringgit; include your expected living costs"
+      },
+      "monthlyContribution": {
+        "label": "Monthly retirement deposits",
+        "hint": "In today’s ringgit; kept constant after inflation"
+      },
+      "returnRate": {
+        "label": "Annual return after fees",
+        "hint": "Before inflation; a hypothetical growth assumption"
+      },
+      "inflationRate": {
+        "label": "Annual inflation",
+        "hint": "Used to convert growth to purchasing power"
+      },
+      "withdrawalRate": {
+        "label": "Initial withdrawal rate",
+        "hint": "Annual spending as a share of the retirement portfolio"
+      }
+    },
+    "reset": "Reset example",
+    "stress": "Try 5% return",
+    "invalid": "Enter values within the displayed limits. Ages must be whole years.",
+    "invalidAge": "Retirement age must be later than your current age.",
+    "resultKicker": "YOUR COAST FIRE NUMBER",
+    "resultCaption": "Invested today, with no further deposits, to reach your retirement target under these assumptions.",
+    "progress": "Progress toward today’s Coast FIRE target",
+    "gap": "Gap to today’s target",
+    "retirementTarget": "Full retirement target",
+    "realReturn": "Return after inflation",
+    "years": "Years to retirement",
+    "ready": "Coast target reached in this model",
+    "future": "A milestone on the horizon",
+    "notReached": "The plan needs another look",
+    "statusReady": "Your current investments meet the Coast FIRE target under these assumptions. Current living costs still need funding.",
+    "statusFuture": "With continued monthly deposits, this model reaches Coast FIRE around age {age}.",
+    "statusNotReached": "This scenario does not reach Coast FIRE by your retirement age. Explore a different savings amount or review your assumptions.",
+    "chartTitle": "Two paths from here.",
+    "chartIntro": "Compare continuing monthly deposits with letting your existing investments grow.",
+    "keepSaving": "Keep making deposits",
+    "noDeposits": "Stop deposits today",
+    "targetLine": "Retirement target",
+    "ageAxis": "Age",
+    "moneyAxis": "Today’s RM",
+    "chartAccessible": "Projected investments from age {start} to {end}, with and without new deposits, compared with the retirement target.",
+    "atAge": "At age {age}",
+    "table": "View the projection table",
+    "ageColumn": "Age",
+    "tableNote": "Annual snapshots. Calculations compound monthly.",
+    "methodTitle": "See the maths. Keep the assumptions.",
+    "methodIntro": "A milestone to explore, rather than a date to hand in your notice.",
+    "method1Title": "Find the retirement target.",
+    "method1": "Annual retirement spending divided by your chosen withdrawal rate. This is a planning assumption, not a guaranteed safe rate.",
+    "method2Title": "Use real growth.",
+    "method2": "We adjust your after-fee return for inflation, so every result stays in today’s purchasing power.",
+    "method3Title": "Work backwards to today.",
+    "method3": "Discount the retirement target by the years of growth left. That is the amount needed today if you add nothing else.",
+    "method4Title": "Explore continued saving.",
+    "method4": "Deposits are added at month-end and stay constant in real terms. The model finds the first month you could stop adding and still reach the target.",
+    "limitations": "This is a constant-growth illustration. Taxes, pension income and market volatility are not modelled. It does not test whether a withdrawal rate will survive retirement.",
+    "sourcesTitle": "Background reading",
+    "sourceCoast": "Charles Schwab · The FIRE movement",
+    "sourceWithdrawal": "Fidelity · Estimating a financial independence target",
+    "journalLink": "Back to the journal",
+    "annualSpending": "Annual spending",
+    "formulaReal": "Real return",
+    "formulaCoast": "Coast target today",
+    "formulaTarget": "Retirement target",
+    "formulaYears": "Years to retirement"
   }
 }
