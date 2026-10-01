@@ -1,6 +1,6 @@
 ---
 title: "马来西亚的 ETF，真的不好吗？"
-description: "管理费只是开始。再看看基金实际费用、买卖价差，以及「便宜」到底是什么意思。"
+description: "比较持有 ETF 的费用，以及买入和卖出时的费用。"
 author: "walau01"
 categories: ["核心研究"]
 tags: ["research"]

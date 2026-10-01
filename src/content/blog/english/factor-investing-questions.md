@@ -1,6 +1,6 @@
 ---
-title: "A factor premium is not a promise."
-description: "What would make an investing idea convincing enough to carry into a real portfolio?"
+title: "Can an investing strategy improve returns?"
+description: "Questions to ask before trusting an investment strategy with your money."
 author: "walau01"
 categories: ["Core Research"]
 tags: ["research"]
@@ -11,7 +11,7 @@ motif: "factor"
 order: 4
 issue: 4
 sample_draft: true
-takeaway: "An interesting historical result is the beginning of due diligence."
+takeaway: "A good result in the past is a reason to investigate a strategy, not a guarantee about its future."
 ---
 
 ## What is the proposed explanation?

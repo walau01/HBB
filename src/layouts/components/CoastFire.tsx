@@ -92,8 +92,9 @@ function NumberField({
 
 export default function CoastFire({ copy: c, lang, journalHref }: Props) {
   const w = c.workspace;
+  const u = w.simple;
   const [plan, setPlan] = useState<CoastPlan>(createExamplePlan);
-  const [mode, setMode] = useState<"quick" | "detailed">("detailed");
+  const [mode, setMode] = useState<"quick" | "detailed">("quick");
   const [section, setSection] = useState<Section>("assets");
   const [scenario, setScenario] = useState<Scenario>("base");
   const [saved, setSaved] = useState(false);
@@ -306,52 +307,233 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
       if (importRef.current) importRef.current.value = "";
     }
   };
+  // The simple fields edit non-EPF accounts; account schedules and saved plans stay intact.
+  const updateSimple = (key: keyof CoastInputs, value: number) => {
+    if (!["investments", "monthlyContribution", "returnRate"].includes(key)) {
+      setPlan((p) => {
+        const next = updateQuickField(p, key, value);
+        if (key === "retirementAge") {
+          next.accounts = next.accounts.map((a) => ({
+            ...a,
+            stopAge: a.stopAge === p.retirementAge ? value : a.stopAge,
+          }));
+        }
+        return next;
+      });
+      return;
+    }
+    setPlan((p) => {
+      const accounts = p.accounts.filter((a) => a.kind !== "epf");
+      if (!accounts.some((a) => a.included))
+        accounts.push({
+          id: rowId(),
+          name: "",
+          kind: "investment",
+          balance: 0,
+          returnRate: 7,
+          accessAge: 18,
+          included: true,
+          monthlyContribution: 0,
+          employerContribution: 0,
+          annualIncrease: 0,
+          stopAge: p.retirementAge,
+        });
+      const edited = updateQuickField({ ...p, accounts }, key, value);
+      return {
+        ...p,
+        accounts: [
+          ...p.accounts.map(
+            (a) => edited.accounts.find((b) => b.id === a.id) || a,
+          ),
+          ...edited.accounts.filter(
+            (a) => !p.accounts.some((b) => b.id === a.id),
+          ),
+        ],
+      };
+    });
+  };
   const quick = () => {
+    const nonEpf = planTotals({
+      ...plan,
+      accounts: plan.accounts.filter((a) => a.kind !== "epf"),
+    });
+    const epfAccounts = plan.accounts.filter((a) => a.kind === "epf");
+    const epfIncluded = epfAccounts.filter((a) => a.included);
     const values: CoastInputs = {
       age: plan.age,
       retirementAge: plan.retirementAge,
-      investments: totals.investments,
+      investments: nonEpf.investments,
       monthlySpending: totals.monthlySpending,
-      monthlyContribution: totals.monthlyContribution,
-      returnRate: totals.returnRate,
+      monthlyContribution: nonEpf.monthlyContribution,
+      returnRate: nonEpf.returnRate,
       inflationRate: plan.inflationRate,
       withdrawalRate: plan.withdrawalRate,
     };
+    const field = (key: keyof CoastInputs) => {
+      const monetary = [
+        "investments",
+        "monthlySpending",
+        "monthlyContribution",
+      ].includes(key);
+      const percent = [
+        "returnRate",
+        "inflationRate",
+        "withdrawalRate",
+      ].includes(key);
+      return (
+        <NumberField
+          key={key}
+          id={"quick-" + key}
+          label={c.fields[key].label}
+          value={values[key]}
+          money={monetary}
+          suffix={percent ? "%" : undefined}
+          min={inputLimits[key][0]}
+          max={inputLimits[key][1]}
+          integer={!monetary && !percent}
+          hint={key === "returnRate" ? u.returnHint : c.fields[key].hint}
+          invalid={key === "retirementAge" && plan.retirementAge <= plan.age}
+          onChange={(value) => updateSimple(key, value)}
+        />
+      );
+    };
     return (
-      <div className="coast-fields quick-fields">
-        {(Object.keys(values) as (keyof CoastInputs)[]).map((key) => {
-          const monetary = [
-            "investments",
-            "monthlySpending",
-            "monthlyContribution",
-          ].includes(key);
-          const percent = [
-            "returnRate",
-            "inflationRate",
-            "withdrawalRate",
-          ].includes(key);
-          return (
-            <NumberField
-              key={key}
-              id={"quick-" + key}
-              label={c.fields[key].label}
-              value={values[key]}
-              money={monetary}
-              suffix={percent ? "%" : undefined}
-              min={inputLimits[key][0]}
-              max={inputLimits[key][1]}
-              integer={!monetary && !percent}
-              hint={c.fields[key].hint}
-              invalid={
-                key === "retirementAge" && plan.retirementAge <= plan.age
+      <>
+        <div className="coast-fields quick-fields">
+          {(
+            [
+              "age",
+              "retirementAge",
+              "investments",
+              "monthlyContribution",
+              "monthlySpending",
+            ] as const
+          ).map(field)}
+        </div>
+        <details className="coast-optional coast-epf-optional">
+          <summary>
+            <span>{u.epfTitle}</span>
+            <small>
+              {epfIncluded.length
+                ? u.epfIncluded +
+                  " · " +
+                  money(epfIncluded.reduce((sum, a) => sum + a.balance, 0))
+                : u.epfExcluded}
+            </small>
+          </summary>
+          {epfAccounts.map((a) => (
+            <fieldset className="coast-simple-epf" key={a.id}>
+              <legend>{accountName(a)}</legend>
+              <label className="coast-check">
+                <input
+                  type="checkbox"
+                  checked={a.included}
+                  onChange={(e) =>
+                    account(a.id, { included: e.target.checked })
+                  }
+                />
+                {w.included}
+              </label>
+              <div className="coast-fields">
+                <NumberField
+                  id={a.id + "-quick-balance"}
+                  label={u.epfBalance}
+                  value={a.balance}
+                  max={1000000000}
+                  money
+                  onChange={(v) => account(a.id, { balance: v })}
+                />
+                <NumberField
+                  id={a.id + "-quick-deposit"}
+                  label={u.epfContribution}
+                  value={a.monthlyContribution + a.employerContribution}
+                  money
+                  hint={u.epfContributionHint}
+                  onChange={(v) => {
+                    const total =
+                      a.monthlyContribution + a.employerContribution;
+                    const employeeShare =
+                      total > 0 ? a.monthlyContribution / total : 1;
+                    account(a.id, {
+                      monthlyContribution: v * employeeShare,
+                      employerContribution: v * (1 - employeeShare),
+                    });
+                  }}
+                />
+                <NumberField
+                  id={a.id + "-quick-return"}
+                  label={u.epfReturn}
+                  value={a.returnRate}
+                  min={-10}
+                  max={20}
+                  suffix="%"
+                  onChange={(v) => account(a.id, { returnRate: v })}
+                />
+              </div>
+            </fieldset>
+          ))}
+          {!epfAccounts.length && (
+            <button
+              type="button"
+              className="coast-detail-button"
+              onClick={() =>
+                setPlan((p) => ({
+                  ...p,
+                  accounts: [
+                    ...p.accounts,
+                    {
+                      id: rowId(),
+                      name: "",
+                      kind: "epf",
+                      balance: 0,
+                      returnRate: 5.5,
+                      accessAge: 55,
+                      included: true,
+                      monthlyContribution: 0,
+                      employerContribution: 0,
+                      annualIncrease: 0,
+                      stopAge: p.retirementAge,
+                    },
+                  ],
+                }))
               }
-              onChange={(value) =>
-                setPlan((p) => updateQuickField(p, key, value))
-              }
-            />
-          );
-        })}
-      </div>
+            >
+              {u.epfAdd}
+            </button>
+          )}
+          <p className="coast-help">{u.epfNote}</p>
+        </details>
+        <div className="coast-simple-total">
+          <span>{u.summarySavings}</span>
+          <strong>{money(totals.investments)}</strong>
+        </div>
+        <details className="coast-optional coast-assumptions">
+          <summary>
+            {u.assumptionsTitle}
+            <small>
+              {c.fields.returnRate.label}: {decimal.format(nonEpf.returnRate)}%
+              · {c.fields.inflationRate.label}:{" "}
+              {decimal.format(plan.inflationRate)}% · {u.spendingPercent}:{" "}
+              {decimal.format(plan.withdrawalRate)}%
+            </small>
+          </summary>
+          <p className="coast-help">{u.assumptionsHint}</p>
+          <div className="coast-fields">
+            {(["returnRate", "inflationRate", "withdrawalRate"] as const).map(
+              field,
+            )}
+          </div>
+        </details>
+        <button
+          type="button"
+          className="coast-detail-button"
+          onClick={() => setMode("detailed")}
+        >
+          {w.detailed} <span aria-hidden="true">+</span>
+        </button>
+        <p className="coast-help">{u.moreHint}</p>
+        <p className="coast-help coast-kept-details">{u.detailsActive}</p>
+      </>
     );
   };
   const panel = (key: Section) => {
@@ -906,64 +1088,56 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
   };
 
   return (
-    <div className="container coast-page">
+    <div className={"container coast-page simplified-coast " + mode}>
       <header className="coast-heading">
         <div>
-          <p className="eyebrow">
-            {c.tag}
-            <span className="coast-title-label">{c.title}</span>
-          </p>
-          <h1>
-            {c.title}
-            <em>{w.subtitle}</em>
-          </h1>
+          <p className="eyebrow">{c.tag}</p>
+          <h1>{c.title}</h1>
           <p className="coast-intro">{w.intro}</p>
-        </div>
-        <div className="coast-heading-note" aria-hidden="true">
-          <div className="coast-orbit">
-            <span>∞</span>
-            <i />
-            <i />
-          </div>
-          <span>RM / {w.todayMoney}</span>
         </div>
       </header>
       <div className="coast-toolbar">
-        <div className="coast-mode" role="group" aria-label={w.mode}>
-          {(["quick", "detailed"] as const).map((m) => (
+        <div>
+          {mode === "detailed" ? (
             <button
-              key={m}
               type="button"
-              aria-pressed={mode === m}
-              onClick={() => setMode(m)}
+              className="coast-detail-button"
+              onClick={() => setMode("quick")}
             >
-              {w[m]}
+              ← {u.back}
             </button>
-          ))}
+          ) : (
+            <span className="coast-example-label">{w.fictional}</span>
+          )}
         </div>
-        <div className="coast-file-actions">
-          <button type="button" onClick={store} disabled={!valid}>
-            {w.save}
-          </button>
-          <button type="button" onClick={load} disabled={!saved}>
-            {w.load}
-          </button>
-          <button type="button" onClick={exportPlan} disabled={!valid}>
-            {w.export}
-          </button>
-          <button type="button" onClick={() => importRef.current?.click()}>
-            {w.import}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setPlan(createExamplePlan());
-              setNotice(w.fictional);
-            }}
-          >
-            {w.reset}
-          </button>
-        </div>
+        <details className="coast-plan-options">
+          <summary>
+            {u.planOptions} <span aria-hidden="true">⌄</span>
+          </summary>
+          <div className="coast-file-actions">
+            <button type="button" onClick={store} disabled={!valid}>
+              {w.save}
+            </button>
+            <button type="button" onClick={load} disabled={!saved}>
+              {w.load}
+            </button>
+            <button type="button" onClick={exportPlan} disabled={!valid}>
+              {w.export}
+            </button>
+            <button type="button" onClick={() => importRef.current?.click()}>
+              {w.import}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setPlan(createExamplePlan());
+                setNotice(w.fictional);
+              }}
+            >
+              {w.reset}
+            </button>
+          </div>
+        </details>
         <input
           ref={importRef}
           type="file"
@@ -973,40 +1147,19 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
           onChange={(e) => void importPlan(e.target.files?.[0])}
         />
       </div>
-      <p className="coast-mode-hint">{w.modeHint}</p>
       {notice && (
         <p className="coast-notice" role="status">
           {notice}
         </p>
       )}
-      <div className="coast-plan-strip">
-        <div>
-          <span>{w.accountTotal}</span>
-          <strong>{money(totals.investments)}</strong>
-        </div>
-        <div>
-          <span>{w.retirementTotal}</span>
-          <strong>
-            {money(totals.monthlySpending)}
-            <small> / {w.monthly}</small>
-          </strong>
-        </div>
-        <div>
-          <span>{w.depositTotal}</span>
-          <strong>
-            {money(totals.monthlyContribution)}
-            <small> / {w.monthly}</small>
-          </strong>
-        </div>
-      </div>
       <div className="coast-workspace">
         <div className="coast-editor">
           {mode === "quick" ? (
             <section className="coast-panel">
               <div className="coast-section-title">
-                <span className="eyebrow">01 / {w.quick}</span>
+                <span className="eyebrow">{w.quick}</span>
                 <h2>{c.inputsTitle}</h2>
-                <p>{w.modeHint}</p>
+                <p>{u.inputHint}</p>
               </div>
               {quick()}
             </section>
@@ -1044,7 +1197,6 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
                       tabs.current[next]?.focus();
                     }}
                   >
-                    <span aria-hidden="true">0{i + 1}</span>
                     {w.sections[s]}
                   </button>
                 ))}
@@ -1063,9 +1215,7 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
                     aria-controls={"panel-" + s}
                     onClick={() => setSection(s)}
                   >
-                    <span>
-                      0{i + 1} / {w.sections[s]}
-                    </span>
+                    <span>{w.sections[s]}</span>
                     <span aria-hidden="true">{section === s ? "−" : "+"}</span>
                   </button>
                   <section
@@ -1077,9 +1227,7 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
                     tabIndex={0}
                   >
                     <div className="coast-section-title">
-                      <span className="eyebrow">
-                        0{i + 1} / {w.detailed}
-                      </span>
+                      <span className="eyebrow">{w.modeHint}</span>
                       <h2>{w.sections[s]}</h2>
                       <p>{w.sectionHints[s]}</p>
                     </div>
@@ -1162,14 +1310,13 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
                   )}
                 </div>
                 <p className="coast-status-line">
-                  {result.firstCoastMonth === 0
-                    ? w.today
-                    : result.coastAge !== null
-                      ? result.coastAge <= plan.desiredCoastAge
-                        ? w.goalMet
-                        : w.goalLater
-                      : w.livingCosts}
+                  {result.coastAge === null
+                    ? u.resultUnreached
+                    : u.resultMeaning}
                 </p>
+                {result.firstCoastMonth === 0 && (
+                  <p className="coast-status-line">{w.today}</p>
+                )}
                 <div className="coast-target">
                   <span>{w.targetToday}</span>
                   <strong>
@@ -1204,15 +1351,12 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
                     <dt>{w.gap}</dt>
                     <dd>{result.gap === null ? "—" : money(result.gap)}</dd>
                   </div>
-                  <div>
-                    <dt>{w.retirementTarget}</dt>
-                    <dd>{money(result.target)}</dd>
-                  </div>
                 </dl>
                 <p className="result-caption">
                   {result.coastTarget === null ? w.accessIssue : w.targetHint}
                 </p>
                 <p className="result-basis">{w.targetBasis}</p>
+                <p className="result-basis">{u.uncertainty}</p>
               </>
             ) : (
               <p className="result-caption">{w.invalid}</p>
@@ -1231,53 +1375,59 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
                 {money(result.target)}
               </strong>
               <p className="coast-fire-basis">{w.todayMoney}</p>
-              <dl>
-                <div>
-                  <dt>{w.futureMoney}</dt>
-                  <dd>{money(result.nominalTarget)}</dd>
-                </div>
-                <div>
-                  <dt>{w.fullFireGap}</dt>
-                  <dd>{money(result.fireGap)}</dd>
-                </div>
-                <div>
-                  <dt>{w.fullFireProgress}</dt>
-                  <dd>{decimal.format(result.fireProgress)}%</dd>
-                </div>
-                <div>
-                  <dt>{w.projectedMonthly}</dt>
-                  <dd>{money(result.retirementSpending.nominal)}</dd>
-                </div>
-              </dl>
-              <p>{w.fullFireHint}</p>
-              <p className="coast-fire-formula">
-                {money(result.retirementSpending.today * 12)} ÷{" "}
-                {decimal.format(plan.withdrawalRate)}% = {money(result.target)}
-              </p>
+              <details className="coast-retirement-details">
+                <summary>{u.retirementDetails} +</summary>
+                <dl>
+                  <div>
+                    <dt>{w.futureMoney}</dt>
+                    <dd>{money(result.nominalTarget)}</dd>
+                  </div>
+                  <div>
+                    <dt>{w.fullFireGap}</dt>
+                    <dd>{money(result.fireGap)}</dd>
+                  </div>
+                  <div>
+                    <dt>{w.fullFireProgress}</dt>
+                    <dd>{decimal.format(result.fireProgress)}%</dd>
+                  </div>
+                  <div>
+                    <dt>{w.projectedMonthly}</dt>
+                    <dd>{money(result.retirementSpending.nominal)}</dd>
+                  </div>
+                </dl>
+                <p>{w.fullFireHint}</p>
+                <p className="coast-fire-formula">
+                  {money(result.retirementSpending.today * 12)} ÷{" "}
+                  {decimal.format(plan.withdrawalRate)}% ={" "}
+                  {money(result.target)}
+                </p>
+              </details>
             </section>
           )}
-          <section className="coast-budget">
-            <h2>{w.budgetTitle}</h2>
-            <dl>
-              <div>
-                <dt>{w.netIncome}</dt>
-                <dd>{money(plan.monthlyIncome)}</dd>
-              </div>
-              <div>
-                <dt>{w.currentTotal}</dt>
-                <dd>{money(totals.currentSpending)}</dd>
-              </div>
-              <div>
-                <dt>{w.voluntary}</dt>
-                <dd>{money(totals.voluntary)}</dd>
-              </div>
-              <div className="coast-budget-surplus">
-                <dt>{w.budgetSurplus}</dt>
-                <dd>{money(totals.surplus)}</dd>
-              </div>
-            </dl>
-            <p>{w.budgetHint}</p>
-          </section>
+          {mode === "detailed" && (
+            <section className="coast-budget">
+              <h2>{w.budgetTitle}</h2>
+              <dl>
+                <div>
+                  <dt>{w.netIncome}</dt>
+                  <dd>{money(plan.monthlyIncome)}</dd>
+                </div>
+                <div>
+                  <dt>{w.currentTotal}</dt>
+                  <dd>{money(totals.currentSpending)}</dd>
+                </div>
+                <div>
+                  <dt>{w.voluntary}</dt>
+                  <dd>{money(totals.voluntary)}</dd>
+                </div>
+                <div className="coast-budget-surplus">
+                  <dt>{w.budgetSurplus}</dt>
+                  <dd>{money(totals.surplus)}</dd>
+                </div>
+              </dl>
+              <p>{w.budgetHint}</p>
+            </section>
+          )}
         </aside>
       </div>
       {result && (
@@ -1292,236 +1442,246 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
             onScenario={setScenario}
             events={plan.events}
           />
-          {withoutEvents && (
-            <section
-              className="coast-event-impact"
-              id="coast-event-impact"
-              aria-labelledby="event-impact-title"
-            >
-              <div className="coast-section-title">
-                <p className="eyebrow">
-                  {w.sections.events} · {w.scenarioNames[scenario]}
-                </p>
-                <h2 id="event-impact-title">{w.eventImpactTitle}</h2>
-                <p>{w.eventImpactHint}</p>
-              </div>
-              <dl className="coast-event-deltas">
-                <div>
-                  <dt>{w.coastDateChange}</dt>
-                  <dd>{eventDateChange()}</dd>
+          <details className="coast-deeper" open={mode === "detailed"}>
+            <summary>
+              {u.deeper}
+              <span aria-hidden="true"> +</span>
+            </summary>
+            {withoutEvents && (
+              <section
+                className="coast-event-impact"
+                id="coast-event-impact"
+                aria-labelledby="event-impact-title"
+              >
+                <div className="coast-section-title">
+                  <p className="eyebrow">
+                    {w.sections.events} · {w.scenarioNames[scenario]}
+                  </p>
+                  <h2 id="event-impact-title">{w.eventImpactTitle}</h2>
+                  <p>{w.eventImpactHint}</p>
                 </div>
-                <div>
-                  <dt>{w.retirementBalanceChange}</dt>
-                  <dd>
-                    {moneyChange(
-                      result.savingRetirement - withoutEvents.savingRetirement,
-                    )}
-                  </dd>
-                </div>
-                <div>
-                  <dt>{w.endBalanceChange}</dt>
-                  <dd>
-                    {moneyChange(
-                      result.cashProjection.at(-1)!.balance -
-                        withoutEvents.cashProjection.at(-1)!.balance,
-                    )}
-                  </dd>
-                </div>
-              </dl>
-              <div className="table-scroll">
-                <table>
-                  <thead>
-                    <tr>
-                      <th scope="col">{w.eventMetric}</th>
-                      <th scope="col">{w.withoutEvents}</th>
-                      <th scope="col">{w.withEvents}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">{w.estimatedAge}</th>
-                      <td>{ageText(withoutEvents.coastAge)}</td>
-                      <td>{ageText(result.coastAge)}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">{w.targetToday}</th>
-                      <td>{money(withoutEvents.coastTarget ?? NaN)}</td>
-                      <td>{money(result.coastTarget ?? NaN)}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">{w.retirementBalance}</th>
-                      <td>{money(withoutEvents.savingRetirement)}</td>
-                      <td>{money(result.savingRetirement)}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">{w.firstShortfall}</th>
-                      <td>
-                        {withoutEvents.firstShortfallAge === null
-                          ? w.noShortfall
-                          : ageText(withoutEvents.firstShortfallAge)}
-                      </td>
-                      <td>
-                        {result.firstShortfallAge === null
-                          ? w.noShortfall
-                          : ageText(result.firstShortfallAge)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        {w.endBalance} · {w.age} {plan.endAge}
-                      </th>
-                      <td>
-                        {money(withoutEvents.cashProjection.at(-1)!.balance)}
-                      </td>
-                      <td>{money(result.cashProjection.at(-1)!.balance)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="coast-event-list">
-                {plan.events.map((e) => (
-                  <div key={e.id}>
-                    <span className="coast-event-age">
-                      {w.age} {e.age}
-                    </span>
-                    <div>
-                      <strong>{e.name || w.names[e.kind]}</strong>
-                      <p>{eventExplanation(e)}</p>
-                    </div>
-                    <span>
-                      {e.kind === "expense" ? "−" : "+"}
-                      {money(e.amount)}
-                      {e.kind === "income" ? ` / ${w.monthly}` : ""}
-                    </span>
+                <dl className="coast-event-deltas">
+                  <div>
+                    <dt>{w.coastDateChange}</dt>
+                    <dd>{eventDateChange()}</dd>
                   </div>
+                  <div>
+                    <dt>{w.retirementBalanceChange}</dt>
+                    <dd>
+                      {moneyChange(
+                        result.savingRetirement -
+                          withoutEvents.savingRetirement,
+                      )}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>{w.endBalanceChange}</dt>
+                    <dd>
+                      {moneyChange(
+                        result.cashProjection.at(-1)!.balance -
+                          withoutEvents.cashProjection.at(-1)!.balance,
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+                <div className="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">{w.eventMetric}</th>
+                        <th scope="col">{w.withoutEvents}</th>
+                        <th scope="col">{w.withEvents}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">{w.estimatedAge}</th>
+                        <td>{ageText(withoutEvents.coastAge)}</td>
+                        <td>{ageText(result.coastAge)}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">{w.targetToday}</th>
+                        <td>{money(withoutEvents.coastTarget ?? NaN)}</td>
+                        <td>{money(result.coastTarget ?? NaN)}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">{w.retirementBalance}</th>
+                        <td>{money(withoutEvents.savingRetirement)}</td>
+                        <td>{money(result.savingRetirement)}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">{w.firstShortfall}</th>
+                        <td>
+                          {withoutEvents.firstShortfallAge === null
+                            ? w.noShortfall
+                            : ageText(withoutEvents.firstShortfallAge)}
+                        </td>
+                        <td>
+                          {result.firstShortfallAge === null
+                            ? w.noShortfall
+                            : ageText(result.firstShortfallAge)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">
+                          {w.endBalance} · {w.age} {plan.endAge}
+                        </th>
+                        <td>
+                          {money(withoutEvents.cashProjection.at(-1)!.balance)}
+                        </td>
+                        <td>{money(result.cashProjection.at(-1)!.balance)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="coast-event-list">
+                  {plan.events.map((e) => (
+                    <div key={e.id}>
+                      <span className="coast-event-age">
+                        {w.age} {e.age}
+                      </span>
+                      <div>
+                        <strong>{e.name || w.names[e.kind]}</strong>
+                        <p>{eventExplanation(e)}</p>
+                      </div>
+                      <span>
+                        {e.kind === "expense" ? "−" : "+"}
+                        {money(e.amount)}
+                        {e.kind === "income" ? ` / ${w.monthly}` : ""}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+            <section className="coast-comparison">
+              <div className="coast-section-title">
+                <p className="eyebrow">{w.scenario}</p>
+                <h2>{w.scenarioTitle}</h2>
+                <p>{w.scenarioIntro}</p>
+              </div>
+              <div className="coast-scenario-grid">
+                {comparisons.map(({ scenario: s, result: r }) => (
+                  <button
+                    type="button"
+                    key={s}
+                    aria-pressed={scenario === s}
+                    onClick={() => setScenario(s)}
+                  >
+                    <span>{w.scenarioNames[s]}</span>
+                    <strong>{ageText(r.coastAge)}</strong>
+                    <dl>
+                      <div>
+                        <dt>{w.targetToday}</dt>
+                        <dd>
+                          {r.coastTarget === null ? "—" : money(r.coastTarget)}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>{w.retirementBalance}</dt>
+                        <dd>{money(r.savingRetirement)}</dd>
+                      </div>
+                    </dl>
+                  </button>
                 ))}
               </div>
             </section>
-          )}
-          <section className="coast-comparison">
-            <div className="coast-section-title">
-              <p className="eyebrow">{w.scenario}</p>
-              <h2>{w.scenarioTitle}</h2>
-              <p>{w.scenarioIntro}</p>
-            </div>
-            <div className="coast-scenario-grid">
-              {comparisons.map(({ scenario: s, result: r }) => (
-                <button
-                  type="button"
-                  key={s}
-                  aria-pressed={scenario === s}
-                  onClick={() => setScenario(s)}
-                >
-                  <span>{w.scenarioNames[s]}</span>
-                  <strong>{ageText(r.coastAge)}</strong>
-                  <dl>
-                    <div>
-                      <dt>{w.targetToday}</dt>
-                      <dd>
-                        {r.coastTarget === null ? "—" : money(r.coastTarget)}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt>{w.retirementBalance}</dt>
-                      <dd>{money(r.savingRetirement)}</dd>
-                    </div>
-                  </dl>
-                </button>
-              ))}
-            </div>
-          </section>
-          <section className="coast-cash">
-            <div className="coast-section-title">
-              <p className="eyebrow">
-                {w.sections.timeline} / {plan.retirementAge}–{plan.endAge}
-              </p>
-              <h2>{w.cashTitle}</h2>
-              <p>{w.cashIntro}</p>
-            </div>
-            <dl className="coast-cash-metrics">
-              <div>
-                <dt>{w.accessibleRetirement}</dt>
-                <dd>{money(result.accessibleAtRetirement)}</dd>
+            <section className="coast-cash">
+              <div className="coast-section-title">
+                <p className="eyebrow">
+                  {w.sections.timeline} / {plan.retirementAge}–{plan.endAge}
+                </p>
+                <h2>{w.cashTitle}</h2>
+                <p>{w.cashIntro}</p>
               </div>
-              <div>
-                <dt>{w.lockedRetirement}</dt>
-                <dd>{money(result.lockedAtRetirement)}</dd>
-              </div>
-              <div>
-                <dt>{w.bridgeGap}</dt>
-                <dd>{money(result.bridgeGap)}</dd>
-              </div>
-              <div>
-                <dt>{w.firstShortfall}</dt>
-                <dd>
-                  {result.firstShortfallAge === null
-                    ? w.noShortfall
-                    : ageText(result.firstShortfallAge)}
-                </dd>
-              </div>
-            </dl>
-            {result.eventShortfall > 0.01 && (
-              <p className="coast-validation">
-                {w.eventShortfall}: {money(result.eventShortfall)}
-              </p>
-            )}
-            <details className="projection-table">
-              <summary>
-                {w.cashTable}
-                <span aria-hidden="true">+</span>
-              </summary>
-              <div className="table-scroll">
-                <table>
-                  <caption>{w.targetBasis}</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">{w.age}</th>
-                      <th scope="col">{w.portfolio}</th>
-                      <th scope="col">{w.available}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {result.cashProjection.map((point) => (
-                      <tr key={point.age}>
-                        <th scope="row">{point.age}</th>
-                        <td>{money(point.balance)}</td>
-                        <td>{money(point.accessible)}</td>
+              <dl className="coast-cash-metrics">
+                <div>
+                  <dt>{w.accessibleRetirement}</dt>
+                  <dd>{money(result.accessibleAtRetirement)}</dd>
+                </div>
+                <div>
+                  <dt>{w.lockedRetirement}</dt>
+                  <dd>{money(result.lockedAtRetirement)}</dd>
+                </div>
+                <div>
+                  <dt>{w.bridgeGap}</dt>
+                  <dd>{money(result.bridgeGap)}</dd>
+                </div>
+                <div>
+                  <dt>{w.firstShortfall}</dt>
+                  <dd>
+                    {result.firstShortfallAge === null
+                      ? w.noShortfall
+                      : ageText(result.firstShortfallAge)}
+                  </dd>
+                </div>
+              </dl>
+              {result.eventShortfall > 0.01 && (
+                <p className="coast-validation">
+                  {w.eventShortfall}: {money(result.eventShortfall)}
+                </p>
+              )}
+              <details className="projection-table">
+                <summary>
+                  {w.cashTable}
+                  <span aria-hidden="true">+</span>
+                </summary>
+                <div className="table-scroll">
+                  <table>
+                    <caption>{w.targetBasis}</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">{w.age}</th>
+                        <th scope="col">{w.portfolio}</th>
+                        <th scope="col">{w.available}</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </details>
-            <p className="coast-help">{w.cashHint}</p>
-          </section>
+                    </thead>
+                    <tbody>
+                      {result.cashProjection.map((point) => (
+                        <tr key={point.age}>
+                          <th scope="row">{point.age}</th>
+                          <td>{money(point.balance)}</td>
+                          <td>{money(point.accessible)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+              <p className="coast-help">{w.cashHint}</p>
+            </section>
+          </details>
         </>
       )}
-      <section className="coast-method">
-        <div>
-          <p className="eyebrow">{w.sections.assumptions}</p>
-          <h2>{w.methodTitle}</h2>
-        </div>
-        <div>
-          <p>{w.method}</p>
-          <p>{w.limitations}</p>
-          <div className="coast-source-links">
-            <a
-              href="https://www.schwab.com/learn/story/fire-movement"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {w.coastSource} ↗
-            </a>
-            <a
-              href="https://www.kwsp.gov.my/en/member/life-stages/age-55-60-withdrawal"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {w.epfSource} ↗
-            </a>
+      <details className="coast-method-details">
+        <summary>{u.method} +</summary>
+        <section className="coast-method">
+          <div>
+            <p className="eyebrow">{w.sections.assumptions}</p>
+            <h2>{w.methodTitle}</h2>
           </div>
-        </div>
-      </section>
+          <div>
+            <p>{w.method}</p>
+            <p>{w.limitations}</p>
+            <div className="coast-source-links">
+              <a
+                href="https://www.schwab.com/learn/story/fire-movement"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {w.coastSource} ↗
+              </a>
+              <a
+                href="https://www.kwsp.gov.my/en/member/life-stages/age-55-60-withdrawal"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {w.epfSource} ↗
+              </a>
+            </div>
+          </div>
+        </section>
+      </details>
       <a className="text-link" href={journalHref}>
         {c.journalLink} →
       </a>

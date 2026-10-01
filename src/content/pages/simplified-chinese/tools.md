@@ -1,11 +1,11 @@
 ---
 title: "工具"
 meta_title: ""
-description: "由 walau01 提供、假设透明的个人理财工具。"
+description: "使用 Coast FIRE 计算器探索退休储蓄。"
 image: ""
 draft: false
 ---
 
-工具仍在规划中，目前尚未开放。
+估算现有投资何时有机会在不再追加的情况下增长到退休目标。退休前仍需要收入支付生活费。
 
-首批工具将用来解释复利增长和投资费用的长期影响。每项工具都会列出假设与限制，其结果仅供说明，并非预测。
+[打开 Coast FIRE](/zh/coast-fire)

@@ -17,8 +17,8 @@
   "journal": {
     "journal": "一份独立的投资笔记",
     "place": "马来西亚 · 槟城",
-    "home": "笔记",
-    "articles": "全部文章",
+    "home": "首页",
+    "articles": "文章",
     "foundation": "从这里开始",
     "about": "关于",
     "search": "搜索文章",
@@ -28,24 +28,24 @@
     "eyebrow": "对钱好奇，对证据认真。",
     "hero1": "投资这件事，",
     "hero2": "少一点噪音。",
-    "intro": "读研究，问问题，分享发现。从马来西亚投资者的视角出发，偶尔也聊聊生活。",
-    "browse": "翻开投资笔记",
-    "start": "刚来？先把基础补上。",
+    "intro": "一次弄懂一个理财问题。用简单的说明，从马来西亚的角度认识投资与退休规划。",
+    "browse": "浏览文章",
+    "start": "从这里开始",
     "featured": "正在研究的问题",
     "featureArt1": "看懂费用，",
     "featureArt2": "不只看费率。",
     "artFoot": "基金费用 · 买卖价差 · 换汇成本",
-    "read": "阅读草稿",
+    "read": "阅读文章",
     "draft": "示例草稿",
-    "preview": "设计预览 · 内容为示例",
-    "recent": "最近的笔记",
-    "recentIntro": "从真实问题开始。看看研究，也留一点改变想法的空间。",
+    "preview": "示范文章均有标示",
+    "recent": "读一篇文章",
+    "recentIntro": "选择你关心的主题。示范文章会清楚标示。",
     "all": "全部文章",
     "categories": {
-      "research": "核心研究",
-      "bridge": "观念与证据",
-      "foundation": "基础知识",
-      "life": "投资之外"
+      "research": "投资问题",
+      "bridge": "投资问题",
+      "foundation": "投资基础",
+      "life": "生活"
     },
     "categoryNotes": {
       "research": "多看一步，别停在标题。",
@@ -57,7 +57,7 @@
     "pathTitle": "一个问题，就是好的起点。",
     "researchLine": "先看证据，再看马来西亚的实际情况。",
     "method": "我怎样研究一个问题",
-    "methodTitle": "一个结论，只是开始。",
+    "methodTitle": "我如何研究一篇文章",
     "steps": [
       ["01", "问一个真实的问题", "从投资者真正关心的事情开始。"],
       ["02", "回到原始证据", "看看来源、方法，以及可能遗漏的部分。"],
@@ -69,19 +69,19 @@
     "lifeLink": "看看投资之外",
     "footerLine": "边想边写，边写边核对。",
     "footerNote": "个人研究与观察。内容提供一般信息，并非针对个人的财务建议。",
-    "archiveEyebrow": "文章目录",
-    "archiveTitle": "跟着问题走。",
-    "archiveText": "投资研究、背后的基础知识，还有一些生活笔记。",
-    "filterAll": "全部",
-    "filterLabel": "按分类筛选文章",
+    "archiveEyebrow": "按自己的步调学习",
+    "archiveTitle": "文章",
+    "archiveText": "先了解投资基础，再探索投资问题，也可以读一些生活随笔。",
+    "filterAll": "全部文章",
+    "filterLabel": "选择主题",
     "searchPlaceholder": "试试「ETF」「费用」或「生活」…",
-    "searchEmpty": "没有找到匹配的文章。",
+    "searchEmpty": "没有符合搜索条件的文章。",
     "searchInitial": "搜索问题、主题或分类。",
     "showing": "篇文章",
     "readTime": "分钟阅读",
-    "back": "返回全部文章",
-    "toc": "本篇内容",
-    "takeaway": "目前的思路",
+    "back": "返回文章列表",
+    "toc": "本文内容",
+    "takeaway": "重点先看",
     "references": "进一步阅读",
     "sampleNotice": "这是用于展示网站设计的示例内容，还不是已发表的研究文章。",
     "aboutEyebrow": "关于 WALAU01",
@@ -124,16 +124,58 @@
     "notFoundKicker": "404 / AN UNWRITTEN PAGE",
     "mediaPlay": "播放动图",
     "mediaPause": "暂停动图",
-    "toolsEyebrow": "把想法放进数字里",
-    "toolsTitle": "需要多少钱，才能让时间接手？",
-    "toolsText": "互动式 Coast FIRE 计算器。输入数字，调整假设，看看结果如何变化。",
-    "toolsLink": "探索 Coast FIRE",
-    "toolsNote": "马币 · 已调整通胀 · 由你设定假设",
+    "toolsEyebrow": "规划你的退休",
+    "toolsTitle": "Coast FIRE",
+    "toolsText": "什么时候可以不再为退休追加投资，让储蓄继续增长？先输入五个数字，有需要再加入更多细节。",
+    "toolsLink": "试用计算器",
+    "toolsNote": "结果基于你的假设。退休前的生活费仍需要收入支付。",
     "mediaLabel": "含图片与动图",
     "coastArt1": "留一点",
     "coastArt2": "时间。",
     "coastArtKicker": "基础知识 / 看远一点",
-    "coastArtFoot": "示意计算，不是预测。"
+    "coastArtFoot": "示意计算，不是预测。",
+    "nextArticle": "接着阅读",
+    "guide": {
+      "title": "从这里开始",
+      "intro": "刚接触投资？跟着这三个步骤阅读。不必先学会专业术语。",
+      "welcomeTitle": "刚开始学习投资？",
+      "welcomeText": "一份简短的阅读指南，每一步都有清楚的说明。",
+      "link": "打开新手指南",
+      "steps": [
+        {
+          "title": "了解你买的是什么",
+          "text": "什么是 ETF？看看基金如何持有一组投资，以及为什么要了解它的内容。",
+          "action": "认识 ETF"
+        },
+        {
+          "title": "看看钱如何增长",
+          "text": "通过简单例子、图片和动画，认识复利。",
+          "action": "查看例子"
+        },
+        {
+          "title": "探索你的退休目标",
+          "text": "使用 Coast FIRE 计算器，估算储蓄何时能够继续增长到退休目标。",
+          "action": "试用 Coast FIRE"
+        }
+      ],
+      "sample": "下面两篇是教育示范文章，均有标示，方便与正式研究文章区分。",
+      "more": "想进一步了解？按主题浏览文章。",
+      "glossaryTitle": "你会遇到的三个词",
+      "terms": [
+        {
+          "term": "ETF",
+          "meaning": "交易所买卖基金：一种可在交易所买卖的基金。它持有什么投资，取决于基金本身。"
+        },
+        {
+          "term": "复利",
+          "meaning": "增长不仅来自最初投入的钱，也来自之前的增长。"
+        },
+        {
+          "term": "Coast FIRE",
+          "meaning": "现有储蓄有机会在不再追加投资的情况下增长到退休目标。退休前仍需要收入支付生活费。"
+        }
+      ]
+    }
   },
   "coast": {
     "tag": "WALAU01 / 工具 01",
@@ -154,20 +196,20 @@
         "hint": "以整岁计算"
       },
       "retirementAge": {
-        "label": "退休年龄",
-        "hint": "何时开始用这笔资产支付退休生活"
+        "label": "你想几岁退休？",
+        "hint": "从这个年龄开始使用退休储蓄。"
       },
       "investments": {
-        "label": "现有退休投资",
-        "hint": "留作退休的资产；不包括应急现金"
+        "label": "目前的退休投资",
+        "hint": "不包括公积金与应急储蓄。公积金在下方另行填写。"
       },
       "monthlySpending": {
-        "label": "退休后每月支出",
-        "hint": "以今天的马币计算，包含预计生活费用"
+        "label": "退休后的每月开销",
+        "hint": "按今天的物价填写，包括住屋、饮食、医疗等生活费。"
       },
       "monthlyContribution": {
-        "label": "每月追加退休投资",
-        "hint": "以今天的马币计算，假设实际购买力不变"
+        "label": "每月准备投资多少？",
+        "hint": "不包括公积金。模型假设此金额随一般通胀增长。"
       },
       "returnRate": {
         "label": "扣费后年回报",
@@ -178,8 +220,8 @@
         "hint": "用来将回报换算成实际购买力"
       },
       "withdrawalRate": {
-        "label": "初始年提取率",
-        "hint": "年度支出占退休投资组合的比例"
+        "label": "退休第一年使用基金的比例",
+        "hint": "第一年开销占退休基金的百分比。4% 是假设，并非保证。"
       }
     },
     "reset": "重设示例",
@@ -232,27 +274,27 @@
     "formulaTarget": "退休目标",
     "formulaYears": "剩余年数",
     "workspace": {
-      "subtitle": "多一点细节，让下一步更清晰。",
-      "intro": "把资产、支出和储蓄放进同一份计划，看看已有投资何时能靠时间增长，承担未来的退休目标。",
+      "subtitle": "什么时候可以让储蓄继续接力？",
+      "intro": "Coast FIRE 是指现有投资有机会在不再追加的情况下增长到退休目标。先填写数字，再探索估算结果。",
       "quick": "快速估算",
-      "detailed": "详细计划",
+      "detailed": "加入更多细节",
       "mode": "选择规划方式",
-      "modeHint": "两个视图使用同一份计划，切换不会丢失明细。",
+      "modeHint": "切换视图会保留你的数字。",
       "sections": {
-        "timeline": "时间线",
-        "assets": "资产",
-        "spending": "支出",
-        "contributions": "投入计划",
-        "events": "人生事件与收入",
-        "assumptions": "计算假设"
+        "timeline": "年龄与收入",
+        "assets": "你的储蓄",
+        "spending": "你的开销",
+        "contributions": "每月投资",
+        "events": "未来变化",
+        "assumptions": "增长与通胀"
       },
       "sectionHints": {
-        "timeline": "设定几个里程碑，金额一律以今天的马币输入。",
-        "assets": "每个账户都有自己的回报和可用年龄，未纳入的账户不参与任何预测。",
-        "spending": "拆开你想负担的生活，年度金额会换算成月度总额。",
-        "contributions": "安排每个账户的投入金额、增幅和停止年龄。",
-        "events": "可选的一次性变化和退休收入，未来进账要等实际到账后才计入 Coast 达标判断。",
-        "assumptions": "这是可调整的假设示例，不是预测。回报已扣费用，未扣通胀。"
+        "timeline": "选择各个年龄，以及数字是个人还是全家的预算。",
+        "assets": "列出退休账户，设定预期回报与可以使用资金的年龄。",
+        "spending": "按今天的物价列出生活费。不同类别可以使用不同通胀率。",
+        "contributions": "选择每个账户的投入金额，以及何时停止投入。",
+        "events": "加入未来开销、预计收到的钱或退休收入，查看它如何改变结果。",
+        "assumptions": "调整增长与通胀，探索不同估算。这些是假设，不是预测。"
       },
       "names": {
         "investment": "投资账户",
@@ -348,32 +390,32 @@
       "viewResults": "查看结果",
       "next": "下一部分",
       "requiresJS": "请启用 JavaScript 以编辑计算器。",
-      "resultTitle": "你的 Coast FIRE 里程碑",
-      "estimatedAge": "预计 Coast 年龄",
+      "resultTitle": "你的估算",
+      "estimatedAge": "预计可以不再追加投资的年龄",
       "age": "岁",
       "notReached": "退休前未达标",
       "today": "模型中今天已达标",
-      "targetToday": "今天的 Coast 目标",
-      "targetHint": "根据账户组合、退休预算及退休前的计划支出计算；未来进账未到账前不用于判断已达标。",
-      "retirementTarget": "完整 FIRE 目标",
-      "gap": "今天的差额",
-      "progress": "现有资产占今天目标的比例",
+      "targetToday": "今天停止追加所需的金额",
+      "targetHint": "这是今天需要持有、以继续增长到退休目标的投资金额。计算包括计划开销与账户可用年龄。",
+      "retirementTarget": "退休所需金额",
+      "gap": "今天还差多少",
+      "progress": "目前已达到的比例",
       "impossible": "需要检查资金可用时间",
       "accessIssue": "所选账户组合无法支付较早的计划支出，请补充可用资产或调整计划。",
-      "livingCosts": "Coast 期间的生活仍需收入，这只是固定回报的示意模型。",
+      "livingCosts": "退休前仍需要收入支付生活费。",
       "goalMet": "在你希望的 Coast 年龄内",
       "goalLater": "晚于你希望的 Coast 年龄",
-      "targetBasis": "结果摘要以今天的马币显示。",
+      "targetBasis": "除非另有标示，金额均以今天的 RM 表示。",
       "budgetTitle": "当前预算负担得起吗？",
       "netIncome": "到手收入",
       "budgetSurplus": "支出与自主投资后余额",
       "budgetHint": "雇员 EPF 已从到手收入中扣除，雇主 EPF 不会重复扣除。此检查不会改变你填写的投入。",
-      "chartTitle": "看清每个选择如何改变路径。",
-      "chartIntro": "对比持续供款、今天停止所有新增投资，以及仅继续 EPF。Coast 标记显示首次达标月份；菱形标记表示指定年龄的事件，点按下方事件即可查看。",
-      "saving": "按投入计划继续",
+      "chartTitle": "看看储蓄如何增长",
+      "chartIntro": "实线是你的储蓄计划。紫色虚线是每个年龄达到 Coast FIRE 所需的金额。两线相交的位置是估算里程碑。",
+      "saving": "你的储蓄计划",
       "stop": "停止所有新投入",
       "epfOnly": "只继续 EPF",
-      "threshold": "Coast 目标曲线",
+      "threshold": "达到 Coast FIRE 所需金额",
       "todayMoney": "今天的马币",
       "futureMoney": "未来名义马币",
       "moneyView": "图表金额基准",
@@ -405,10 +447,10 @@
       "categoryInflation": "类别年通胀率",
       "categoryInflationHint": "默认沿用整体通胀率，也可单独设置。退休支出按今天的价格填写；预览显示退休时的每月名义令吉支出。情景调整也会应用于各类别通胀率。",
       "projectedMonthly": "退休时每月预算",
-      "fullFireTitle": "完整 FIRE 需要多少钱？",
-      "fullFireGap": "与目前纳入资产的差额",
-      "fullFireProgress": "目前资产占完整 FIRE 目标比例",
-      "fullFireHint": "这是在所选退休年龄需要的投资组合，按退休第一年的预算和提款率估算。差额以目前纳入的资产计算。账户可动用时间与退休收入会在下方另行检查。",
+      "fullFireTitle": "退休所需金额",
+      "fullFireGap": "与今天储蓄相比还差多少",
+      "fullFireProgress": "已存金额占退休目标比例",
+      "fullFireHint": "FIRE 指财务独立与提早退休。这是按退休开销及第一年使用比例估算的退休基金。",
       "eventExpenseEffect": "在发生时从三条路径的可动用资产扣除。这可能提高 Coast 目标、推迟达标时间；无法支付的部分会单独显示。",
       "eventLumpSumEffect": "在到账时加入持续供款和仅继续 EPF 的路径。可能提前达标，但在实际收到前不会计入当下的 Coast 准备度。",
       "eventIncomeEffect": "在指定退休期间减少所需投资提款。影响现金流检查；Coast 与完整 FIRE 目标仍按完整支出预算计算。",
@@ -423,11 +465,11 @@
       "years": "岁",
       "months": "个月",
       "coastMeaning": "按当前假设，此时的现有资产无需继续投资，也能增长至退休目标。日常生活仍需要收入。",
-      "inspectMilestone": "查看 Coast 达标点",
-      "chartInteraction": "悬停、点按或拖动即可查看预测点，金额显示在图表下方。也可使用滑杆或方向键。",
+      "inspectMilestone": "在图表查看这个年龄",
+      "chartInteraction": "点击或指向图表，在下方查看金额。也可以移动年龄滑杆。",
       "coastMarker": "Coast FIRE",
-      "aboveThreshold": "高于 Coast 门槛",
-      "belowThreshold": "低于 Coast 门槛",
+      "aboveThreshold": "超过所需金额",
+      "belowThreshold": "这个年龄还差多少",
       "noCoastDate": "两种计划均未达标",
       "coastWithEvents": "计入事件后可达标",
       "noChange": "无变化",
@@ -435,7 +477,38 @@
       "earlier": "更早",
       "coastDateChange": "Coast 达标时间变化",
       "retirementBalanceChange": "退休资产变化",
-      "endBalanceChange": "计划结束时资产变化"
+      "endBalanceChange": "计划结束时资产变化",
+      "simple": {
+        "back": "返回快速估算",
+        "moreHint": "分别填写账户、开销类别、未来变化与退休检查。",
+        "planOptions": "保存或载入计划",
+        "epfTitle": "EPF / 公积金 — 可选",
+        "epfIncluded": "此估算已包括公积金",
+        "epfExcluded": "未包括公积金",
+        "epfAdd": "加入公积金储蓄",
+        "epfBalance": "目前公积金余额",
+        "epfContribution": "每月公积金投入",
+        "epfContributionHint": "雇员加雇主投入。详细视图可以分别填写。",
+        "epfNote": "公积金与其他投资分开计算。示例假设现有余额从 55 岁可用，而 55 岁起的新投入到 60 岁才可用。可在「加入更多细节」修改。",
+        "assumptionsTitle": "此估算使用的假设",
+        "assumptionsHint": "假设回报与通胀保持不变。修改数字可查看不同结果。",
+        "returnHint": "扣除费用、通胀前的预期年增长。快速视图修改后，非公积金账户会使用同一回报率。",
+        "detailsActive": "账户可用年龄、投入时间表、类别通胀与未来变化仍在计算中。可在「加入更多细节」修改。",
+        "resultMeaning": "之后现有储蓄有机会在不再追加的情况下增长到退休目标。退休前仍需要收入支付生活费。",
+        "resultUnreached": "按这些数字，退休前尚未达到 Coast FIRE。可尝试调整每月投资、退休年龄或计划开销。",
+        "uncertainty": "这是固定增长假设下的估算，并非保证。实际投资回报会变化。",
+        "retirementDetails": "查看退休金额细节",
+        "deeper": "探索不同情境、未来变化与退休检查",
+        "chartSettings": "图表设置",
+        "comparePaths": "比较其他储蓄方式",
+        "hideComparisons": "显示简化图表",
+        "method": "如何计算此估算",
+        "summarySavings": "已包括的退休储蓄总额",
+        "rateMix": "不同账户使用不同预期回报。快速修改会统一非公积金账户回报，公积金保留自己的回报。",
+        "epfReturn": "公积金扣费后年回报",
+        "inputHint": "先填写这五个数字。示例为虚构，请换成你的数字。",
+        "spendingPercent": "退休第一年开销比例"
+      }
     }
   }
 }

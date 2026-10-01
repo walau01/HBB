@@ -17,35 +17,35 @@
   "journal": {
     "journal": "JURNAL PELABURAN BEBAS",
     "place": "PULAU PINANG, MALAYSIA",
-    "home": "Jurnal",
-    "articles": "Semua tulisan",
+    "home": "Utama",
+    "articles": "Artikel",
     "foundation": "Mula di sini",
     "about": "Tentang",
-    "search": "Cari tulisan",
+    "search": "Cari artikel",
     "menu": "Menu",
     "theme": "Tukar tema warna",
     "language": "Bahasa",
     "eyebrow": "INGIN TAHU TENTANG WANG. TELITI TENTANG BUKTI.",
     "hero1": "Pelaburan,",
     "hero2": "lebih jelas.",
-    "intro": "Saya membaca kajian, menilai nasihat biasa, dan berkongsi apa yang saya pelajari. Dari sudut pelabur Malaysia, dengan sedikit cerita kehidupan.",
-    "browse": "Terokai jurnal",
-    "start": "Baru di sini? Mulakan dengan asas.",
+    "intro": "Fahami wang anda, satu soalan pada satu masa. Penerangan jelas tentang pelaburan dan persaraan dari perspektif Malaysia.",
+    "browse": "Lihat artikel",
+    "start": "Mula di sini",
     "featured": "SOALAN YANG SEDANG SAYA KAJI",
     "featureArt1": "Baca setiap",
     "featureArt2": "butiran.",
     "artFoot": "YURAN · SPREAD · KOS TUKARAN MATA WANG",
-    "read": "Baca draf",
+    "read": "Baca artikel",
     "draft": "Draf contoh",
-    "preview": "PRATONTON REKA BENTUK · KANDUNGAN CONTOH",
-    "recent": "Dari buku nota",
-    "recentIntro": "Soalan sebenar. Kajian, konteks, dan ruang untuk menukar pandangan.",
-    "all": "Semua tulisan",
+    "preview": "ARTIKEL CONTOH DILABEL",
+    "recent": "Baca satu artikel",
+    "recentIntro": "Pilih topik yang penting bagi anda. Artikel contoh dilabel dengan jelas.",
+    "all": "Semua artikel",
     "categories": {
-      "research": "Kajian Utama",
-      "bridge": "Idea & Bukti",
-      "foundation": "Asas",
-      "life": "Di luar pelaburan"
+      "research": "Soalan pelaburan",
+      "bridge": "Soalan pelaburan",
+      "foundation": "Asas pelaburan",
+      "life": "Kehidupan"
     },
     "categoryNotes": {
       "research": "Lihat melangkaui tajuk.",
@@ -57,7 +57,7 @@
     "pathTitle": "Mulakan dengan satu soalan.",
     "researchLine": "Bukti dahulu. Konteks Malaysia sentiasa diambil kira.",
     "method": "CARA SAYA MENILAI SOALAN",
-    "methodTitle": "Sesuatu dakwaan hanyalah permulaan.",
+    "methodTitle": "Cara saya menyelidik artikel",
     "steps": [
       [
         "01",
@@ -81,19 +81,19 @@
     "lifeLink": "Terokai di luar pelaburan",
     "footerLine": "Berkongsi fikiran. Menyemak bukti.",
     "footerNote": "Kajian dan pandangan peribadi. Maklumat umum, bukan nasihat kewangan individu.",
-    "archiveEyebrow": "KOLEKSI TULISAN",
-    "archiveTitle": "Ikuti soalannya.",
-    "archiveText": "Kajian pelaburan, asas di sebaliknya, dan beberapa catatan kehidupan.",
-    "filterAll": "Semua",
-    "filterLabel": "Tapis tulisan mengikut kategori",
+    "archiveEyebrow": "BELAJAR MENGIKUT RENTAK ANDA",
+    "archiveTitle": "Artikel",
+    "archiveText": "Mulakan dengan asas, terokai soalan pelaburan, atau baca catatan tentang kehidupan.",
+    "filterAll": "Semua artikel",
+    "filterLabel": "Pilih topik",
     "searchPlaceholder": "Cuba “ETF”, “yuran”, atau “hidup”…",
-    "searchEmpty": "Tiada tulisan yang sepadan.",
+    "searchEmpty": "Tiada artikel sepadan dengan carian.",
     "searchInitial": "Cari soalan, topik, atau kategori.",
-    "showing": "tulisan",
+    "showing": "artikel",
     "readTime": "min bacaan",
-    "back": "Kembali ke semua tulisan",
-    "toc": "DALAM TULISAN INI",
-    "takeaway": "IDEA AWAL",
+    "back": "Kembali ke artikel",
+    "toc": "Dalam artikel ini",
+    "takeaway": "Isi utama",
     "references": "Sumber untuk diterokai",
     "sampleNotice": "Ini kandungan contoh untuk prototaip reka bentuk, bukan artikel kajian yang telah diterbitkan.",
     "aboutEyebrow": "CATATAN DARIPADA WALAU01",
@@ -110,7 +110,7 @@
       "Perspektif Malaysia"
     ],
     "notFound": "Halaman itu belum ada dalam buku nota.",
-    "returnHome": "Kembali ke jurnal",
+    "returnHome": "Kembali ke Utama",
     "footerNav": "Navigasi pengaki",
     "skip": "Langkau ke kandungan",
     "close": "Tutup carian",
@@ -140,16 +140,58 @@
     "notFoundKicker": "404 / AN UNWRITTEN PAGE",
     "mediaPlay": "Mainkan animasi",
     "mediaPause": "Jeda animasi",
-    "toolsEyebrow": "UJI IDEA DENGAN ANGKA",
-    "toolsTitle": "Berapa cukup untuk memberi masa ruang bekerja?",
-    "toolsText": "Kalkulator Coast FIRE interaktif. Terokai angka, ubah andaian, dan lihat kesannya.",
-    "toolsLink": "Terokai Coast FIRE",
-    "toolsNote": "MYR · DILARAS INFLASI · ANDAIAN ANDA",
+    "toolsEyebrow": "RANCANG PERSARAAN ANDA",
+    "toolsTitle": "Coast FIRE",
+    "toolsText": "Bilakah anda boleh berhenti menambah simpanan persaraan dan membiarkannya berkembang? Mulakan dengan lima angka, kemudian tambah butiran apabila perlu.",
+    "toolsLink": "Cuba kalkulator",
+    "toolsNote": "Anggaran berdasarkan andaian anda. Kos hidup masih memerlukan pendapatan.",
     "mediaLabel": "DENGAN IMEJ & ANIMASI",
     "coastArt1": "Beri",
     "coastArt2": "masa.",
     "coastArtKicker": "ASAS / PANDANGAN JAUH",
-    "coastArtFoot": "ILUSTRASI. BUKAN RAMALAN."
+    "coastArtFoot": "ILUSTRASI. BUKAN RAMALAN.",
+    "nextArticle": "Baca seterusnya",
+    "guide": {
+      "title": "Mula di sini",
+      "intro": "Baru mula melabur? Ikuti tiga langkah ini. Anda tidak perlu tahu istilah teknikal terlebih dahulu.",
+      "welcomeTitle": "Baru belajar melabur?",
+      "welcomeText": "Panduan bacaan ringkas dengan penerangan jelas pada setiap langkah.",
+      "link": "Buka panduan pemula",
+      "steps": [
+        {
+          "title": "Fahami apa yang anda miliki",
+          "text": "Apakah ETF? Lihat cara dana memegang sekumpulan pelaburan dan mengapa kandungannya penting.",
+          "action": "Kenali ETF"
+        },
+        {
+          "title": "Lihat bagaimana wang berkembang",
+          "text": "Fahami pengkompaunan melalui contoh mudah, imej dan animasi.",
+          "action": "Lihat contoh"
+        },
+        {
+          "title": "Terokai matlamat persaraan",
+          "text": "Gunakan kalkulator Coast FIRE untuk menganggar bila simpanan boleh berkembang hingga mencapai matlamat persaraan.",
+          "action": "Cuba Coast FIRE"
+        }
+      ],
+      "sample": "Dua artikel di bawah ialah kandungan pendidikan contoh. Labelnya membezakan artikel contoh daripada penyelidikan yang diterbitkan.",
+      "more": "Mahu belajar lagi? Lihat artikel mengikut topik.",
+      "glossaryTitle": "Tiga istilah yang akan anda temui",
+      "terms": [
+        {
+          "term": "ETF",
+          "meaning": "Dana dagangan bursa: dana yang boleh dibeli dan dijual di bursa. Pelaburannya bergantung pada dana tersebut."
+        },
+        {
+          "term": "Pengkompaunan",
+          "meaning": "Pertumbuhan berlaku pada wang asal dan juga pertumbuhan sebelumnya."
+        },
+        {
+          "term": "Coast FIRE",
+          "meaning": "Simpanan sedia ada boleh berkembang hingga matlamat persaraan tanpa caruman tambahan. Kos hidup masih memerlukan pendapatan sehingga bersara."
+        }
+      ]
+    }
   },
   "coast": {
     "tag": "WALAU01 / ALAT 01",
@@ -170,20 +212,20 @@
         "hint": "Dalam tahun penuh"
       },
       "retirementAge": {
-        "label": "Umur persaraan",
-        "hint": "Bila portfolio mula membiayai persaraan"
+        "label": "Bila anda mahu bersara?",
+        "hint": "Umur apabila simpanan persaraan mula digunakan."
       },
       "investments": {
         "label": "Pelaburan persaraan sekarang",
-        "hint": "Aset untuk persaraan; tidak termasuk wang kecemasan"
+        "hint": "Tidak termasuk KWSP dan simpanan kecemasan. Masukkan KWSP secara berasingan di bawah."
       },
       "monthlySpending": {
-        "label": "Perbelanjaan persaraan bulanan",
-        "hint": "Dalam ringgit hari ini; termasuk kos sara hidup"
+        "label": "Perbelanjaan bulanan semasa bersara",
+        "hint": "Gunakan harga hari ini. Sertakan perumahan, makanan, kesihatan dan kos hidup lain."
       },
       "monthlyContribution": {
-        "label": "Deposit persaraan bulanan",
-        "hint": "Dalam ringgit hari ini; kekal selepas pelarasan inflasi"
+        "label": "Berapa akan dilaburkan setiap bulan?",
+        "hint": "Tidak termasuk KWSP. Model menaikkan jumlah ini mengikut inflasi umum."
       },
       "returnRate": {
         "label": "Pulangan tahunan selepas fi",
@@ -194,8 +236,8 @@
         "hint": "Untuk menukar pertumbuhan kepada kuasa beli"
       },
       "withdrawalRate": {
-        "label": "Kadar pengeluaran awal",
-        "hint": "Perbelanjaan tahunan sebagai bahagian portfolio persaraan"
+        "label": "Perbelanjaan tahun pertama daripada dana persaraan",
+        "hint": "Peratus dana yang dibelanjakan pada tahun pertama persaraan. 4% ialah andaian, bukan jaminan."
       }
     },
     "reset": "Tetapkan semula",
@@ -248,27 +290,27 @@
     "formulaTarget": "Sasaran persaraan",
     "formulaYears": "Baki tahun",
     "workspace": {
-      "subtitle": "Lebih terperinci. Langkah seterusnya lebih jelas.",
-      "intro": "Satukan akaun, belanja dan simpanan dalam satu pelan. Terokai bila pelaburan persaraan anda boleh meneruskan perjalanan melalui pertumbuhan.",
+      "subtitle": "Bilakah simpanan boleh meneruskan perjalanan?",
+      "intro": "Coast FIRE bermaksud pelaburan sedia ada boleh berkembang hingga matlamat persaraan tanpa tambahan baharu. Isi angka di bawah, kemudian terokai anggaran.",
       "quick": "Anggaran ringkas",
-      "detailed": "Pelan terperinci",
+      "detailed": "Tambah butiran",
       "mode": "Pilih cara merancang",
-      "modeHint": "Kedua-dua paparan menggunakan pelan sama. Butiran kekal apabila bertukar.",
+      "modeHint": "Angka anda kekal apabila menukar paparan.",
       "sections": {
-        "timeline": "Garis masa",
-        "assets": "Aset",
-        "spending": "Belanja",
-        "contributions": "Caruman",
-        "events": "Peristiwa & pendapatan",
-        "assumptions": "Andaian"
+        "timeline": "Umur & pendapatan",
+        "assets": "Simpanan anda",
+        "spending": "Perbelanjaan anda",
+        "contributions": "Pelaburan bulanan",
+        "events": "Perubahan masa depan",
+        "assumptions": "Pertumbuhan & inflasi"
       },
       "sectionHints": {
-        "timeline": "Tetapkan pencapaian. Semua wang dimasukkan dalam ringgit hari ini.",
-        "assets": "Setiap akaun mempunyai pulangan dan umur akses sendiri. Akaun yang dikecualikan tidak masuk dalam unjuran.",
-        "spending": "Pecahkan gaya hidup yang ingin dibiayai. Amaun tahunan ditukar kepada jumlah bulanan.",
-        "contributions": "Rancang amaun setiap akaun, peningkatan dan bila caruman berhenti.",
-        "events": "Perubahan sekali sahaja dan pendapatan persaraan pilihan. Wang akan datang hanya dikira untuk Coast FIRE selepas diterima.",
-        "assumptions": "Ini ilustrasi boleh ubah, bukan ramalan. Pulangan selepas fi dan sebelum inflasi."
+        "timeline": "Pilih umur dan sama ada angka untuk seorang atau seluruh isi rumah.",
+        "assets": "Senaraikan akaun persaraan. Pilih jangkaan pulangan dan umur wang boleh digunakan.",
+        "spending": "Senaraikan kos hidup pada harga hari ini. Setiap kategori boleh menggunakan kadar inflasi berbeza.",
+        "contributions": "Pilih jumlah ditambah ke setiap akaun dan bila mahu berhenti.",
+        "events": "Tambah perbelanjaan masa depan, wang dijangka diterima atau pendapatan persaraan. Lihat kesannya pada keputusan.",
+        "assumptions": "Ubah pertumbuhan dan inflasi untuk meneroka anggaran lain. Ini andaian, bukan ramalan."
       },
       "names": {
         "investment": "Pelaburan",
@@ -364,37 +406,37 @@
       "viewResults": "Lihat hasil",
       "next": "Bahagian seterusnya",
       "requiresJS": "Aktifkan JavaScript untuk mengedit kalkulator.",
-      "resultTitle": "Pencapaian Coast FIRE anda",
-      "estimatedAge": "Anggaran umur Coast",
+      "resultTitle": "Anggaran anda",
+      "estimatedAge": "Anda boleh berhenti menambah sekitar umur",
       "age": "Umur",
       "notReached": "Tidak dicapai sebelum bersara",
       "today": "Dicapai hari ini dalam model",
-      "targetToday": "Sasaran Coast hari ini",
-      "targetHint": "Menggunakan campuran akaun, belanjawan persaraan dan belanja sebelum bersara yang dirancang. Wang akan datang tidak dianggap tersedia sebelum diterima.",
-      "retirementTarget": "Sasaran FIRE penuh",
-      "gap": "Jurang hari ini",
-      "progress": "Kemajuan ke sasaran hari ini",
+      "targetToday": "Jumlah diperlukan untuk berhenti menambah hari ini",
+      "targetHint": "Jumlah yang perlu dilaburkan hari ini untuk berkembang hingga matlamat persaraan. Perbelanjaan terancang dan akses akaun diambil kira.",
+      "retirementTarget": "Jumlah diperlukan untuk persaraan",
+      "gap": "Masih diperlukan hari ini",
+      "progress": "Disimpan ke arah matlamat hari ini",
       "impossible": "Semak akses akaun",
       "accessIssue": "Campuran akaun ini tidak boleh membiayai belanja lebih awal. Tambah aset boleh akses atau ubah pelan.",
-      "livingCosts": "Coast masih memerlukan pendapatan untuk hidup. Ini ilustrasi pulangan tetap.",
+      "livingCosts": "Kos hidup masih memerlukan pendapatan sehingga bersara.",
       "goalMet": "Dalam umur Coast pilihan anda",
       "goalLater": "Lebih lewat daripada umur Coast pilihan",
-      "targetBasis": "Semua amaun ringkasan dalam RM hari ini.",
+      "targetBasis": "Jumlah dalam RM hari ini kecuali dilabel sebaliknya.",
       "budgetTitle": "Bolehkah belanjawan semasa menyokongnya?",
       "netIncome": "Pendapatan bersih",
       "budgetSurplus": "Selepas belanja & pelaburan sukarela",
       "budgetHint": "KWSP pekerja sudah ditolak daripada gaji bersih; KWSP majikan tidak ditolak sekali lagi. Semakan ini tidak mengubah caruman dimasukkan.",
-      "chartTitle": "Lihat apa yang mengubah laluan anda.",
-      "chartIntro": "Bandingkan pelan caruman, menghentikan pelaburan baharu hari ini dan EPF sahaja. Penanda Coast menunjukkan bulan pertama yang layak. Berlian menunjukkan peristiwa bertarikh; ketik peristiwa di bawah untuk memeriksanya.",
-      "saving": "Ikut pelan caruman",
+      "chartTitle": "Lihat simpanan berkembang",
+      "chartIntro": "Garis penuh ialah pelan simpanan anda. Garis ungu putus-putus ialah jumlah diperlukan untuk Coast FIRE pada setiap umur. Titik pertemuan ialah pencapaian yang dianggarkan.",
+      "saving": "Pelan simpanan anda",
       "stop": "Hentikan pelaburan baharu",
       "epfOnly": "Teruskan KWSP sahaja",
-      "threshold": "Ambang Coast",
+      "threshold": "Jumlah diperlukan untuk Coast FIRE",
       "todayMoney": "RM hari ini",
       "futureMoney": "RM nominal masa depan",
       "moneyView": "Asas wang carta",
       "retirementBalance": "Baki semasa bersara",
-      "inspectAge": "Semak umur",
+      "inspectAge": "Lihat umur",
       "table": "Angka unjuran",
       "tableHint": "Petikan tahunan serta titik bulan tepat bagi Coast dan peristiwa. Nilai mengikut asas wang yang dipilih. Ambang mengikut campuran akaun dan mungkin turun selepas belanja bertarikh dibayar.",
       "scenarioTitle": "Bandingkan andaian",
@@ -421,10 +463,10 @@
       "categoryInflation": "Inflasi tahunan kategori",
       "categoryInflationHint": "Kategori mengikut inflasi umum kecuali anda menetapkan kadar berasingan. Masukkan belanja persaraan pada harga hari ini; pratonton menunjukkan kos bulanan dalam RM nominal masa hadapan. Pelarasan senario juga digunakan pada inflasi kategori.",
       "projectedMonthly": "Bajet bulanan ketika bersara",
-      "fullFireTitle": "Berapa diperlukan untuk FIRE penuh?",
-      "fullFireGap": "Jurang daripada aset termasuk hari ini",
-      "fullFireProgress": "Aset semasa / sasaran FIRE penuh",
-      "fullFireHint": "Portfolio yang diperlukan pada umur persaraan berdasarkan bajet tahun pertama dan andaian kadar pengeluaran. Jurang dibandingkan dengan aset termasuk hari ini. Akses akaun dan pendapatan persaraan disemak di bawah.",
+      "fullFireTitle": "Jumlah diperlukan untuk persaraan",
+      "fullFireGap": "Masih diperlukan berbanding simpanan hari ini",
+      "fullFireProgress": "Disimpan ke arah jumlah persaraan ini",
+      "fullFireHint": "FIRE bermaksud kebebasan kewangan dan persaraan awal. Ini anggaran dana semasa bersara berdasarkan perbelanjaan dan peratus tahun pertama.",
       "eventExpenseEffect": "Mengurangkan aset yang boleh diakses pada tarikh peristiwa dalam ketiga-tiga laluan. Ia boleh meningkatkan sasaran Coast dan melambatkan pencapaian; kos tidak dibiayai ditandakan.",
       "eventLumpSumEffect": "Ditambah pada tarikh penerimaan dalam laluan pelan caruman dan EPF sahaja. Ia boleh mempercepat pencapaian, tetapi hanya diambil kira untuk kesediaan selepas diterima.",
       "eventIncomeEffect": "Mengurangkan pengeluaran pelaburan sepanjang tempoh persaraan yang dipilih. Ia mengubah semakan aliran tunai; sasaran Coast dan FIRE penuh masih menggunakan bajet belanja penuh.",
@@ -439,11 +481,11 @@
       "years": "tahun",
       "months": "bulan",
       "coastMeaning": "Pada tahap ini, aset sedia ada boleh berkembang ke sasaran persaraan tanpa pelaburan baharu mengikut andaian ini. Belanja hidup masih memerlukan pendapatan.",
-      "inspectMilestone": "Periksa titik Coast",
-      "chartInteraction": "Halakan penuding, ketik atau seret untuk memeriksa titik unjuran. Jumlah dipaparkan di bawah graf. Peluncur atau kekunci anak panah juga boleh digunakan.",
+      "inspectMilestone": "Lihat umur ini pada graf",
+      "chartInteraction": "Sentuh atau tunjuk pada graf untuk melihat jumlah di bawahnya. Anda juga boleh gerakkan peluncur umur.",
       "coastMarker": "Coast FIRE",
-      "aboveThreshold": "Melebihi ambang Coast",
-      "belowThreshold": "Di bawah ambang Coast",
+      "aboveThreshold": "Melebihi jumlah diperlukan",
+      "belowThreshold": "Masih diperlukan pada umur ini",
       "noCoastDate": "Tiada tarikh Coast dalam kedua-dua pelan",
       "coastWithEvents": "Dicapai dengan peristiwa ini",
       "noChange": "Tiada perubahan",
@@ -451,7 +493,38 @@
       "earlier": "lebih awal",
       "coastDateChange": "Perubahan tarikh Coast",
       "retirementBalanceChange": "Perubahan baki persaraan",
-      "endBalanceChange": "Perubahan baki umur akhir"
+      "endBalanceChange": "Perubahan baki umur akhir",
+      "simple": {
+        "back": "Kembali ke anggaran ringkas",
+        "moreHint": "Asingkan akaun, kategori perbelanjaan, perubahan masa depan dan semakan persaraan.",
+        "planOptions": "Simpan atau muatkan pelan",
+        "epfTitle": "EPF / KWSP — pilihan",
+        "epfIncluded": "KWSP termasuk dalam anggaran",
+        "epfExcluded": "KWSP tidak termasuk",
+        "epfAdd": "Tambah simpanan KWSP",
+        "epfBalance": "Baki KWSP sekarang",
+        "epfContribution": "Caruman KWSP bulanan",
+        "epfContributionHint": "Jumlah pekerja dan majikan. Paparan terperinci boleh mengasingkannya.",
+        "epfNote": "KWSP dikira berasingan daripada pelaburan lain. Contoh mengandaikan akses dari umur 55, dengan caruman mulai 55 tersedia pada 60. Ubah melalui Tambah butiran.",
+        "assumptionsTitle": "Andaian yang digunakan dalam anggaran",
+        "assumptionsHint": "Pulangan dan inflasi diandaikan tetap. Ubah angka ini untuk melihat anggaran lain.",
+        "returnHint": "Jangkaan pertumbuhan tahunan sebelum inflasi. Perubahan dalam anggaran ringkas menetapkan kadar sama bagi akaun bukan KWSP.",
+        "detailsActive": "Umur akses akaun, jadual caruman, inflasi kategori dan perubahan masa depan masih diambil kira. Sunting melalui Tambah butiran.",
+        "resultMeaning": "Simpanan kemudian boleh berkembang hingga matlamat persaraan tanpa caruman tambahan. Kos hidup masih memerlukan pendapatan sehingga bersara.",
+        "resultUnreached": "Dengan angka ini, pelan belum mencapai Coast FIRE sebelum persaraan. Cuba ubah pelaburan bulanan, umur persaraan atau perbelanjaan terancang.",
+        "uncertainty": "Ini anggaran pertumbuhan tetap, bukan janji. Pulangan pelaburan sebenar akan berubah.",
+        "retirementDetails": "Lihat butiran jumlah persaraan",
+        "deeper": "Terokai senario, perubahan masa depan dan semakan persaraan",
+        "chartSettings": "Tetapan graf",
+        "comparePaths": "Bandingkan cara simpanan lain",
+        "hideComparisons": "Tunjukkan graf ringkas",
+        "method": "Cara anggaran ini dikira",
+        "summarySavings": "Jumlah simpanan persaraan yang disertakan",
+        "rateMix": "Jangkaan pulangan berbeza mengikut akaun. Suntingan ringkas menetapkan satu kadar untuk akaun bukan KWSP; KWSP kekal dengan kadarnya sendiri.",
+        "epfReturn": "Pulangan tahunan KWSP selepas yuran",
+        "inputHint": "Mulakan dengan lima angka ini. Contoh ini rekaan; gantikan dengan angka anda.",
+        "spendingPercent": "Perbelanjaan tahun pertama"
+      }
     }
   }
 }

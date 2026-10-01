@@ -30,6 +30,10 @@ export default function CoastPlanChart({
   events,
 }: Props) {
   const [nominal, setNominal] = useState(false);
+  const [compare, setCompare] = useState(false);
+  const visiblePaths: readonly (typeof paths)[number][] = compare
+    ? paths
+    : ["saving", "threshold"];
   const [inspect, setInspect] = useState(0);
   const [width, setWidth] = useState(1100);
   const container = useRef<HTMLDivElement>(null);
@@ -78,8 +82,10 @@ export default function CoastPlanChart({
     threshold: w.threshold,
   };
   const rawMax =
-    Math.max(1, ...series.flatMap((p) => paths.map((key) => p[key] ?? 0))) *
-    1.08;
+    Math.max(
+      1,
+      ...series.flatMap((p) => visiblePaths.map((key) => p[key] ?? 0)),
+    ) * 1.08;
   const magnitude = 10 ** Math.floor(Math.log10(rawMax / 4));
   const tick =
     ([1, 2, 2.5, 5, 10].find((v) => v * magnitude >= rawMax / 4) ?? 10) *
@@ -162,18 +168,25 @@ export default function CoastPlanChart({
           <p>{w.chartIntro}</p>
         </div>
         <div className="coast-chart-controls">
-          <div className="coast-segmented" role="group" aria-label={w.scenario}>
-            {(["cautious", "base", "optimistic"] as const).map((s) => (
-              <button
-                type="button"
-                key={s}
-                aria-pressed={s === scenario}
-                onClick={() => onScenario(s)}
-              >
-                {w.scenarioNames[s]}
-              </button>
-            ))}
-          </div>
+          <details className="coast-chart-options">
+            <summary>{w.simple.chartSettings} ⌄</summary>
+            <div
+              className="coast-segmented"
+              role="group"
+              aria-label={w.scenario}
+            >
+              {(["cautious", "base", "optimistic"] as const).map((s) => (
+                <button
+                  type="button"
+                  key={s}
+                  aria-pressed={s === scenario}
+                  onClick={() => onScenario(s)}
+                >
+                  {w.scenarioNames[s]}
+                </button>
+              ))}
+            </div>
+          </details>
           <div
             className="coast-segmented"
             role="group"
@@ -321,7 +334,7 @@ export default function CoastPlanChart({
               />
             </g>
           ))}
-          {paths.map((key) => (
+          {visiblePaths.map((key) => (
             <path
               key={key}
               className={"chart-line chart-" + key}
@@ -353,7 +366,7 @@ export default function CoastPlanChart({
             y1={top}
             y2={bottom}
           />
-          {paths
+          {visiblePaths
             .filter((key) => selected[key] !== null)
             .map((key) => (
               <circle
@@ -366,7 +379,7 @@ export default function CoastPlanChart({
             ))}
         </svg>
       </div>
-      <div className="coast-inspector">
+      <div className={"coast-inspector" + (compare ? "" : " simple-inspector")}>
         <label htmlFor="coast-inspect">
           {w.inspectAge} <strong>{ageText(selected.age)}</strong>
           <small>{nominal ? w.futureMoney : w.todayMoney}</small>
@@ -381,7 +394,7 @@ export default function CoastPlanChart({
           onChange={(e) => setInspect(Number(e.target.value))}
         />
         <dl>
-          {paths.map((key) => (
+          {visiblePaths.map((key) => (
             <div key={key}>
               <dt>
                 <i className={"tooltip-" + key} />
@@ -413,13 +426,21 @@ export default function CoastPlanChart({
         ))}
       </div>
       <div className="chart-legend">
-        {paths.map((key) => (
+        {visiblePaths.map((key) => (
           <span key={key}>
             <i className={"legend-" + key} />
             {labels[key]}
           </span>
         ))}
       </div>
+      <button
+        type="button"
+        className="coast-detail-button coast-compare-toggle"
+        aria-pressed={compare}
+        onClick={() => setCompare((v) => !v)}
+      >
+        {compare ? w.simple.hideComparisons : w.simple.comparePaths}
+      </button>
       {!!chartEvents.length && (
         <div className="coast-chart-events">
           {chartEvents.map((e) => (
@@ -430,16 +451,18 @@ export default function CoastPlanChart({
           ))}
         </div>
       )}
-      <div className="projection-totals">
-        {(["saving", "stop", "epf"] as const).map((key) => (
-          <div key={key}>
-            <span>
-              {labels[key]} · {w.age} {retirementAge}
-            </span>
-            <strong>{money(ending[key])}</strong>
-          </div>
-        ))}
-      </div>
+      {compare && (
+        <div className="projection-totals">
+          {(["saving", "stop", "epf"] as const).map((key) => (
+            <div key={key}>
+              <span>
+                {labels[key]} · {w.age} {retirementAge}
+              </span>
+              <strong>{money(ending[key])}</strong>
+            </div>
+          ))}
+        </div>
+      )}
       <details className="projection-table">
         <summary>
           {w.table}
@@ -451,7 +474,7 @@ export default function CoastPlanChart({
             <thead>
               <tr>
                 <th scope="col">{w.age}</th>
-                {paths.map((key) => (
+                {visiblePaths.map((key) => (
                   <th key={key} scope="col">
                     {labels[key]}
                   </th>
@@ -462,7 +485,7 @@ export default function CoastPlanChart({
               {series.map((point) => (
                 <tr key={point.age}>
                   <th scope="row">{ageText(point.age)}</th>
-                  {paths.map((key) => (
+                  {visiblePaths.map((key) => (
                     <td key={key}>{money(point[key])}</td>
                   ))}
                 </tr>

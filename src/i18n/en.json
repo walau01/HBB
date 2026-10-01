@@ -17,35 +17,35 @@
   "journal": {
     "journal": "AN INDEPENDENT INVESTING JOURNAL",
     "place": "PENANG, MALAYSIA",
-    "home": "Journal",
-    "articles": "All writing",
+    "home": "Home",
+    "articles": "Articles",
     "foundation": "Start here",
     "about": "About",
-    "search": "Search writing",
+    "search": "Search articles",
     "menu": "Menu",
     "theme": "Switch colour theme",
     "language": "Language",
     "eyebrow": "CURIOUS ABOUT MONEY. SERIOUS ABOUT EVIDENCE.",
     "hero1": "Investing,",
     "hero2": "minus the noise.",
-    "intro": "I read the research, question the usual advice, and share what I find. Investing through a Malaysian lens, with a little life in between.",
-    "browse": "Explore the journal",
-    "start": "New here? Start with the foundations.",
+    "intro": "Understand your money, one question at a time. Clear explanations of investing and retirement, from a Malaysian perspective.",
+    "browse": "Browse articles",
+    "start": "Start here",
     "featured": "THE QUESTION ON MY DESK",
     "featureArt1": "Read the",
     "featureArt2": "fine print.",
     "artFoot": "FEES · SPREADS · CURRENCY COSTS",
-    "read": "Read the draft",
+    "read": "Read article",
     "draft": "Sample draft",
-    "preview": "DESIGN PREVIEW · SAMPLE CONTENT",
-    "recent": "From the notebook",
-    "recentIntro": "Real questions. Research, context, and the occasional change of mind.",
-    "all": "All writing",
+    "preview": "SAMPLE ARTICLES ARE MARKED",
+    "recent": "Read an article",
+    "recentIntro": "Pick a topic that matters to you. Sample articles are clearly marked.",
+    "all": "All articles",
     "categories": {
-      "research": "Core Research",
-      "bridge": "Bridge",
-      "foundation": "Foundation",
-      "life": "Beyond investing"
+      "research": "Investing questions",
+      "bridge": "Investing questions",
+      "foundation": "Investing basics",
+      "life": "Life"
     },
     "categoryNotes": {
       "research": "Go beyond the headline.",
@@ -57,7 +57,7 @@
     "pathTitle": "A question is a good place to start.",
     "researchLine": "Evidence first. Malaysia in the picture.",
     "method": "HOW I APPROACH A QUESTION",
-    "methodTitle": "The claim is just the beginning.",
+    "methodTitle": "How I research an article",
     "steps": [
       [
         "01",
@@ -81,19 +81,19 @@
     "lifeLink": "Explore beyond investing",
     "footerLine": "Thinking aloud. Checking the evidence.",
     "footerNote": "Personal research and reflections. General information, not individual financial advice.",
-    "archiveEyebrow": "THE WRITING LIBRARY",
-    "archiveTitle": "Follow the question.",
-    "archiveText": "Investing research, the foundations underneath it, and a few notes from everyday life.",
-    "filterAll": "Everything",
-    "filterLabel": "Filter writing by category",
+    "archiveEyebrow": "LEARN AT YOUR OWN PACE",
+    "archiveTitle": "Articles",
+    "archiveText": "Start with the basics, explore an investing question, or read a little about life.",
+    "filterAll": "All articles",
+    "filterLabel": "Choose a topic",
     "searchPlaceholder": "Try “ETF”, “fees”, or “life”…",
-    "searchEmpty": "No writing matches that search.",
+    "searchEmpty": "No articles match that search.",
     "searchInitial": "Search a question, topic, or category.",
-    "showing": "pieces",
+    "showing": "articles",
     "readTime": "min read",
-    "back": "Back to all writing",
-    "toc": "IN THIS PIECE",
-    "takeaway": "THE WORKING IDEA",
+    "back": "Back to articles",
+    "toc": "In this article",
+    "takeaway": "Main takeaway",
     "references": "Sources to explore",
     "sampleNotice": "This is sample editorial content for the design prototype, not a published research article.",
     "aboutEyebrow": "A NOTE FROM WALAU01",
@@ -110,7 +110,7 @@
       "A Malaysian perspective"
     ],
     "notFound": "That page is not in the notebook.",
-    "returnHome": "Return to the journal",
+    "returnHome": "Back to Home",
     "footerNav": "Footer",
     "skip": "Skip to content",
     "close": "Close search",
@@ -140,16 +140,58 @@
     "notFoundKicker": "404 / AN UNWRITTEN PAGE",
     "mediaPlay": "Play animation",
     "mediaPause": "Pause animation",
-    "toolsEyebrow": "PUT AN IDEA TO WORK",
-    "toolsTitle": "How much is enough to let time do the rest?",
-    "toolsText": "An interactive Coast FIRE calculator. Explore the numbers, change the assumptions, and see what moves.",
-    "toolsLink": "Explore Coast FIRE",
-    "toolsNote": "MYR · INFLATION ADJUSTED · YOUR ASSUMPTIONS",
+    "toolsEyebrow": "PLAN YOUR RETIREMENT",
+    "toolsTitle": "Coast FIRE",
+    "toolsText": "When could you stop adding to your retirement savings and let them grow? Start with five numbers, then add detail when you need it.",
+    "toolsLink": "Try the calculator",
+    "toolsNote": "An estimate based on your assumptions. You still need income for living costs.",
     "mediaLabel": "WITH IMAGES & ANIMATION",
     "coastArt1": "Give it",
     "coastArt2": "time.",
     "coastArtKicker": "FOUNDATION / A LONGER VIEW",
-    "coastArtFoot": "ILLUSTRATION. NOT A FORECAST."
+    "coastArtFoot": "ILLUSTRATION. NOT A FORECAST.",
+    "nextArticle": "Read next",
+    "guide": {
+      "title": "Start here",
+      "intro": "New to investing? Follow these three steps. You do not need to know the technical terms first.",
+      "welcomeTitle": "New to investing?",
+      "welcomeText": "A short reading guide, with a clear explanation at each step.",
+      "link": "Follow the beginner guide",
+      "steps": [
+        {
+          "title": "Understand what you own",
+          "text": "What is an ETF? See how a fund holds a collection of investments and why its contents matter.",
+          "action": "Read about ETFs"
+        },
+        {
+          "title": "See how money grows",
+          "text": "Understand compounding with a simple example, an image and an animation.",
+          "action": "See the example"
+        },
+        {
+          "title": "Explore your retirement goal",
+          "text": "Use the Coast FIRE calculator to estimate when your savings could grow to your retirement goal.",
+          "action": "Try Coast FIRE"
+        }
+      ],
+      "sample": "The two articles below are sample educational content. They are labelled so you can tell them apart from published research.",
+      "more": "Ready for more? Browse articles by topic.",
+      "glossaryTitle": "Three terms you will meet",
+      "terms": [
+        {
+          "term": "ETF",
+          "meaning": "Exchange-traded fund: a fund you can buy and sell on an exchange. Its investments depend on the fund."
+        },
+        {
+          "term": "Compounding",
+          "meaning": "Growth builds on your starting money and on earlier growth."
+        },
+        {
+          "term": "Coast FIRE",
+          "meaning": "Your existing savings could grow to your retirement goal without further contributions. You still need income for living costs until retirement."
+        }
+      ]
+    }
   },
   "coast": {
     "tag": "WALAU01 / TOOL 01",
@@ -170,20 +212,20 @@
         "hint": "Whole years"
       },
       "retirementAge": {
-        "label": "Retirement age",
-        "hint": "When this portfolio starts funding retirement"
+        "label": "When do you want to retire?",
+        "hint": "The age when you start using your retirement savings."
       },
       "investments": {
-        "label": "Retirement investments today",
-        "hint": "Assets earmarked for retirement; exclude emergency cash"
+        "label": "Current retirement investments",
+        "hint": "Exclude EPF and emergency savings. EPF is entered separately below."
       },
       "monthlySpending": {
-        "label": "Monthly retirement spending",
-        "hint": "In today’s ringgit; include your expected living costs"
+        "label": "Monthly spending in retirement",
+        "hint": "Use today’s prices. Include housing, food, healthcare and other living costs."
       },
       "monthlyContribution": {
-        "label": "Monthly retirement deposits",
-        "hint": "In today’s ringgit; kept constant after inflation"
+        "label": "How much will you invest each month?",
+        "hint": "Exclude EPF. The model keeps this amount growing with general inflation."
       },
       "returnRate": {
         "label": "Annual return after fees",
@@ -194,8 +236,8 @@
         "hint": "Used to convert growth to purchasing power"
       },
       "withdrawalRate": {
-        "label": "Initial withdrawal rate",
-        "hint": "Annual spending as a share of the retirement portfolio"
+        "label": "First-year spending from your retirement fund",
+        "hint": "Percentage of the fund spent in the first retirement year. 4% is an assumption, not a guarantee."
       }
     },
     "reset": "Reset example",
@@ -248,27 +290,27 @@
     "formulaTarget": "Retirement target",
     "formulaYears": "Years to retirement",
     "workspace": {
-      "subtitle": "A little more detail. A clearer way forward.",
-      "intro": "Bring your accounts, spending and savings into one plan. Explore when your retirement investments could carry the rest of the journey.",
+      "subtitle": "When could your savings do the rest?",
+      "intro": "Coast FIRE means your existing investments could grow to your retirement goal without adding more. Start below, then explore the estimate.",
       "quick": "Quick estimate",
-      "detailed": "Detailed plan",
+      "detailed": "Add more details",
       "mode": "Choose your planning mode",
-      "modeHint": "Both views use the same plan. Switching keeps your details.",
+      "modeHint": "Your numbers stay the same when you switch views.",
       "sections": {
-        "timeline": "Timeline",
-        "assets": "Assets",
-        "spending": "Spending",
-        "contributions": "Contributions",
-        "events": "Life events & income",
-        "assumptions": "Assumptions"
+        "timeline": "Your ages & income",
+        "assets": "Your savings",
+        "spending": "Your spending",
+        "contributions": "Monthly investing",
+        "events": "Future changes",
+        "assumptions": "Growth & inflation"
       },
       "sectionHints": {
-        "timeline": "Set the milestones. All money is entered in today’s ringgit.",
-        "assets": "Give every account its own return and access age. Excluded accounts stay outside every projection.",
-        "spending": "Build the lifestyle you want to fund. Annual amounts are converted to monthly totals.",
-        "contributions": "Plan how much goes into each account, how it grows and when it stops.",
-        "events": "Optional one-off changes and retirement income. A future lump sum only counts toward Coast FIRE once it arrives.",
-        "assumptions": "These are editable illustrations, not forecasts. Returns are after fees and before inflation."
+        "timeline": "Choose your ages and whether these numbers cover one person or your household.",
+        "assets": "List your retirement accounts. For each, choose an expected return and the age you can use the money.",
+        "spending": "List your living costs at today’s prices. You can use a different inflation rate for each category.",
+        "contributions": "Choose how much you add to each account and when you stop.",
+        "events": "Add a future expense, money you expect to receive, or retirement income. See how it changes the result.",
+        "assumptions": "Adjust growth and inflation to explore different estimates. These are assumptions, not forecasts."
       },
       "names": {
         "investment": "Investments",
@@ -364,37 +406,37 @@
       "viewResults": "View results",
       "next": "Next section",
       "requiresJS": "Enable JavaScript to edit this calculator.",
-      "resultTitle": "Your Coast FIRE milestone",
-      "estimatedAge": "Estimated Coast age",
+      "resultTitle": "Your estimate",
+      "estimatedAge": "You could stop adding around age",
       "age": "Age",
       "notReached": "Not reached by retirement",
       "today": "Reached today in this model",
-      "targetToday": "Coast target today",
-      "targetHint": "Uses your account mix, retirement budget and planned pre-retirement expenses. Future lump sums are not assumed for readiness until received.",
-      "retirementTarget": "Full FIRE target",
-      "gap": "Gap today",
-      "progress": "Progress toward today’s target",
+      "targetToday": "Amount needed to stop adding today",
+      "targetHint": "This is the amount you would need invested today to grow to your retirement goal. Planned expenses and access to your accounts are included.",
+      "retirementTarget": "Amount needed for retirement",
+      "gap": "Still needed today",
+      "progress": "Saved toward today’s goal",
       "impossible": "Account access needs review",
       "accessIssue": "The selected account mix cannot fund an earlier planned expense. Add accessible assets or change the plan.",
-      "livingCosts": "Coasting still needs income for living costs. This is a constant-return illustration.",
+      "livingCosts": "You still need income for living costs until retirement.",
       "goalMet": "Within your preferred Coast age",
       "goalLater": "Later than your preferred Coast age",
-      "targetBasis": "All summary amounts are in today’s RM.",
+      "targetBasis": "Amounts are in today’s RM unless labelled otherwise.",
       "budgetTitle": "Can your current budget support it?",
       "netIncome": "Take-home income",
       "budgetSurplus": "After spending & voluntary investing",
       "budgetHint": "Employee EPF is already outside take-home pay; employer EPF is not deducted again. This check does not change your entered contributions.",
-      "chartTitle": "See what changes your path.",
-      "chartIntro": "Compare your contribution plan, stopping all new investing today, and EPF only. The Coast marker shows the first qualifying month. Event diamonds show dated changes; tap an event below to inspect it.",
-      "saving": "Follow contribution plan",
+      "chartTitle": "See your savings grow",
+      "chartIntro": "The solid line is your savings plan. The purple dashed line is the amount needed to Coast FIRE at each age. Where they meet is your estimated milestone.",
+      "saving": "Your savings plan",
       "stop": "Stop all new investing",
       "epfOnly": "Continue EPF only",
-      "threshold": "Coast threshold",
+      "threshold": "Amount needed to Coast FIRE",
       "todayMoney": "Today’s RM",
       "futureMoney": "Future nominal RM",
       "moneyView": "Chart money basis",
       "retirementBalance": "Balance at retirement",
-      "inspectAge": "Inspect age",
+      "inspectAge": "View age",
       "table": "Projection figures",
       "tableHint": "Annual snapshots plus exact-month Coast and event points. Values use the selected money basis. The threshold follows the account mix and may fall when a dated expense is paid.",
       "scenarioTitle": "Compare the assumptions",
@@ -421,10 +463,10 @@
       "categoryInflation": "Annual category inflation",
       "categoryInflationHint": "Categories use general inflation unless you choose an override. Enter retirement amounts at today’s prices; previews show monthly costs at retirement in future RM. Scenario changes also apply to category inflation.",
       "projectedMonthly": "Monthly budget at retirement",
-      "fullFireTitle": "How much for full FIRE?",
-      "fullFireGap": "Gap from included assets today",
-      "fullFireProgress": "Current assets / full FIRE target",
-      "fullFireHint": "Portfolio needed at your retirement age, based on the first year’s budget and your withdrawal-rate assumption. The gap compares this target with included assets today. Account access and retirement income are checked below.",
+      "fullFireTitle": "Amount needed for retirement",
+      "fullFireGap": "Still needed compared with savings today",
+      "fullFireProgress": "Saved toward this retirement amount",
+      "fullFireHint": "FIRE means financial independence and retiring early. This is the estimated fund needed when you retire, using your spending and first-year percentage.",
       "eventExpenseEffect": "Reduces accessible assets on the event date across all three paths. It can raise the Coast target and delay the milestone; unpaid costs are flagged.",
       "eventLumpSumEffect": "Added on the event date to the contribution-plan and EPF-only paths. It can bring the milestone forward, but is only counted toward readiness once received.",
       "eventIncomeEffect": "Reduces investment withdrawals during its selected retirement period. It changes the cash-flow check; the headline Coast and full FIRE targets still use the full spending budget.",
@@ -439,11 +481,11 @@
       "years": "years",
       "months": "months",
       "coastMeaning": "At this point, existing assets can grow to the retirement target without further investing under these assumptions. Living costs still need income.",
-      "inspectMilestone": "Inspect Coast point",
-      "chartInteraction": "Hover, tap or drag to inspect a point. Amounts appear below the graph. You can also use the slider or arrow keys.",
+      "inspectMilestone": "Show this age on the graph",
+      "chartInteraction": "Tap or point at the graph to see amounts below it. You can also move the age slider.",
       "coastMarker": "Coast FIRE",
-      "aboveThreshold": "Above Coast threshold",
-      "belowThreshold": "Below Coast threshold",
+      "aboveThreshold": "Above the amount needed",
+      "belowThreshold": "Still needed at this age",
       "noCoastDate": "No Coast date in either plan",
       "coastWithEvents": "Reached with these events",
       "noChange": "No change",
@@ -451,7 +493,38 @@
       "earlier": "earlier",
       "coastDateChange": "Change in Coast date",
       "retirementBalanceChange": "Change in retirement balance",
-      "endBalanceChange": "Change in end-age balance"
+      "endBalanceChange": "Change in end-age balance",
+      "simple": {
+        "back": "Back to quick estimate",
+        "moreHint": "Separate accounts, spending categories, future changes and retirement checks.",
+        "planOptions": "Save or load your plan",
+        "epfTitle": "EPF / KWSP — optional",
+        "epfIncluded": "EPF included in this estimate",
+        "epfExcluded": "EPF is not included",
+        "epfAdd": "Add EPF savings",
+        "epfBalance": "EPF balance today",
+        "epfContribution": "Monthly EPF contributions",
+        "epfContributionHint": "Employee plus employer contributions. Detailed view can separate them.",
+        "epfNote": "EPF stays separate from your other investments. The example assumes access from age 55, with contributions from 55 available at 60. Change this in Add more details.",
+        "assumptionsTitle": "Assumptions used in this estimate",
+        "assumptionsHint": "Returns and inflation are assumed constant. Change these numbers to see a different estimate.",
+        "returnHint": "Expected annual growth before inflation. In quick estimate, changing this sets the same rate for all non-EPF accounts.",
+        "detailsActive": "Your account access ages, contribution schedules, category inflation and future changes are still included. Edit them in Add more details.",
+        "resultMeaning": "Your savings could then grow to your retirement goal without more contributions. You still need income for living costs until retirement.",
+        "resultUnreached": "With these numbers, the savings plan does not reach Coast FIRE before retirement. Try changing how much you invest, your retirement age or your planned spending.",
+        "uncertainty": "This is a constant-growth estimate, not a promise. Actual investment returns will vary.",
+        "retirementDetails": "See the retirement amounts",
+        "deeper": "Explore scenarios, future changes and retirement checks",
+        "chartSettings": "Graph settings",
+        "comparePaths": "Compare other ways of saving",
+        "hideComparisons": "Show the simple graph",
+        "method": "How this estimate is calculated",
+        "summarySavings": "Total retirement savings included",
+        "rateMix": "Expected return differs by account. Quick edits set one rate for non-EPF accounts; EPF keeps its own rate.",
+        "epfReturn": "EPF annual return after fees",
+        "inputHint": "Start with these five numbers. The example is fictional; replace it with your own.",
+        "spendingPercent": "First-year spending"
+      }
     }
   }
 }

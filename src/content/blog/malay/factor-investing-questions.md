@@ -1,6 +1,6 @@
 ---
-title: "Premium faktor bukan satu janji."
-description: "Apakah yang menjadikan idea pelaburan cukup meyakinkan untuk portfolio sebenar?"
+title: "Bolehkah strategi pelaburan meningkatkan pulangan?"
+description: "Soalan sebelum mempercayakan wang anda kepada strategi pelaburan."
 author: "walau01"
 categories: ["Kajian Utama"]
 tags: ["research"]
@@ -11,7 +11,7 @@ motif: "factor"
 order: 4
 issue: 4
 sample_draft: true
-takeaway: "Hasil sejarah yang menarik ialah permulaan penelitian."
+takeaway: "Keputusan baik pada masa lalu ialah sebab untuk mengkaji strategi, bukan jaminan masa depan."
 ---
 
 ## Apakah penjelasan yang dicadangkan?

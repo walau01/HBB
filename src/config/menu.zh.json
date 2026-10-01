@@ -2,18 +2,18 @@
   "main": [
     {
       "key": "home",
-      "name": "笔记",
+      "name": "首页",
       "url": "/"
-    },
-    {
-      "key": "articles",
-      "name": "全部文章",
-      "url": "/blog"
     },
     {
       "key": "foundation",
       "name": "从这里开始",
-      "url": "/blog?category=foundation"
+      "url": "/start-here"
+    },
+    {
+      "key": "articles",
+      "name": "文章",
+      "url": "/blog"
     },
     {
       "key": "coast",
@@ -29,13 +29,13 @@
   "footer": [
     {
       "key": "articles",
-      "name": "全部文章",
+      "name": "文章",
       "url": "/blog"
     },
     {
       "key": "foundation",
       "name": "从这里开始",
-      "url": "/blog?category=foundation"
+      "url": "/start-here"
     },
     {
       "key": "coast",

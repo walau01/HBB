@@ -1,0 +1,68 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getCopy, url, type Lang } from "@/lib/journal";
+const { lang } = Astro.props as { lang: Lang };
+const c = await getCopy(lang);
+const links = [
+  "blog/what-you-own-in-an-etf",
+  "blog/the-quiet-work-of-compounding",
+  "coast-fire",
+];
+---
+
+<Base
+  lang={lang}
+  title={c.guide.title}
+  description={c.guide.intro}
+  active="foundation"
+  currentPath="start-here"
+>
+  <div class="container beginner-guide">
+    <header>
+      <p class="eyebrow">walau01</p><h1>{c.guide.title}</h1><p>
+        {c.guide.intro}
+      </p>
+    </header>
+    <p class="guide-sample">{c.guide.sample}</p>
+    <ol class="guide-steps">
+      {
+        c.guide.steps.map((step, i) => (
+          <li>
+            <>
+              <span class="guide-number" aria-hidden="true">
+                {i + 1}
+              </span>
+              <div>
+                <>
+                  <h2>{step.title}</h2>
+                  <p>{step.text}</p>
+                  <a class="text-link" href={url(lang, links[i])}>
+                    {step.action} →
+                  </a>
+                </>
+              </div>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+    <section class="guide-glossary">
+      <h2>{c.guide.glossaryTitle}</h2><dl>
+        {
+          c.guide.terms.map((term) => (
+            <div>
+              <>
+                <dt>{term.term}</dt>
+                <dd>{term.meaning}</dd>
+              </>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+    <p class="guide-more">
+      {c.guide.more}
+      <a class="text-link" href={url(lang, "blog")}>{c.browse} →</a>
+    </p>
+  </div>
+</Base>

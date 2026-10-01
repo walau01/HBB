@@ -1,11 +1,11 @@
 ---
 title: "Alat"
 meta_title: ""
-description: "Alat kewangan peribadi yang telus daripada walau01."
+description: "Terokai simpanan persaraan dengan kalkulator Coast FIRE."
 image: ""
 draft: false
 ---
 
-Alat sedang dirancang tetapi belum tersedia.
+Anggar bila pelaburan sedia ada boleh berkembang hingga matlamat persaraan tanpa caruman tambahan. Kos hidup masih memerlukan pendapatan sehingga bersara.
 
-Alat pertama akan membantu menerangkan konsep seperti pertumbuhan kompaun dan kesan jangka panjang yuran pelaburan. Setiap alat akan menyatakan andaian dan batasannya, dan hasilnya ialah ilustrasi, bukannya ramalan.
+[Buka Coast FIRE](/ms/coast-fire)

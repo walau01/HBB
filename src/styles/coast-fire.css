@@ -1535,3 +1535,336 @@ html[lang="zh-Hans"] .coast-heading h1 em {
     scroll-behavior: auto;
   }
 }
+
+/* Simple estimate first; the detailed plan continues to use the same model. */
+.simplified-coast .coast-heading {
+  grid-template-columns: 1fr;
+  padding-bottom: 20px;
+}
+.simplified-coast .coast-heading h1 {
+  font: 500 clamp(38px, 4vw, 50px)/1.15 var(--sans);
+  margin: 10px 0 16px;
+}
+.simplified-coast .coast-intro {
+  font-size: 17px;
+  max-width: 850px;
+}
+.simplified-coast .coast-example-label {
+  font-size: 14px;
+  color: var(--secondary);
+}
+.simplified-coast .coast-toolbar {
+  align-items: start;
+  margin-bottom: 24px;
+}
+.coast-plan-options summary {
+  font-size: 14px;
+  min-height: 30px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.coast-plan-options .coast-file-actions {
+  max-width: 440px;
+  margin-top: 12px;
+}
+.simplified-coast .coast-file-actions button {
+  font-size: 14px;
+}
+.simplified-coast .coast-workspace {
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 1fr);
+  gap: 30px;
+}
+.simplified-coast .coast-results {
+  position: static;
+  display: block;
+}
+.simplified-coast .coast-panel {
+  padding: 25px;
+}
+.simplified-coast .coast-section-title h2 {
+  font: 500 27px/1.3 var(--sans);
+}
+.simplified-coast .coast-section-title p:not(.eyebrow),
+.simplified-coast .coast-help {
+  font-size: 15px;
+}
+.simplified-coast .coast-field label {
+  font-size: 14px;
+}
+.simplified-coast .coast-field small {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.simplified-coast .coast-input-wrap input {
+  font-size: 18px;
+  min-width: 0;
+}
+.quick-fields > .coast-field:last-child {
+  grid-column: 1/-1;
+}
+.coast-optional {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding-top: 16px;
+}
+.coast-optional > summary {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.coast-optional > summary::before {
+  content: "+";
+  display: inline-block;
+  margin-right: 10px;
+}
+.coast-optional[open] > summary::before {
+  content: "−";
+}
+.coast-optional > summary small {
+  display: block;
+  font-size: 13px;
+  color: var(--secondary);
+  font-weight: 400;
+  margin: 6px 0 0 22px;
+}
+.coast-optional .coast-fields {
+  margin-top: 18px;
+}
+.coast-optional .coast-help {
+  margin-top: 14px;
+}
+.coast-simple-epf {
+  border: 0;
+  padding: 18px 0 0;
+  margin: 0;
+  min-width: 0;
+}
+.coast-simple-epf legend {
+  padding: 0;
+  font-size: 14px;
+  color: var(--secondary);
+}
+.simplified-coast .coast-check {
+  font-size: 14px;
+}
+.coast-simple-total {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 13px 16px;
+  background: var(--muted);
+  font-size: 14px;
+}
+.coast-simple-total strong {
+  font-size: 18px;
+  font-weight: 600;
+}
+.coast-detail-button {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--ink);
+  padding: 11px 17px;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.quick .coast-panel > .coast-detail-button {
+  margin-top: 24px;
+}
+.coast-detail-button + .coast-help {
+  margin-top: 9px;
+}
+.coast-kept-details {
+  padding-top: 12px;
+  color: var(--secondary);
+}
+.simplified-coast .coast-result-card {
+  padding: 28px;
+}
+.simplified-coast .coast-result-top .eyebrow,
+.simplified-coast .coast-result-top > span {
+  font-size: 13px;
+}
+.simplified-coast .coast-result-label {
+  font-size: 17px;
+}
+.simplified-coast .coast-age-number > strong {
+  font: 500 65px/1.1 var(--sans);
+}
+.simplified-coast .coast-status-line {
+  font-size: 16px;
+  line-height: 1.65;
+}
+.simplified-coast .coast-target > span,
+.simplified-coast .coast-progress-label,
+.simplified-coast .coast-metrics dt {
+  font-size: 14px;
+}
+.simplified-coast .coast-metrics {
+  grid-template-columns: 1fr;
+}
+.simplified-coast .coast-target > strong {
+  font-size: 32px;
+  font-weight: 550;
+}
+.simplified-coast .result-caption,
+.simplified-coast .result-basis {
+  font-size: 13px;
+  line-height: 1.65;
+}
+.simplified-coast .coast-fire-target {
+  padding: 24px 28px;
+}
+.simplified-coast .coast-fire-target h2 {
+  font: 500 23px/1.3 var(--sans);
+}
+.simplified-coast .coast-fire-amount {
+  font-size: 32px;
+}
+.coast-retirement-details {
+  margin-top: 16px;
+}
+.coast-retirement-details summary {
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.coast-retirement-details p {
+  font-size: 14px;
+}
+.coast-deeper,
+.coast-method-details {
+  margin: 26px 0;
+  border: 1px solid var(--line);
+}
+.coast-deeper > summary,
+.coast-method-details > summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 22px;
+  background: var(--surface);
+  font-size: 16px;
+  font-weight: 550;
+}
+.coast-deeper .coast-comparison,
+.coast-deeper .coast-cash,
+.coast-deeper .coast-event-impact {
+  margin: 0;
+  border-inline: 0;
+  padding: 25px;
+}
+.coast-method-details .coast-method {
+  margin: 0;
+  padding: 25px;
+  border: 0;
+}
+.coast-chart-options {
+  display: grid;
+  justify-items: end;
+}
+.coast-chart-options summary {
+  font-size: 14px;
+  padding: 5px 0;
+}
+.coast-chart-options .coast-segmented {
+  margin-top: 10px;
+}
+.simplified-coast .coast-chart-controls {
+  gap: 10px;
+}
+.coast-inspector.simple-inspector dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.simplified-coast .coast-inspector dt,
+.simplified-coast .chart-legend {
+  font-size: 14px;
+}
+.coast-compare-toggle {
+  margin: 18px 0;
+}
+.simplified-coast .coast-chart {
+  padding-bottom: 20px;
+}
+.simplified-coast .coast-section-title .eyebrow {
+  font-size: 13px;
+}
+.simplified-coast .coast-budget dl,
+.simplified-coast .coast-budget p {
+  font-size: 14px;
+}
+@media (max-width: 999px) {
+  .simplified-coast .coast-workspace {
+    grid-template-columns: 1fr;
+  }
+  .simplified-coast .coast-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .simplified-coast .coast-budget {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 700px) {
+  .simplified-coast .coast-toolbar {
+    gap: 12px;
+  }
+  .simplified-coast .coast-heading h1 {
+    font-size: 38px;
+  }
+  .simplified-coast .coast-panel {
+    padding: 22px 18px;
+  }
+  .simplified-coast .quick-fields {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .simplified-coast .coast-results {
+    display: block;
+  }
+  .simplified-coast .coast-result-card {
+    padding: 24px;
+  }
+  .simplified-coast .coast-age-number > strong {
+    font-size: 56px;
+  }
+  .simplified-coast .coast-chart-head {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .simplified-coast .coast-chart-controls {
+    align-items: start;
+    width: 100%;
+  }
+  .coast-chart-options {
+    justify-items: start;
+  }
+  .simplified-coast .coast-chart {
+    padding-inline: 16px;
+  }
+  .simplified-coast .coast-inspector {
+    padding: 14px;
+    grid-template-columns: 1fr;
+  }
+  .coast-inspector.simple-inspector dl {
+    gap: 16px;
+  }
+  .simplified-coast .coast-inspector dd {
+    font-size: 20px;
+  }
+  .coast-detail-button {
+    white-space: normal;
+    text-align: left;
+    max-width: 100%;
+  }
+  .coast-deeper > summary,
+  .coast-method-details > summary {
+    padding: 17px;
+  }
+}

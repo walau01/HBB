@@ -1,6 +1,6 @@
 ---
 title: "Are Malaysian ETFs actually bad?"
-description: "The management fee is only the start. A closer look at fund expenses, trading spreads, and what “cheap” really means."
+description: "Compare the costs of owning an ETF with the costs of buying and selling it."
 author: "walau01"
 categories: ["Core Research"]
 tags: ["research"]

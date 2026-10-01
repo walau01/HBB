@@ -2,18 +2,18 @@
   "main": [
     {
       "key": "home",
-      "name": "Journal",
+      "name": "Home",
       "url": "/"
-    },
-    {
-      "key": "articles",
-      "name": "All writing",
-      "url": "/blog"
     },
     {
       "key": "foundation",
       "name": "Start here",
-      "url": "/blog?category=foundation"
+      "url": "/start-here"
+    },
+    {
+      "key": "articles",
+      "name": "Articles",
+      "url": "/blog"
     },
     {
       "key": "coast",
@@ -29,13 +29,13 @@
   "footer": [
     {
       "key": "articles",
-      "name": "All writing",
+      "name": "Articles",
       "url": "/blog"
     },
     {
       "key": "foundation",
       "name": "Start here",
-      "url": "/blog?category=foundation"
+      "url": "/start-here"
     },
     {
       "key": "coast",

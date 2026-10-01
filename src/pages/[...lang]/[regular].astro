@@ -3,6 +3,8 @@ import Base from "@/layouts/Base.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import { supportedLang } from "@/lib/utils/languageParser";
 import PageHeader from "@/partials/PageHeader.astro";
+import StartHere from "@/layouts/journal/StartHere.astro";
+import { normalizeLang } from "@/lib/journal";
 
 import { render } from "astro:content";
 
@@ -20,7 +22,7 @@ export async function getStaticPaths() {
           page,
         },
       }));
-    })
+    }),
   );
   return paths.flat();
 }
@@ -28,24 +30,32 @@ export async function getStaticPaths() {
 const { page } = Astro.props;
 const { title, meta_title, description, image } = page.data;
 const { Content } = await render(page);
+const lang = normalizeLang(Astro.params.lang);
 ---
 
-<Base
-  title={title}
-  meta_title={meta_title}
-  description={description}
-  image={image}
->
-  <PageHeader title={title} />
-  <section class="section-sm">
-    <div class="container">
-      <div class="row justify-center">
-        <div class="lg:col-10">
-          <div class="content">
-            <Content />
+{
+  Astro.params.regular === "start-here" ? (
+    <StartHere lang={lang} />
+  ) : (
+    <Base
+      lang={lang}
+      title={title}
+      meta_title={meta_title}
+      description={description}
+      image={image}
+    >
+      <PageHeader title={title} />
+      <section class="section-sm">
+        <div class="container">
+          <div class="row justify-center">
+            <div class="lg:col-10">
+              <div class="content">
+                <Content />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-</Base>
+      </section>
+    </Base>
+  )
+}

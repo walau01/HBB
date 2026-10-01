@@ -2,18 +2,18 @@
   "main": [
     {
       "key": "home",
-      "name": "Jurnal",
+      "name": "Utama",
       "url": "/"
-    },
-    {
-      "key": "articles",
-      "name": "Semua tulisan",
-      "url": "/blog"
     },
     {
       "key": "foundation",
       "name": "Mula di sini",
-      "url": "/blog?category=foundation"
+      "url": "/start-here"
+    },
+    {
+      "key": "articles",
+      "name": "Artikel",
+      "url": "/blog"
     },
     {
       "key": "coast",
@@ -29,13 +29,13 @@
   "footer": [
     {
       "key": "articles",
-      "name": "Semua tulisan",
+      "name": "Artikel",
       "url": "/blog"
     },
     {
       "key": "foundation",
       "name": "Mula di sini",
-      "url": "/blog?category=foundation"
+      "url": "/start-here"
     },
     {
       "key": "coast",

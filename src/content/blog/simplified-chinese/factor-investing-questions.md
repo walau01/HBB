@@ -1,6 +1,6 @@
 ---
-title: "因子溢价，不是一张保证书。"
-description: "一个投资想法，要经过什么检验，才值得带进真实的投资组合？"
+title: "一种投资策略能提高回报吗？"
+description: "在把钱交给一种投资策略之前，可以先问哪些问题？"
 author: "walau01"
 categories: ["核心研究"]
 tags: ["research"]
@@ -11,7 +11,7 @@ motif: "factor"
 order: 4
 issue: 4
 sample_draft: true
-takeaway: "一个有趣的历史结果，只是尽职研究的开始。"
+takeaway: "过去的好结果值得研究，但不能保证未来表现。"
 ---
 
 ## 背后的解释是什么？

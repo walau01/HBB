@@ -1,6 +1,6 @@
 ---
-title: "市场又创新高，然后呢？"
-description: "一个熟悉的感觉，一个诱人的预测，以及一个值得用证据检验的问题。"
+title: "市场创新高时应该投资吗？"
+description: "现在投资还是等待？看看公平比较需要哪些条件。"
 author: "walau01"
 categories: ["观念与证据"]
 tags: ["bridge"]

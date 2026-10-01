@@ -1,11 +1,11 @@
 ---
 title: "Tools"
 meta_title: ""
-description: "Transparent personal-finance tools from walau01."
+description: "Explore your retirement savings with the Coast FIRE calculator."
 image: ""
 draft: false
 ---
 
-Tools are planned but are not available yet.
+Estimate when your existing investments could grow to your retirement goal without more contributions. You still need income for living costs until retirement.
 
-The first tools will focus on explaining concepts such as compound growth and the long-term effect of investment fees. Every tool will state its assumptions and limitations, and its results will be illustrations rather than forecasts.
+[Open Coast FIRE](/coast-fire)

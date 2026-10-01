@@ -1,6 +1,6 @@
 ---
-title: "ETF ialah satu struktur. Apa kandungannya?"
-description: "Lihat pegangan dan mandat dahulu, sebelum tertarik dengan simbol dagangannya."
+title: "Apakah yang sebenarnya dimiliki oleh ETF?"
+description: "Kenali ETF melalui contoh mudah dan lihat tempat menyemak pelaburan serta kosnya."
 author: "walau01"
 categories: ["Asas"]
 tags: ["foundation"]
@@ -11,17 +11,38 @@ motif: "etf"
 order: 3
 issue: 3
 sample_draft: true
-takeaway: "Mulakan dengan apa yang dimiliki dana dan cara pegangan itu dipilih."
+takeaway: "Lihat apa yang dimiliki dana, cara pelaburan dipilih dan kosnya. Nama sahaja tidak menerangkan semuanya."
+references:
+  [
+    {
+      "label": "Investor.gov · ETFs",
+      "url": "https://www.investor.gov/introduction-investing/investing-basics/investment-products/mutual-funds-and-exchange-traded-2",
+    },
+    {
+      "label": "InvestSmart · ETFs in Malaysia",
+      "url": "https://investsmartsc.my/learning-zone/learn-capital-market-products-and-services/investors-guide-to-exchange-traded-funds/",
+    },
+    {
+      "label": "Investor.gov · Fund fees",
+      "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/mutual-fund-and-etf-fees-and-expenses-investor-bulletin",
+    },
+  ]
 ---
 
-## Baca mandat dahulu
+## Apakah ETF?
 
-Nama produk hanyalah permulaan. Mandat, pegangan, dan pelaksanaan menerangkan pendedahan yang dibeli.
+ETF ialah dana dagangan bursa. Ia mengumpulkan wang pelabur dalam dana yang sahamnya didagangkan di bursa. [Investor.gov menerangkan asasnya](https://www.investor.gov/introduction-investing/investing-basics/investment-products/mutual-funds-and-exchange-traded-2).
 
-Tulisan asas ini akan menggunakan helaian fakta dan prospektus sebenar, dengan sumber di sebelah penjelasan.
+## Contoh mudah
 
-## Hubungkan dengan portfolio
+Bayangkan dana rekaan yang memegang saham 100 syarikat. Membeli saham dana itu memberi anda pelaburan dalam koleksi dana, tanpa memilih setiap syarikat sendiri. Ini contoh, bukan cadangan produk sebenar. Nilai dana masih boleh jatuh.
 
-Tanya peranan pendedahan itu dan apa yang sudah anda miliki.
+## Lihat kandungan sebelum membandingkan
 
-Langkah seterusnya ialah membandingkan pegangan bertindih, kos, dan pertimbangan yang berkaitan dengan rancangan anda.
+Helaian fakta ialah ringkasan dana. **Pegangan** ialah pelaburan yang dimiliki. **Objektif pelaburan** menerangkan matlamat dana. Dana dengan nama hampir sama boleh melabur secara berbeza. [Baca pengenalan Malaysia daripada InvestSmart](https://investsmartsc.my/learning-zone/learn-capital-market-products-and-services/investors-guide-to-exchange-traded-funds/).
+
+## Tukarkan yuran kepada angka
+
+Yuran tahunan rekaan sebanyak 0.2% atas baki RM10,000 yang tidak berubah ialah kira-kira RM20 setahun. Caj sebenar bergantung pada dana dan baki yang berubah; kos dagangan mungkin berasingan. [Kenali cara yuran dana dikira](https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/mutual-fund-and-etf-fees-and-expenses-investor-bulletin).
+
+Ini artikel pendidikan contoh. Ia tidak membandingkan atau mencadangkan dana tertentu.

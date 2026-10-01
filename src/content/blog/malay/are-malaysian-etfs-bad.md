@@ -1,6 +1,6 @@
 ---
 title: "Adakah ETF Malaysia benar-benar kurang baik?"
-description: "Yuran pengurusan hanyalah permulaan. Lihat kos dana, spread dagangan, dan maksud sebenar “murah”."
+description: "Bandingkan kos memiliki ETF dengan kos membeli dan menjualnya."
 author: "walau01"
 categories: ["Kajian Utama"]
 tags: ["research"]

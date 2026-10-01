@@ -1,6 +1,6 @@
 ---
-title: "An all-time high. Now what?"
-description: "A familiar feeling, a tempting prediction, and a question worth testing against the evidence."
+title: "Should you invest when the market is at a record high?"
+description: "Explore the question of investing now or waiting, and what a fair comparison would need."
 author: "walau01"
 categories: ["Bridge"]
 tags: ["bridge"]

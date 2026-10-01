@@ -1,6 +1,6 @@
 ---
-title: "Pasaran mencapai paras tertinggi. Selepas itu?"
-description: "Perasaan yang biasa, ramalan yang menggoda, dan soalan yang wajar diuji dengan bukti."
+title: "Patutkah melabur ketika pasaran pada paras rekod?"
+description: "Melabur sekarang atau menunggu? Lihat perkara yang diperlukan untuk perbandingan adil."
 author: "walau01"
 categories: ["Idea & Bukti"]
 tags: ["bridge"]
