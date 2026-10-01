@@ -343,6 +343,8 @@ export function updateQuickField(
   value: number,
 ): CoastPlan {
   const p = structuredClone(plan);
+  // Never spread a temporary empty input into derived ages, budgets or scenarios.
+  if (!Number.isFinite(value)) return p;
   const totals = planTotals(p);
   if (key === "age" || key === "retirementAge") {
     p[key] = value;

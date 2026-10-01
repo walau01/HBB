@@ -330,6 +330,37 @@ test("quick-mode inflation extremes keep scenario inflation within bounds", () =
   );
 });
 
+test("clearing and retyping retirement age does not corrupt hidden age settings", () => {
+  const original = createExamplePlan();
+  const cleared = updateQuickField(original, "retirementAge", NaN);
+  assert.deepEqual(cleared, original);
+  const changed = updateQuickField(cleared, "retirementAge", 40);
+  assert.equal(changed.retirementAge, 40);
+  assert.equal(changed.desiredCoastAge, 40);
+  assert.equal(changed.endAge, 95);
+  assert.equal(validCoastPlan(changed), true);
+  assert.ok(calculateCoastPlan(changed).projection.length > 0);
+});
+
+test("unfinished number edits cannot overwrite accounts, expenses or scenarios", () => {
+  const original = createExamplePlan();
+  for (const key of [
+    "age",
+    "investments",
+    "monthlyContribution",
+    "monthlySpending",
+    "inflationRate",
+    "returnRate",
+    "withdrawalRate",
+  ] as const) {
+    for (const draft of [NaN, Infinity, -Infinity]) {
+      const unchanged = updateQuickField(original, key, draft);
+      assert.deepEqual(unchanged, original);
+      assert.equal(validCoastPlan(unchanged), true);
+    }
+  }
+});
+
 test("category inflation compounds nominal costs and deflates exactly once", () => {
   const p = simple();
   p.retirementAge = 55;
