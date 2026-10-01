@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type dictionary from "@/i18n/en.json";
-import type { calculateCoastPlan, Scenario, PlanPoint } from "@/lib/coast-plan";
+import type {
+  calculateCoastPlan,
+  Scenario,
+  PlanPoint,
+  PlanEvent,
+} from "@/lib/coast-plan";
 
 type Props = {
   result: ReturnType<typeof calculateCoastPlan>;
@@ -10,6 +15,7 @@ type Props = {
   retirementAge: number;
   scenario: Scenario;
   onScenario: (scenario: Scenario) => void;
+  events: PlanEvent[];
 };
 const paths = ["saving", "stop", "epf", "threshold"] as const;
 
@@ -21,9 +27,23 @@ export default function CoastPlanChart({
   retirementAge,
   scenario,
   onScenario,
+  events,
 }: Props) {
   const [nominal, setNominal] = useState(false);
   const [inspect, setInspect] = useState(0);
+  const [tooltip, setTooltip] = useState(false);
+  const [width, setWidth] = useState(1100);
+  const container = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = container.current;
+    if (!element) return;
+    const measure = () =>
+      setWidth(Math.max(200, element.getBoundingClientRect().width));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
   const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
   const compact = new Intl.NumberFormat(locale, {
     notation: "compact",
@@ -31,6 +51,15 @@ export default function CoastPlanChart({
   });
   const money = (n: number | null) =>
     n === null ? "—" : "RM " + number.format(n);
+  const ageText = (age: number) => {
+    const months = Math.round((age - Math.floor(age)) * 12);
+    return (
+      number.format(Math.floor(age)) +
+      (months
+        ? " " + w.years + " " + number.format(months) + " " + w.months
+        : "")
+    );
+  };
   const series = result.projection.map((p) => {
     const factor = nominal
       ? Math.pow(1 + result.inflation, p.age - currentAge)
@@ -49,23 +78,92 @@ export default function CoastPlanChart({
     epf: w.epfOnly,
     threshold: w.threshold,
   };
-  const max =
+  const rawMax =
     Math.max(1, ...series.flatMap((p) => paths.map((key) => p[key] ?? 0))) *
-    1.1;
+    1.08;
+  const magnitude = 10 ** Math.floor(Math.log10(rawMax / 4));
+  const tick =
+    ([1, 2, 2.5, 5, 10].find((v) => v * magnitude >= rawMax / 4) ?? 10) *
+    magnitude;
+  const max = tick * 4;
+  const left = 62,
+    right = width - 18,
+    top = 48,
+    bottom = 310,
+    height = 354;
   const x = (age: number) =>
-    92 + ((age - currentAge) / (retirementAge - currentAge)) * 1020;
-  const y = (n: number) => 322 - (n / max) * 278;
-  const path = (key: keyof Omit<PlanPoint, "age">) =>
-    series
-      .filter((p) => p[key] !== null)
-      .map(
-        (p, i) =>
-          `${i ? "L" : "M"}${x(p.age).toFixed(2)},${y(p[key] ?? 0).toFixed(2)}`,
-      )
+    left + ((age - currentAge) / (retirementAge - currentAge)) * (right - left);
+  const y = (n: number) => bottom - (n / max) * (bottom - top);
+  const path = (key: keyof Omit<PlanPoint, "age">) => {
+    let previous = false;
+    return series
+      .map((p) => {
+        if (p[key] === null) {
+          previous = false;
+          return "";
+        }
+        const segment =
+          (previous ? "L" : "M") +
+          x(p.age).toFixed(2) +
+          "," +
+          y(p[key]!).toFixed(2);
+        previous = true;
+        return segment;
+      })
       .join(" ");
+  };
   const index = Math.min(inspect, series.length - 1);
   const selected = series[index];
   const ending = series[series.length - 1];
+  const nearest = (age: number) =>
+    series.reduce(
+      (best, p, i) =>
+        Math.abs(p.age - age) < Math.abs(series[best].age - age) ? i : best,
+      0,
+    );
+  const milestoneIndex =
+    result.coastAge === null ? null : nearest(result.coastAge);
+  const milestone = milestoneIndex === null ? null : series[milestoneIndex];
+  const chartEvents = events.filter((e) => e.age <= retirementAge);
+  const eventAges = [...new Set(chartEvents.map((e) => e.age))];
+  const selectedEvents = chartEvents.filter(
+    (e) => Math.abs(e.age - selected.age) < 0.001,
+  );
+  const gap =
+    selected.threshold === null ? null : selected.saving - selected.threshold;
+  const tooltipWidth = Math.min(290, width - 16);
+  const tooltipLeft = Math.max(
+    8,
+    Math.min(
+      width - tooltipWidth - 8,
+      x(selected.age) > width / 2
+        ? x(selected.age) - tooltipWidth - 14
+        : x(selected.age) + 14,
+    ),
+  );
+  const inspectPointer = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (e.pointerType !== "mouse" && e.type === "pointermove" && !e.buttons)
+      return;
+    const matrix = e.currentTarget.getScreenCTM();
+    if (!matrix) return;
+    const point = e.currentTarget.createSVGPoint();
+    point.x = e.clientX;
+    point.y = e.clientY;
+    const local = point.matrixTransform(matrix.inverse());
+    if (local.x < left || local.x > right || local.y < top || local.y > bottom)
+      return;
+    setInspect(
+      nearest(
+        currentAge +
+          ((local.x - left) / (right - left)) * (retirementAge - currentAge),
+      ),
+    );
+    setTooltip(true);
+  };
+  const inspectAt = (age: number) => {
+    setInspect(nearest(age));
+    setTooltip(true);
+  };
   return (
     <section className="coast-chart" aria-labelledby="coast-chart-title">
       <div className="coast-chart-head">
@@ -83,7 +181,10 @@ export default function CoastPlanChart({
                 type="button"
                 key={s}
                 aria-pressed={s === scenario}
-                onClick={() => onScenario(s)}
+                onClick={() => {
+                  onScenario(s);
+                  setTooltip(false);
+                }}
               >
                 {w.scenarioNames[s]}
               </button>
@@ -111,51 +212,139 @@ export default function CoastPlanChart({
           </div>
         </div>
       </div>
-      <div className="coast-chart-scroll">
+      <div className={"coast-milestone" + (milestone ? " reached" : "")}>
+        <div>
+          <span>{w.resultTitle}</span>
+          <strong>
+            {result.firstCoastMonth === 0
+              ? w.today
+              : result.coastAge === null
+                ? w.notReached
+                : w.age + " " + ageText(result.coastAge)}
+          </strong>
+          <p>{w.coastMeaning}</p>
+        </div>
+        {milestone && (
+          <button type="button" onClick={() => inspectAt(milestone.age)}>
+            {w.inspectMilestone}
+          </button>
+        )}
+      </div>
+      <p className="coast-chart-hint" id="coast-chart-hint">
+        {w.chartInteraction} · {nominal ? w.futureMoney : w.todayMoney}
+      </p>
+      <div className="coast-chart-plot" ref={container}>
         <svg
-          viewBox="0 0 1150 365"
+          viewBox={"0 0 " + width + " " + height}
           role="img"
+          tabIndex={0}
           aria-labelledby="chart-svg-title chart-svg-desc"
+          aria-describedby="coast-chart-hint"
+          onPointerDown={(e) => {
+            inspectPointer(e);
+            if (e.pointerType !== "mouse")
+              e.currentTarget.setPointerCapture(e.pointerId);
+          }}
+          onPointerMove={inspectPointer}
+          onPointerLeave={(e) => {
+            if (e.pointerType === "mouse") setTooltip(false);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setTooltip(false);
+              return;
+            }
+            if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key))
+              return;
+            e.preventDefault();
+            setInspect(
+              e.key === "Home"
+                ? 0
+                : e.key === "End"
+                  ? series.length - 1
+                  : Math.max(
+                      0,
+                      Math.min(
+                        series.length - 1,
+                        index + (e.key === "ArrowRight" ? 1 : -1),
+                      ),
+                    ),
+            );
+            setTooltip(true);
+          }}
         >
           <title id="chart-svg-title">{w.chartTitle}</title>
           <desc id="chart-svg-desc">
             {w.chartIntro} {nominal ? w.futureMoney : w.todayMoney}.{" "}
             {currentAge}–{retirementAge}.
+            {result.coastAge === null
+              ? w.notReached
+              : w.resultTitle + ": " + ageText(result.coastAge)}
           </desc>
           {[0, 1, 2, 3, 4].map((i) => (
             <g key={i}>
               <line
                 className="chart-grid"
-                x1="92"
-                x2="1112"
-                y1={y((max * i) / 4)}
-                y2={y((max * i) / 4)}
+                x1={left}
+                x2={right}
+                y1={y(tick * i)}
+                y2={y(tick * i)}
               />
               <text
                 className="chart-label"
-                x="79"
-                y={y((max * i) / 4) + 5}
+                x={left - 9}
+                y={y(tick * i) + 5}
                 textAnchor="end"
               >
-                {compact.format((max * i) / 4)}
+                {compact.format(tick * i)}
               </text>
             </g>
           ))}
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <text
-              className="chart-label"
-              key={i}
-              x={x(currentAge + ((retirementAge - currentAge) * i) / 5)}
-              y="350"
-              textAnchor="middle"
-            >
-              {Math.round(currentAge + ((retirementAge - currentAge) * i) / 5)}
-            </text>
-          ))}
+          {Array.from({ length: width < 550 ? 4 : 6 }, (_, i) => i).map((i) => {
+            const count = width < 550 ? 3 : 5;
+            const age = currentAge + ((retirementAge - currentAge) * i) / count;
+            return (
+              <text
+                className="chart-label"
+                key={i}
+                x={x(age)}
+                y={bottom + 26}
+                textAnchor="middle"
+              >
+                {number.format(Math.round(age))}
+              </text>
+            );
+          })}
           <path
             className="chart-area"
-            d={path("saving") + " L1112,322 L92,322 Z"}
+            d={
+              path("saving") +
+              " L" +
+              right +
+              "," +
+              bottom +
+              " L" +
+              left +
+              "," +
+              bottom +
+              " Z"
+            }
           />
+          {eventAges.map((age) => (
+            <g key={age} className="chart-event-marker">
+              <title>
+                {w.age} {age}:{" "}
+                {chartEvents
+                  .filter((e) => e.age === age)
+                  .map((e) => e.name || w.names[e.kind])
+                  .join(", ")}
+              </title>
+              <line x1={x(age)} x2={x(age)} y1={top - 10} y2={bottom} />
+              <path
+                d={"M" + x(age) + "," + (top - 19) + " l6,6 -6,6 -6,-6 Z"}
+              />
+            </g>
+          ))}
           {paths.map((key) => (
             <path
               key={key}
@@ -163,12 +352,30 @@ export default function CoastPlanChart({
               d={path(key)}
             />
           ))}
+          {milestone && (
+            <g className="chart-coast-marker">
+              <line
+                x1={x(milestone.age)}
+                x2={x(milestone.age)}
+                y1={top - 20}
+                y2={bottom}
+              />
+              <circle cx={x(milestone.age)} cy={y(milestone.saving)} r={8} />
+              <text
+                x={Math.max(left + 40, Math.min(right - 40, x(milestone.age)))}
+                y={top - 28}
+                textAnchor="middle"
+              >
+                {w.coastMarker}
+              </text>
+            </g>
+          )}
           <line
             className="chart-cursor"
             x1={x(selected.age)}
             x2={x(selected.age)}
-            y1="28"
-            y2="322"
+            y1={top}
+            y2={bottom}
           />
           {paths
             .filter((key) => selected[key] !== null)
@@ -177,11 +384,54 @@ export default function CoastPlanChart({
                 className={"chart-point chart-point-" + key}
                 key={key}
                 cx={x(selected.age)}
-                cy={y(selected[key] ?? 0)}
-                r="5"
+                cy={y(selected[key]!)}
+                r={4}
               />
             ))}
         </svg>
+        {tooltip && (
+          <div
+            className="coast-chart-tooltip"
+            role="tooltip"
+            style={{ left: tooltipLeft, width: tooltipWidth }}
+          >
+            <div>
+              <strong>
+                {w.age} {ageText(selected.age)}
+              </strong>
+              <span>{nominal ? w.futureMoney : w.todayMoney}</span>
+            </div>
+            <dl>
+              {paths.map((key) => (
+                <div key={key}>
+                  <dt>
+                    <i className={"tooltip-" + key} />
+                    {labels[key]}
+                  </dt>
+                  <dd>{money(selected[key])}</dd>
+                </div>
+              ))}
+            </dl>
+            {gap !== null && (
+              <p>
+                <span>{gap >= 0 ? w.aboveThreshold : w.belowThreshold}</span>
+                <strong>{money(Math.abs(gap))}</strong>
+              </p>
+            )}
+            {selectedEvents.map((e) => (
+              <small key={e.id}>
+                {e.name || w.names[e.kind]}:{" "}
+                {money(
+                  e.amount *
+                    (nominal
+                      ? Math.pow(1 + result.inflation, e.age - currentAge)
+                      : 1),
+                )}
+                {e.kind === "income" ? " / " + w.monthly : ""}
+              </small>
+            ))}
+          </div>
+        )}
       </div>
       <div className="chart-legend">
         {paths.map((key) => (
@@ -191,9 +441,19 @@ export default function CoastPlanChart({
           </span>
         ))}
       </div>
+      {!!chartEvents.length && (
+        <div className="coast-chart-events">
+          {chartEvents.map((e) => (
+            <button type="button" key={e.id} onClick={() => inspectAt(e.age)}>
+              <span aria-hidden="true">◆</span> {w.age} {e.age} ·{" "}
+              {e.name || w.names[e.kind]}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="coast-inspector">
         <label htmlFor="coast-inspect">
-          {w.inspectAge} <strong>{selected.age}</strong>
+          {w.inspectAge} <strong>{ageText(selected.age)}</strong>
         </label>
         <input
           id="coast-inspect"
@@ -202,16 +462,28 @@ export default function CoastPlanChart({
           max={series.length - 1}
           step={1}
           value={index}
-          onChange={(e) => setInspect(Number(e.target.value))}
+          onChange={(e) => {
+            setInspect(Number(e.target.value));
+            setTooltip(true);
+          }}
         />
         <dl>
           {paths.map((key) => (
             <div key={key}>
-              <dt>{labels[key]}</dt>
+              <dt>
+                <i className={"tooltip-" + key} />
+                {labels[key]}
+              </dt>
               <dd>{money(selected[key])}</dd>
             </div>
           ))}
         </dl>
+        {gap !== null && (
+          <p className="coast-inspector-gap">
+            {gap >= 0 ? w.aboveThreshold : w.belowThreshold}:{" "}
+            <strong>{money(Math.abs(gap))}</strong>
+          </p>
+        )}
       </div>
       <div className="projection-totals">
         {(["saving", "stop", "epf"] as const).map((key) => (
@@ -244,7 +516,7 @@ export default function CoastPlanChart({
             <tbody>
               {series.map((point) => (
                 <tr key={point.age}>
-                  <th scope="row">{point.age}</th>
+                  <th scope="row">{ageText(point.age)}</th>
                   {paths.map((key) => (
                     <td key={key}>{money(point[key])}</td>
                   ))}

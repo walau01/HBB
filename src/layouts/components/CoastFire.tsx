@@ -118,6 +118,13 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
     [plan, valid],
   );
   const result = comparisons.find((r) => r.scenario === scenario)?.result;
+  const withoutEvents = useMemo(
+    () =>
+      valid && plan.events.length
+        ? calculateCoastPlan({ ...plan, events: [] }, scenario)
+        : null,
+    [plan, valid, scenario],
+  );
   useEffect(() => {
     try {
       setSaved(localStorage.getItem(storageKey) !== null);
@@ -174,6 +181,30 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
     age === null
       ? w.notReached
       : `${w.age} ${decimal.format(Math.ceil(age * 10) / 10)}`;
+  const eventDateChange = () => {
+    if (!withoutEvents || !result) return "—";
+    if (result.firstCoastMonth === null)
+      return withoutEvents.firstCoastMonth === null
+        ? w.noCoastDate
+        : w.notReached;
+    if (withoutEvents.firstCoastMonth === null) return w.coastWithEvents;
+    const months = result.firstCoastMonth - withoutEvents.firstCoastMonth;
+    return months === 0
+      ? w.noChange
+      : `${formatter.format(Math.abs(months))} ${w.months} ${months > 0 ? w.later : w.earlier}`;
+  };
+  const moneyChange = (amount: number) =>
+    Math.abs(amount) < 0.5
+      ? w.noChange
+      : `${amount > 0 ? "+" : "−"}${money(Math.abs(amount))}`;
+  const eventExplanation = (e: PlanEvent) =>
+    e.kind === "income"
+      ? w.eventIncomeEffect
+      : e.age > plan.retirementAge
+        ? w.eventAfterRetirementEffect
+        : e.kind === "expense"
+          ? w.eventExpenseEffect
+          : w.eventLumpSumEffect;
   const select = (
     id: string,
     label: string,
@@ -493,6 +524,7 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
     if (key === "spending")
       return (
         <>
+          <p className="coast-help">{w.categoryInflationHint}</p>
           <div className="coast-rows">
             {plan.expenses.map((e) => (
               <fieldset className="coast-row" key={e.id}>
@@ -533,6 +565,50 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
                     onChange={(v) => expense(e.id, { retirement: v })}
                   />
                 </div>
+                <label className="coast-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={e.inflationRate != null}
+                    onChange={(v) =>
+                      expense(e.id, {
+                        inflationRate: v.target.checked
+                          ? plan.inflationRate
+                          : null,
+                      })
+                    }
+                  />
+                  {w.customInflation}
+                </label>
+                {e.inflationRate != null && (
+                  <NumberField
+                    id={e.id + "-inflation"}
+                    label={w.categoryInflation}
+                    value={e.inflationRate}
+                    min={0}
+                    max={15}
+                    suffix="%"
+                    onChange={(v) => expense(e.id, { inflationRate: v })}
+                  />
+                )}
+                {result &&
+                  (() => {
+                    const category = result.retirementSpending.categories.find(
+                      (r) => r.id === e.id,
+                    )!;
+                    return (
+                      <div className="coast-category-preview">
+                        <span>
+                          {w.projectedMonthly} · {w.age} {plan.retirementAge}
+                        </span>
+                        <strong>{money(category.nominal)}</strong>
+                        <small>
+                          {w.futureMoney} ·{" "}
+                          {decimal.format(category.inflationRate)}%{" "}
+                          {w.categoryInflation}
+                        </small>
+                      </div>
+                    );
+                  })()}
               </fieldset>
             ))}
           </div>
@@ -564,6 +640,14 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
               <span>{w.retirementTotal}</span>
               <strong>{money(totals.monthlySpending)}</strong>
             </div>
+            {result && (
+              <div>
+                <span>
+                  {w.projectedMonthly} · {w.futureMoney}
+                </span>
+                <strong>{money(result.retirementSpending.nominal)}</strong>
+              </div>
+            )}
           </div>
         </>
       );
@@ -721,6 +805,7 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
                     {w.adjusted}
                   </label>
                 )}
+                <p className="coast-event-explanation">{eventExplanation(e)}</p>
               </fieldset>
             ))}
           </div>
@@ -746,6 +831,11 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
             + {w.addEvent}
           </button>
           <p className="coast-help">{w.eventHint}</p>
+          {!!plan.events.length && (
+            <a className="text-link" href="#coast-event-impact">
+              {w.viewEventImpact}
+            </a>
+          )}
         </>
       );
     return (
@@ -1128,6 +1218,44 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
               <p className="result-caption">{w.invalid}</p>
             )}
           </section>
+          {result && (
+            <section
+              className="coast-fire-target"
+              aria-labelledby="full-fire-title"
+            >
+              <p className="eyebrow">
+                {w.age} {plan.retirementAge} · {w.scenarioNames[scenario]}
+              </p>
+              <h2 id="full-fire-title">{w.fullFireTitle}</h2>
+              <strong className="coast-fire-amount">
+                {money(result.target)}
+              </strong>
+              <p className="coast-fire-basis">{w.todayMoney}</p>
+              <dl>
+                <div>
+                  <dt>{w.futureMoney}</dt>
+                  <dd>{money(result.nominalTarget)}</dd>
+                </div>
+                <div>
+                  <dt>{w.fullFireGap}</dt>
+                  <dd>{money(result.fireGap)}</dd>
+                </div>
+                <div>
+                  <dt>{w.fullFireProgress}</dt>
+                  <dd>{decimal.format(result.fireProgress)}%</dd>
+                </div>
+                <div>
+                  <dt>{w.projectedMonthly}</dt>
+                  <dd>{money(result.retirementSpending.nominal)}</dd>
+                </div>
+              </dl>
+              <p>{w.fullFireHint}</p>
+              <p className="coast-fire-formula">
+                {money(result.retirementSpending.today * 12)} ÷{" "}
+                {decimal.format(plan.withdrawalRate)}% = {money(result.target)}
+              </p>
+            </section>
+          )}
           <section className="coast-budget">
             <h2>{w.budgetTitle}</h2>
             <dl>
@@ -1162,7 +1290,114 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
             retirementAge={plan.retirementAge}
             scenario={scenario}
             onScenario={setScenario}
+            events={plan.events}
           />
+          {withoutEvents && (
+            <section
+              className="coast-event-impact"
+              id="coast-event-impact"
+              aria-labelledby="event-impact-title"
+            >
+              <div className="coast-section-title">
+                <p className="eyebrow">
+                  {w.sections.events} · {w.scenarioNames[scenario]}
+                </p>
+                <h2 id="event-impact-title">{w.eventImpactTitle}</h2>
+                <p>{w.eventImpactHint}</p>
+              </div>
+              <dl className="coast-event-deltas">
+                <div>
+                  <dt>{w.coastDateChange}</dt>
+                  <dd>{eventDateChange()}</dd>
+                </div>
+                <div>
+                  <dt>{w.retirementBalanceChange}</dt>
+                  <dd>
+                    {moneyChange(
+                      result.savingRetirement - withoutEvents.savingRetirement,
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt>{w.endBalanceChange}</dt>
+                  <dd>
+                    {moneyChange(
+                      result.cashProjection.at(-1)!.balance -
+                        withoutEvents.cashProjection.at(-1)!.balance,
+                    )}
+                  </dd>
+                </div>
+              </dl>
+              <div className="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">{w.eventMetric}</th>
+                      <th scope="col">{w.withoutEvents}</th>
+                      <th scope="col">{w.withEvents}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">{w.estimatedAge}</th>
+                      <td>{ageText(withoutEvents.coastAge)}</td>
+                      <td>{ageText(result.coastAge)}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{w.targetToday}</th>
+                      <td>{money(withoutEvents.coastTarget ?? NaN)}</td>
+                      <td>{money(result.coastTarget ?? NaN)}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{w.retirementBalance}</th>
+                      <td>{money(withoutEvents.savingRetirement)}</td>
+                      <td>{money(result.savingRetirement)}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{w.firstShortfall}</th>
+                      <td>
+                        {withoutEvents.firstShortfallAge === null
+                          ? w.noShortfall
+                          : ageText(withoutEvents.firstShortfallAge)}
+                      </td>
+                      <td>
+                        {result.firstShortfallAge === null
+                          ? w.noShortfall
+                          : ageText(result.firstShortfallAge)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {w.endBalance} · {w.age} {plan.endAge}
+                      </th>
+                      <td>
+                        {money(withoutEvents.cashProjection.at(-1)!.balance)}
+                      </td>
+                      <td>{money(result.cashProjection.at(-1)!.balance)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="coast-event-list">
+                {plan.events.map((e) => (
+                  <div key={e.id}>
+                    <span className="coast-event-age">
+                      {w.age} {e.age}
+                    </span>
+                    <div>
+                      <strong>{e.name || w.names[e.kind]}</strong>
+                      <p>{eventExplanation(e)}</p>
+                    </div>
+                    <span>
+                      {e.kind === "expense" ? "−" : "+"}
+                      {money(e.amount)}
+                      {e.kind === "income" ? ` / ${w.monthly}` : ""}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
           <section className="coast-comparison">
             <div className="coast-section-title">
               <p className="eyebrow">{w.scenario}</p>

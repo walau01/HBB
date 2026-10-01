@@ -7,6 +7,7 @@ import {
   parseCoastPlan,
   planTotals,
   updateQuickField,
+  retirementSpendingAtAge,
 } from "../src/lib/coast-plan.ts";
 import { calculateCoast } from "../src/lib/coast-fire.ts";
 
@@ -327,4 +328,122 @@ test("quick-mode inflation extremes keep scenario inflation within bounds", () =
     validCoastPlan(updateQuickField(createExamplePlan(), "inflationRate", 15)),
     true,
   );
+});
+
+test("category inflation compounds nominal costs and deflates exactly once", () => {
+  const p = simple();
+  p.retirementAge = 55;
+  p.expenses = [
+    {
+      id: "medical",
+      name: "Medical",
+      current: 500,
+      retirement: 500,
+      frequency: "monthly",
+      inflationRate: 5,
+    },
+  ];
+  const budget = retirementSpendingAtAge(p, "base", 55);
+  near(budget.nominal, 500 * 1.05 ** 25);
+  near(budget.today, 500 * (1.05 / 1.03) ** 25);
+  const r = calculateCoastPlan(p);
+  near(r.target, (budget.today * 12) / 0.04);
+  near(r.nominalTarget, (budget.nominal * 12) / 0.04);
+  near(r.fireGap, r.target - 150000);
+  near(r.fireProgress, (150000 / r.target) * 100);
+});
+
+test("an override equal to general inflation preserves targets and saved-plan compatibility", () => {
+  const p = createExamplePlan();
+  const before = calculateCoastPlan(p);
+  for (const expense of p.expenses) expense.inflationRate = p.inflationRate;
+  const after = calculateCoastPlan(p);
+  near(after.target, before.target);
+  near(after.coastTarget!, before.coastTarget!);
+  assert.equal(after.firstCoastMonth, before.firstCoastMonth);
+  assert.equal(validCoastPlan(p), true);
+  p.expenses[0].inflationRate = null;
+  assert.deepEqual(parseCoastPlan(JSON.stringify(p)), p);
+  for (const rate of [-1, 16, NaN, Infinity]) {
+    p.expenses[0].inflationRate = rate;
+    assert.equal(validCoastPlan(p), false);
+  }
+});
+
+test("annual categories and scenario adjustments use the same currency basis", () => {
+  const p = simple();
+  p.expenses = [
+    {
+      id: "annual",
+      name: "Annual",
+      current: 12000,
+      retirement: 12000,
+      frequency: "annual",
+      inflationRate: 5,
+    },
+  ];
+  const cautious = retirementSpendingAtAge(p, "cautious", p.retirementAge);
+  near(cautious.nominal, 1000 * 1.06 ** 30);
+  near(cautious.today, 1000 * (1.06 / 1.04) ** 30);
+  p.expenses[0].inflationRate = 0;
+  assert.equal(
+    retirementSpendingAtAge(p, "optimistic", 60).categories[0].inflationRate,
+    0,
+  );
+});
+
+test("category inflation continues after retirement in the cash-flow check", () => {
+  const p = zero();
+  p.retirementAge = 51;
+  p.desiredCoastAge = 51;
+  p.endAge = 52;
+  p.inflationRate = 3;
+  p.accounts[0].returnRate = 3;
+  p.accounts[0].monthlyContribution = 0;
+  p.expenses = [
+    {
+      id: "health",
+      name: "Health",
+      current: 500,
+      retirement: 500,
+      frequency: "monthly",
+      inflationRate: 5,
+    },
+  ];
+  let expected = 150000;
+  for (let month = 13; month <= 24; month++)
+    expected -= 500 * (1.05 / 1.03) ** (month / 12);
+  near(calculateCoastPlan(p).cashProjection.at(-1)!.balance, expected);
+});
+
+test("the graph includes the exact first Coast month instead of rounding to an annual point", () => {
+  const r = calculateCoastPlan(createExamplePlan());
+  assert.ok(r.coastAge !== null && !Number.isInteger(r.coastAge));
+  const point = r.projection.find((p) => p.age === r.coastAge);
+  assert.ok(point);
+  assert.ok(point.saving >= point.threshold! - 0.01);
+});
+
+test("dated expenses have a pre-event point and an after-event point", () => {
+  const p = zero();
+  p.accounts[0].monthlyContribution = 0;
+  p.events = [
+    {
+      id: "car",
+      name: "Car",
+      kind: "expense",
+      amount: 10000,
+      age: 55,
+      endAge: 95,
+      inflationAdjusted: true,
+    },
+  ];
+  const r = calculateCoastPlan(p);
+  near(
+    r.projection.find((point) => Math.abs(point.age - (55 - 1 / 12)) < 1e-7)!
+      .saving,
+    150000,
+  );
+  near(r.projection.find((point) => point.age === 55)!.saving, 140000);
+  assert.equal(r.projection.at(-1)!.age, p.retirementAge);
 });

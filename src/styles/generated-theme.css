@@ -18,6 +18,9 @@
   --color-navy-text: #f6f8f4;
   --color-navy-muted: #b9c7cf;
   --color-link: #365548;
+  --color-chart-stop: #1664b5;
+  --color-chart-epf: #b45309;
+  --color-chart-threshold: #7e3fac;
   --color-text: #52616a;
   --color-text-dark: #152b3c;
   --color-text-light: #52616a;
@@ -30,6 +33,9 @@
   --color-darkmode-dark: #edf3ef;
   --color-darkmode-surface: #182731;
   --color-darkmode-link: #d3ef69;
+  --color-darkmode-chart-stop: #6bb2ff;
+  --color-darkmode-chart-epf: #ffc177;
+  --color-darkmode-chart-threshold: #cc9aff;
   --color-darkmode-text: #b2c1c5;
   --color-darkmode-text-dark: #edf3ef;
   --color-darkmode-text-light: #b2c1c5;

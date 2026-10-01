@@ -20,6 +20,8 @@ export type PlanExpense = {
   current: number;
   retirement: number;
   frequency: "monthly" | "annual";
+  // Missing/null preserves the general assumption, including older saved plans.
+  inflationRate?: number | null;
 };
 export type PlanEvent = {
   id: string;
@@ -229,6 +231,7 @@ export function validCoastPlan(value: unknown): value is CoastPlan {
         named(e) &&
         inRange(e.current, 0, 1000000) &&
         inRange(e.retirement, 0, 1000000) &&
+        (e.inflationRate == null || inRange(e.inflationRate, 0, 15)) &&
         ["monthly", "annual"].includes(e.frequency),
     ) ||
     p.expenses.reduce(
@@ -405,6 +408,36 @@ export type PlanPoint = {
 };
 export type CashPoint = { age: number; balance: number; accessible: number };
 
+// Inputs are today's prices. Inflate each category, then deflate once into the
+// general today-RM basis used by account returns and the rest of the model.
+export function retirementSpendingAtAge(
+  p: CoastPlan,
+  scenario: Scenario,
+  age: number,
+) {
+  const change = p.scenarios[scenario].inflationAdjustment;
+  const general = (p.inflationRate + change) / 100;
+  const categories = p.expenses.map((e) => {
+    const inflationRate = Math.max(
+      0,
+      Math.min(15, (e.inflationRate ?? p.inflationRate) + change),
+    );
+    const monthly = e.retirement / (e.frequency === "annual" ? 12 : 1);
+    const nominal = monthly * Math.pow(1 + inflationRate / 100, age - p.age);
+    return {
+      id: e.id,
+      inflationRate,
+      nominal,
+      today: nominal / Math.pow(1 + general, age - p.age),
+    };
+  });
+  return {
+    categories,
+    today: categories.reduce((sum, e) => sum + e.today, 0),
+    nominal: categories.reduce((sum, e) => sum + e.nominal, 0),
+  };
+}
+
 export function calculateCoastPlan(p: CoastPlan, scenario: Scenario = "base") {
   if (!validCoastPlan(p)) throw new RangeError("Invalid Coast FIRE plan");
   const accounts = p.accounts.filter((a) => a.included);
@@ -419,7 +452,12 @@ export function calculateCoastPlan(p: CoastPlan, scenario: Scenario = "base") {
   );
   const rates = realReturns.map((r) => Math.pow(1 + r, 1 / 12));
   const months = (p.retirementAge - p.age) * 12;
-  const target = (totals.monthlySpending * 12) / (p.withdrawalRate / 100);
+  const retirementSpending = retirementSpendingAtAge(
+    p,
+    scenario,
+    p.retirementAge,
+  );
+  const target = (retirementSpending.today * 12) / (p.withdrawalRate / 100);
   const initial = (): Bucket[] =>
     accounts.flatMap((a, i) => [
       { account: i, balance: a.balance, accessAge: a.accessAge },
@@ -566,6 +604,11 @@ export function calculateCoastPlan(p: CoastPlan, scenario: Scenario = "base") {
       threshold: required(paths.saving, 0),
     },
   ];
+  const eventMonths = new Set(
+    p.events
+      .filter((e) => e.age <= p.retirementAge)
+      .flatMap((e) => [(e.age - p.age) * 12 - 1, (e.age - p.age) * 12]),
+  );
   for (let m = 1; m <= months; m++) {
     for (const path of ["saving", "stop", "epf"] as const) {
       grow(paths[path]);
@@ -578,7 +621,7 @@ export function calculateCoastPlan(p: CoastPlan, scenario: Scenario = "base") {
       reaches(paths.saving, m)
     )
       firstCoastMonth = m;
-    if (m % 12 === 0)
+    if (m % 12 === 0 || m === firstCoastMonth || eventMonths.has(m))
       projection.push({
         age: p.age + m / 12,
         saving: total(paths.saving),
@@ -610,10 +653,10 @@ export function calculateCoastPlan(p: CoastPlan, scenario: Scenario = "base") {
           (e.inflationAdjusted ? 1 : Math.pow(1 + inflation, age - e.age));
       }
     const lockedBefore = total(cashBuckets) - accessible(cashBuckets, age);
-    if (income > totals.monthlySpending)
-      deposit(cashBuckets, income - totals.monthlySpending, age);
+    const spending = retirementSpendingAtAge(p, scenario, age).today;
+    if (income > spending) deposit(cashBuckets, income - spending, age);
     const deficit =
-      withdraw(cashBuckets, Math.max(0, totals.monthlySpending - income), age) +
+      withdraw(cashBuckets, Math.max(0, spending - income), age) +
       oneOff(cashBuckets, m, true);
     if (deficit > 0.01 && firstShortfallAge === null) firstShortfallAge = age;
     if (lockedBefore > 0.01) bridgeGap += deficit;
@@ -628,6 +671,10 @@ export function calculateCoastPlan(p: CoastPlan, scenario: Scenario = "base") {
     ...totals,
     inflation,
     target,
+    retirementSpending,
+    nominalTarget: (retirementSpending.nominal * 12) / (p.withdrawalRate / 100),
+    fireGap: Math.max(0, target - totals.investments),
+    fireProgress: (totals.investments / target) * 100,
     coastTarget,
     projection,
     cashProjection,
