@@ -424,7 +424,7 @@
       "months": "个月",
       "coastMeaning": "按当前假设，此时的现有资产无需继续投资，也能增长至退休目标。日常生活仍需要收入。",
       "inspectMilestone": "查看 Coast 达标点",
-      "chartInteraction": "悬停、点按或拖动即可查看预测点，也可使用滑杆或方向键。",
+      "chartInteraction": "悬停、点按或拖动即可查看预测点，金额显示在图表下方。也可使用滑杆或方向键。",
       "coastMarker": "Coast FIRE",
       "aboveThreshold": "高于 Coast 门槛",
       "belowThreshold": "低于 Coast 门槛",

@@ -31,7 +31,6 @@ export default function CoastPlanChart({
 }: Props) {
   const [nominal, setNominal] = useState(false);
   const [inspect, setInspect] = useState(0);
-  const [tooltip, setTooltip] = useState(false);
   const [width, setWidth] = useState(1100);
   const container = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -131,16 +130,6 @@ export default function CoastPlanChart({
   );
   const gap =
     selected.threshold === null ? null : selected.saving - selected.threshold;
-  const tooltipWidth = Math.min(290, width - 16);
-  const tooltipLeft = Math.max(
-    8,
-    Math.min(
-      width - tooltipWidth - 8,
-      x(selected.age) > width / 2
-        ? x(selected.age) - tooltipWidth - 14
-        : x(selected.age) + 14,
-    ),
-  );
   const inspectPointer = (e: React.PointerEvent<SVGSVGElement>) => {
     if (e.pointerType !== "mouse" && e.type === "pointermove" && !e.buttons)
       return;
@@ -158,11 +147,9 @@ export default function CoastPlanChart({
           ((local.x - left) / (right - left)) * (retirementAge - currentAge),
       ),
     );
-    setTooltip(true);
   };
   const inspectAt = (age: number) => {
     setInspect(nearest(age));
-    setTooltip(true);
   };
   return (
     <section className="coast-chart" aria-labelledby="coast-chart-title">
@@ -181,10 +168,7 @@ export default function CoastPlanChart({
                 type="button"
                 key={s}
                 aria-pressed={s === scenario}
-                onClick={() => {
-                  onScenario(s);
-                  setTooltip(false);
-                }}
+                onClick={() => onScenario(s)}
               >
                 {w.scenarioNames[s]}
               </button>
@@ -246,14 +230,7 @@ export default function CoastPlanChart({
               e.currentTarget.setPointerCapture(e.pointerId);
           }}
           onPointerMove={inspectPointer}
-          onPointerLeave={(e) => {
-            if (e.pointerType === "mouse") setTooltip(false);
-          }}
           onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              setTooltip(false);
-              return;
-            }
             if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key))
               return;
             e.preventDefault();
@@ -270,7 +247,6 @@ export default function CoastPlanChart({
                       ),
                     ),
             );
-            setTooltip(true);
           }}
         >
           <title id="chart-svg-title">{w.chartTitle}</title>
@@ -389,49 +365,52 @@ export default function CoastPlanChart({
               />
             ))}
         </svg>
-        {tooltip && (
-          <div
-            className="coast-chart-tooltip"
-            role="tooltip"
-            style={{ left: tooltipLeft, width: tooltipWidth }}
-          >
-            <div>
-              <strong>
-                {w.age} {ageText(selected.age)}
-              </strong>
-              <span>{nominal ? w.futureMoney : w.todayMoney}</span>
+      </div>
+      <div className="coast-inspector">
+        <label htmlFor="coast-inspect">
+          {w.inspectAge} <strong>{ageText(selected.age)}</strong>
+          <small>{nominal ? w.futureMoney : w.todayMoney}</small>
+        </label>
+        <input
+          id="coast-inspect"
+          type="range"
+          min={0}
+          max={series.length - 1}
+          step={1}
+          value={index}
+          onChange={(e) => setInspect(Number(e.target.value))}
+        />
+        <dl>
+          {paths.map((key) => (
+            <div key={key}>
+              <dt>
+                <i className={"tooltip-" + key} />
+                {labels[key]}
+              </dt>
+              <dd>{money(selected[key])}</dd>
             </div>
-            <dl>
-              {paths.map((key) => (
-                <div key={key}>
-                  <dt>
-                    <i className={"tooltip-" + key} />
-                    {labels[key]}
-                  </dt>
-                  <dd>{money(selected[key])}</dd>
-                </div>
-              ))}
-            </dl>
-            {gap !== null && (
-              <p>
-                <span>{gap >= 0 ? w.aboveThreshold : w.belowThreshold}</span>
-                <strong>{money(Math.abs(gap))}</strong>
-              </p>
-            )}
-            {selectedEvents.map((e) => (
-              <small key={e.id}>
-                {e.name || w.names[e.kind]}:{" "}
-                {money(
-                  e.amount *
-                    (nominal
-                      ? Math.pow(1 + result.inflation, e.age - currentAge)
-                      : 1),
-                )}
-                {e.kind === "income" ? " / " + w.monthly : ""}
-              </small>
-            ))}
-          </div>
+          ))}
+        </dl>
+        {gap !== null && (
+          <p className="coast-inspector-gap">
+            {gap >= 0 ? w.aboveThreshold : w.belowThreshold}:{" "}
+            <strong>{money(Math.abs(gap))}</strong>
+          </p>
         )}
+        {selectedEvents.map((e) => (
+          <p className="coast-inspector-event" key={e.id}>
+            {e.name || w.names[e.kind]}:{" "}
+            <strong>
+              {money(
+                e.amount *
+                  (nominal
+                    ? Math.pow(1 + result.inflation, e.age - currentAge)
+                    : 1),
+              )}
+              {e.kind === "income" ? " / " + w.monthly : ""}
+            </strong>
+          </p>
+        ))}
       </div>
       <div className="chart-legend">
         {paths.map((key) => (
@@ -451,40 +430,6 @@ export default function CoastPlanChart({
           ))}
         </div>
       )}
-      <div className="coast-inspector">
-        <label htmlFor="coast-inspect">
-          {w.inspectAge} <strong>{ageText(selected.age)}</strong>
-        </label>
-        <input
-          id="coast-inspect"
-          type="range"
-          min={0}
-          max={series.length - 1}
-          step={1}
-          value={index}
-          onChange={(e) => {
-            setInspect(Number(e.target.value));
-            setTooltip(true);
-          }}
-        />
-        <dl>
-          {paths.map((key) => (
-            <div key={key}>
-              <dt>
-                <i className={"tooltip-" + key} />
-                {labels[key]}
-              </dt>
-              <dd>{money(selected[key])}</dd>
-            </div>
-          ))}
-        </dl>
-        {gap !== null && (
-          <p className="coast-inspector-gap">
-            {gap >= 0 ? w.aboveThreshold : w.belowThreshold}:{" "}
-            <strong>{money(Math.abs(gap))}</strong>
-          </p>
-        )}
-      </div>
       <div className="projection-totals">
         {(["saving", "stop", "epf"] as const).map((key) => (
           <div key={key}>

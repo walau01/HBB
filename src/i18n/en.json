@@ -440,7 +440,7 @@
       "months": "months",
       "coastMeaning": "At this point, existing assets can grow to the retirement target without further investing under these assumptions. Living costs still need income.",
       "inspectMilestone": "Inspect Coast point",
-      "chartInteraction": "Hover, tap or drag to inspect a projection point. Use the slider or arrow keys too.",
+      "chartInteraction": "Hover, tap or drag to inspect a point. Amounts appear below the graph. You can also use the slider or arrow keys.",
       "coastMarker": "Coast FIRE",
       "aboveThreshold": "Above Coast threshold",
       "belowThreshold": "Below Coast threshold",
