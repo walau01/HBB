@@ -118,7 +118,7 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
   const w = c.workspace;
   const u = w.simple;
   const [plan, setPlan] = useState<CoastPlan>(createExamplePlan);
-  const [mode, setMode] = useState<"quick" | "detailed">("quick");
+  const [mode, setMode] = useState<"quick" | "detailed">("detailed");
   const [section, setSection] = useState<Section>("assets");
   const [scenario, setScenario] = useState<Scenario>("base");
   const [saved, setSaved] = useState(false);
@@ -1150,17 +1150,7 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
         </header>
         <div className="coast-toolbar">
           <div>
-            {mode === "detailed" ? (
-              <button
-                type="button"
-                className="coast-detail-button"
-                onClick={() => setMode("quick")}
-              >
-                ← {u.back}
-              </button>
-            ) : (
-              <span className="coast-example-label">{w.fictional}</span>
-            )}
+            <span className="coast-example-label">{w.fictional}</span>
           </div>
           <details className="coast-plan-options">
             <summary>

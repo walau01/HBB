@@ -1,11 +1,6 @@
 {
   "main": [
     {
-      "key": "home",
-      "name": "首页",
-      "url": "/"
-    },
-    {
       "key": "foundation",
       "name": "从这里开始",
       "url": "/start-here"
@@ -17,7 +12,7 @@
     },
     {
       "key": "coast",
-      "name": "Coast FIRE",
+      "name": "计算器",
       "url": "/coast-fire"
     },
     {

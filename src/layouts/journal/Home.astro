@@ -5,33 +5,39 @@ import { getCopy, url, getPosts, type Lang } from "@/lib/journal";
 const { lang } = Astro.props as { lang: Lang };
 const posts = await getPosts(lang);
 const c = await getCopy(lang);
-const recentPosts = posts.slice(0, 3);
+const recentPosts = [...posts]
+  .sort(
+    (a, b) =>
+      (b.entry.data.date?.getTime() || 0) - (a.entry.data.date?.getTime() || 0),
+  )
+  .slice(0, 3);
+import { getTranslations } from "@/lib/utils/languageParser";
+const { simpleCoast: u } = await getTranslations(lang);
 ---
 
 <Base lang={lang}>
   <div class="container simple-home">
-    <section class="welcome-grid">
-      <div class="welcome-copy">
-        <p class="eyebrow">walau01 · {c.place}</p>
-        <h1>{c.hero1}<br /><em>{c.hero2}</em></h1>
-        <p>{c.intro}</p>
-        <a class="button-primary" href={url(lang, "blog")}>{c.browse}</a>
-      </div>
-      <div class="beginner-card">
-        <p class="eyebrow">{c.foundation}</p><h2>{c.guide.welcomeTitle}</h2><p>
-          {c.guide.welcomeText}
-        </p>
-        <ol>{c.guide.steps.map((step) => <li>{step.title}</li>)}</ol>
-        <a class="button-accent" href={url(lang, "start-here")}
-          >{c.guide.link} →</a
-        >
-      </div>
+    <section class="intent-home">
+      <h1>{u.homeTitle}</h1><p>{u.homeIntro}</p>
+      <nav class="intent-paths" aria-label={c.menu}>
+        {
+          u.paths.map((path: string[], i: number) => (
+            <a href={url(lang, ["start-here", "blog", "coast-fire"][i])}>
+              <>
+                <h2>{path[0]}</h2>
+                <span>{path[1]}</span>
+              </>
+            </a>
+          ))
+        }
+      </nav>
     </section>
     <section class="simple-articles" aria-labelledby="recent-title">
       <div class="section-header">
-        <div><h2 id="recent-title">{c.recent}</h2><p>{c.recentIntro}</p></div><a
+        <div><h2 id="recent-title">{u.latest}</h2><p>{c.recentIntro}</p></div><a
           class="text-link"
-          href={url(lang, "blog")}>{c.all} →</a>
+          href={url(lang, "blog")}>{c.all} →</a
+        >
       </div>
       <div class="post-grid">
         {
@@ -40,21 +46,8 @@ const recentPosts = posts.slice(0, 3);
           ))
         }
       </div>
-      <nav class="topic-links" aria-label={c.filterLabel}>
-        <a href={url(lang, "blog?category=foundation")}
-          >{c.categories.foundation}</a
-        ><a href={url(lang, "blog?category=questions")}
-          >{c.categories.research}</a
-        ><a href={url(lang, "blog?category=life")}>{c.categories.life}</a>
-      </nav>
     </section>
-    <section class="simple-tool" aria-labelledby="tool-title">
-      <div>
-        <p class="eyebrow">{c.toolsEyebrow}</p><h2 id="tool-title">
-          {c.toolsTitle}
-        </h2><p>{c.toolsText}</p><small>{c.toolsNote}</small>
-      </div><a class="button-accent" href={url(lang, "coast-fire")}
-        >{c.toolsLink} →</a>
-    </section>
-  </div>
+  </div><a class="button-accent" href={url(lang, "coast-fire")}
+    >{c.toolsLink} →</a
+  >
 </Base>

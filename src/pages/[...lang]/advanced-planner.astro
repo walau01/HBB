@@ -1,6 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
-import SimpleCoast from "@/layouts/components/SimpleCoast";
+import CoastFire from "@/layouts/components/CoastFire";
 import "@/styles/coast-fire.css";
 import { getTranslations, supportedLang } from "@/lib/utils/languageParser";
 import { normalizeLang, url } from "@/lib/journal";
@@ -13,15 +13,18 @@ const { coast, simpleCoast } = await getTranslations(lang);
 
 <Base
   lang={lang}
-  title={coast.title}
+  title={simpleCoast.advancedTitle}
   description={coast.intro}
   active="coast"
-  currentPath="coast-fire"
+  currentPath="advanced-planner"
 >
-  <SimpleCoast
-    copy={simpleCoast}
+  <div class="container planner-back">
+    <a class="text-link" href={url(lang, "coast-fire")}>{simpleCoast.back}</a>
+  </div>
+  <CoastFire
+    copy={{ ...coast, title: simpleCoast.advancedTitle }}
     lang={lang}
-    advancedHref={url(lang, "advanced-planner")}
+    journalHref={url(lang)}
     client:load
   />
 </Base>

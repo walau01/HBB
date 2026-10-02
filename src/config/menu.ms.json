@@ -1,11 +1,6 @@
 {
   "main": [
     {
-      "key": "home",
-      "name": "Utama",
-      "url": "/"
-    },
-    {
       "key": "foundation",
       "name": "Mula di sini",
       "url": "/start-here"
@@ -17,7 +12,7 @@
     },
     {
       "key": "coast",
-      "name": "Coast FIRE",
+      "name": "Kalkulator",
       "url": "/coast-fire"
     },
     {

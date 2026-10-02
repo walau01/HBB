@@ -526,5 +526,73 @@
         "spendingPercent": "Perbelanjaan tahun pertama"
       }
     }
+  },
+  "simpleCoast": {
+    "title": "Kalkulator Coast FIRE",
+    "question": "Bilakah saya boleh berhenti menambah pelaburan persaraan?",
+    "intro": "Masukkan lima angka untuk menganggar bila pelaburan boleh berkembang sendiri ke arah persaraan.",
+    "labels": [
+      "Umur anda",
+      "Pada umur berapa anda mahu bersara?",
+      "Jumlah yang sudah dilaburkan",
+      "Pelaburan tambahan setiap bulan",
+      "Perbelanjaan bulanan semasa bersara"
+    ],
+    "spendingHint": "Gunakan harga hari ini. Jangan masukkan KWSP dalam angka pelaburan jika anda menambahnya di bawah.",
+    "calculate": "Kira umur Coast FIRE saya",
+    "example": "Angka contoh — gantikan dengan angka anda.",
+    "epf": "Mahu masukkan KWSP?",
+    "yes": "Ya",
+    "no": "Tidak",
+    "epfBalance": "Baki KWSP",
+    "epfDeposit": "Caruman KWSP bulanan (pekerja + majikan)",
+    "result": "Anggaran umur Coast FIRE anda",
+    "age": "Umur",
+    "today": "Hari ini",
+    "retire": "Bersara",
+    "explain": "Terus melabur {deposit}/bulan sehingga sekitar umur {age}. Pelaburan anda kemudian boleh berkembang sendiri ke arah matlamat persaraan pada umur {retire}.",
+    "living": "Anda masih memerlukan pendapatan untuk perbelanjaan harian sehingga bersara. Anggaran ini bukan jaminan.",
+    "already": "Pelaburan anda sudah mencapai ambang anggaran Coast FIRE.",
+    "unreached": "Belum dicapai sebelum bersara",
+    "unreachedText": "Dengan angka ini, anda perlu terus melabur hingga bersara atau mengubah simpanan, perbelanjaan atau umur persaraan.",
+    "away": "Kira-kira {years} tahun lagi",
+    "numbers": "Lihat cara pengiraan",
+    "target": "Jumlah diperlukan untuk persaraan (RM hari ini)",
+    "nominal": "Future nominal RM",
+    "returnLabel": "Annual return after fees",
+    "inflation": "Inflasi tahunan",
+    "withdrawal": "Peratus pengeluaran tahun pertama",
+    "assumptions": "Ubah andaian",
+    "model": "Perbelanjaan menggunakan RM hari ini. Caruman kekal dalam RM nominal. KWSP menggunakan pulangan tahunan 5.5% dan akses pada umur 55; gunakan perancang lanjutan untuk andaian lain atau persaraan lebih awal.",
+    "graph": "Lihat graf pertumbuhan",
+    "savings": "Unjuran simpanan anda",
+    "threshold": "Jumlah diperlukan untuk Coast FIRE",
+    "graphHelp": "Apabila kedua-dua garis bertemu, unjuran pelaburan mencukupi untuk berkembang ke arah matlamat persaraan tanpa caruman tambahan.",
+    "real": "RM hari ini",
+    "future": "Future nominal RM",
+    "gap": "Masih diperlukan",
+    "advanced": "Buka Perancang Lanjutan",
+    "advancedText": "Mahukan pelan lebih terperinci? Tambah akaun, tetapan KWSP, perbelanjaan masa depan, pendapatan persaraan dan senario. Simpan atau muatkan pelan di sana.",
+    "invalid": "Semak angka anda. Umur persaraan mesti lebih tinggi daripada umur sekarang.",
+    "changed": "Angka telah berubah. Kira semula untuk mengemas kini keputusan.",
+    "back": "Kembali ke kalkulator ringkas",
+    "homeTitle": "Pelaburan, diterangkan dengan mudah.",
+    "homeIntro": "Penerangan pelaburan yang jelas dan alat praktikal, dari perspektif Malaysia.",
+    "paths": [
+      [
+        "Baru mula melabur?",
+        "Mulakan dengan asas"
+      ],
+      [
+        "Mencari sesuatu yang khusus?",
+        "Terokai soalan pelaburan"
+      ],
+      [
+        "Merancang persaraan?",
+        "Cuba kalkulator Coast FIRE"
+      ]
+    ],
+    "latest": "Artikel terkini",
+    "advancedTitle": "Perancang persaraan lanjutan"
   }
 }

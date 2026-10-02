@@ -526,5 +526,73 @@
         "spendingPercent": "First-year spending"
       }
     }
+  },
+  "simpleCoast": {
+    "title": "Coast FIRE calculator",
+    "question": "When could I stop adding to my retirement investments?",
+    "intro": "Enter five numbers to estimate when your investments could grow toward retirement on their own.",
+    "labels": [
+      "Your age",
+      "When do you want to retire?",
+      "How much have you invested?",
+      "How much do you add every month?",
+      "Monthly spending in retirement"
+    ],
+    "spendingHint": "Use today’s prices. Exclude EPF from the investment figures if you include it below.",
+    "calculate": "Calculate my Coast FIRE age",
+    "example": "Example figures — replace them with yours.",
+    "epf": "Do you want to include EPF?",
+    "yes": "Yes",
+    "no": "No",
+    "epfBalance": "EPF balance",
+    "epfDeposit": "Monthly EPF contribution (employee + employer)",
+    "result": "Your estimated Coast FIRE age",
+    "age": "Age",
+    "today": "Today",
+    "retire": "Retire",
+    "explain": "Continue investing {deposit}/month until around age {age}. Your investments could then grow on their own toward your retirement goal at age {retire}.",
+    "living": "You would still need income for everyday living expenses until retirement. This estimate is not a guaranteed outcome.",
+    "already": "Your investments already meet the estimated Coast FIRE threshold.",
+    "unreached": "Not reached before retirement",
+    "unreachedText": "With these figures, you would need to keep investing through retirement or change your savings, spending or retirement age.",
+    "away": "About {years} years away",
+    "numbers": "See how we calculated this",
+    "target": "Amount needed for retirement (today’s RM)",
+    "nominal": "Future nominal RM",
+    "returnLabel": "Annual return after fees",
+    "inflation": "Annual inflation",
+    "withdrawal": "First-year withdrawal percentage",
+    "assumptions": "Change assumptions",
+    "model": "Spending is entered in today’s RM. Contributions stay fixed in nominal RM. EPF uses a 5.5% annual return and access at age 55; use the Advanced Planner for different assumptions or earlier retirement.",
+    "graph": "See the growth graph",
+    "savings": "Your projected savings",
+    "threshold": "Amount needed to Coast FIRE",
+    "graphHelp": "Where the two lines meet, projected investments meet the amount needed to grow toward your retirement goal without more contributions.",
+    "real": "Today’s RM",
+    "future": "Future nominal RM",
+    "gap": "Still needed",
+    "advanced": "Open Advanced Planner",
+    "advancedText": "Want a more detailed plan? Add accounts, EPF settings, future expenses, retirement income and scenarios. Save or load a plan there.",
+    "invalid": "Check your numbers. Retirement age must be later than your current age.",
+    "changed": "Your figures have changed. Calculate again to update the result.",
+    "back": "Back to simple calculator",
+    "homeTitle": "Investing, explained simply.",
+    "homeIntro": "Clear investing explanations and practical tools, with a Malaysian perspective.",
+    "paths": [
+      [
+        "New to investing?",
+        "Start with the basics"
+      ],
+      [
+        "Looking for something specific?",
+        "Browse investing questions"
+      ],
+      [
+        "Planning for retirement?",
+        "Try the Coast FIRE calculator"
+      ]
+    ],
+    "latest": "Latest articles",
+    "advancedTitle": "Advanced retirement planner"
   }
 }
