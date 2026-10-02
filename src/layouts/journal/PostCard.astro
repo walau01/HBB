@@ -1,16 +1,24 @@
 ---
-import { getCopy, url, type Post, type Lang } from '@/lib/journal';
-import Artwork from './Artwork.astro';
-const { post, lang, showArt = true } = Astro.props as { post: Post; lang: Lang; showArt?: boolean };
-const c = await getCopy(lang), p = post.text[lang];
+import { getCopy, url, searchText, type Post, type Lang } from "@/lib/journal";
+const { post, lang } = Astro.props as { post: Post; lang: Lang };
+const c = await getCopy(lang),
+  p = post.text[lang];
 ---
-<article class="post-card" data-category={post.category} data-search={`${p.title} ${p.summary} ${c.categories[post.category]}`.toLowerCase()}>
+
+<article
+  class="post-card"
+  data-category={post.category}
+  data-search={searchText(post, c)}
+>
   <a class="post-card-link" href={url(lang, `blog/${post.slug}`)}>
-    {showArt && <Artwork lang={lang} motif={post.motif} compact />}
-    <div class="post-card-body">
-      <div class="post-meta"><span>{c.categories[post.category]}</span><span>{post.minutes} {c.readTime}</span></div>
-      <h3>{p.title}</h3>
-      <p>{p.summary}</p>
+    <div class="post-meta">
+      <span>{c.categories[post.category]}</span><span
+        >{post.minutes} {c.readTime}</span>
+    </div>
+    <h3>{p.title}</h3>
+    <p>{p.summary}</p>
+    <div class="post-card-foot">
+      <span class="read-link">{c.read}<span aria-hidden="true"> →</span></span>
       {post.sample && <span class="draft-label">{c.draft}</span>}
     </div>
   </a>

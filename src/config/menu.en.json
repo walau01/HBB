@@ -1,19 +1,14 @@
 {
   "main": [
     {
-      "key": "foundation",
-      "name": "Start here",
-      "url": "/start-here"
-    },
-    {
       "key": "articles",
       "name": "Articles",
       "url": "/blog"
     },
     {
-      "key": "coast",
-      "name": "Calculator",
-      "url": "/coast-fire"
+      "key": "foundation",
+      "name": "Start here",
+      "url": "/start-here"
     },
     {
       "key": "about",
@@ -31,11 +26,6 @@
       "key": "foundation",
       "name": "Start here",
       "url": "/start-here"
-    },
-    {
-      "key": "coast",
-      "name": "Coast FIRE",
-      "url": "/coast-fire"
     },
     {
       "key": "about",

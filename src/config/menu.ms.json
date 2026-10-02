@@ -1,19 +1,14 @@
 {
   "main": [
     {
-      "key": "foundation",
-      "name": "Mula di sini",
-      "url": "/start-here"
-    },
-    {
       "key": "articles",
       "name": "Artikel",
       "url": "/blog"
     },
     {
-      "key": "coast",
-      "name": "Kalkulator",
-      "url": "/coast-fire"
+      "key": "foundation",
+      "name": "Mula di sini",
+      "url": "/start-here"
     },
     {
       "key": "about",
@@ -31,11 +26,6 @@
       "key": "foundation",
       "name": "Mula di sini",
       "url": "/start-here"
-    },
-    {
-      "key": "coast",
-      "name": "Coast FIRE",
-      "url": "/coast-fire"
     },
     {
       "key": "about",

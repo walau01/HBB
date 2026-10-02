@@ -1,6 +1,14 @@
 ---
-import Base from '@/layouts/Base.astro';
-import {getCopy,normalizeLang,url} from '@/lib/journal';
-const lang=normalizeLang();const c=await getCopy(lang);
+import Base from "@/layouts/Base.astro";
+import { getCopy, normalizeLang, url } from "@/lib/journal";
+const lang = normalizeLang();
+const c = await getCopy(lang);
 ---
-<Base lang={lang} title="Page not found" noindex><div class="container not-found"><p class="eyebrow">{c.notFoundKicker}</p><h1>{c.notFound}</h1><a class="button-primary" href={url(lang)}>{c.returnHome}</a></div></Base>
+
+<Base lang={lang} title={c.notFound} noindex currentPath="404">
+  <div class="container not-found">
+    <p class="eyebrow">404</p><h1>{c.notFound}</h1><p>{c.notFoundText}</p><a
+      class="button-primary"
+      href={url(lang, "blog")}>{c.browse}<span aria-hidden="true"> →</span></a>
+  </div>
+</Base>

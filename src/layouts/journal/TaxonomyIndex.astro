@@ -1,0 +1,47 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getCopy, getPosts, url, type Lang } from "@/lib/journal";
+import { slugify } from "@/lib/utils/textConverter";
+interface Props {
+  lang: Lang;
+  taxonomy: "categories" | "tags";
+}
+const { lang, taxonomy } = Astro.props;
+const c = await getCopy(lang);
+const posts = await getPosts(lang);
+const values = new Map<string, { label: string; count: number }>();
+posts.forEach((post) =>
+  post.entry.data[taxonomy].forEach((label) => {
+    const key = slugify(label);
+    values.set(key, { label, count: (values.get(key)?.count || 0) + 1 });
+  }),
+);
+const title = taxonomy === "categories" ? c.topicsTitle : c.tagsTitle;
+---
+
+<Base
+  lang={lang}
+  title={title}
+  description={c.archiveText}
+  active="articles"
+  currentPath={taxonomy}
+  noindex={!posts.some((p) => !p.sample)}
+>
+  <div class="container archive">
+    <header class="page-heading">
+      <p class="eyebrow">{c.archiveEyebrow}</p><h1>{title}</h1><p>
+        {c.archiveText}
+      </p>
+    </header>
+    <nav class="taxonomy-links" aria-label={title}>
+      {
+        [...values].map(([key, value]) => (
+          <a href={url(lang, `${taxonomy}/${key}`)}>
+            {value.label}
+            <span>{value.count}</span>
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</Base>

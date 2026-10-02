@@ -31,7 +31,7 @@ const blogCollection = defineCollection({
       .optional(),
     minutes: z.number().positive().optional(),
     motif: z
-      .enum(["costs", "ath", "etf", "factor", "life", "coast"])
+      .enum(["costs", "ath", "etf", "factor", "life", "growth"])
       .optional(),
     order: z.number().optional(),
     issue: z.number().optional(),

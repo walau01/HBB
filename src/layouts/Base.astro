@@ -12,6 +12,7 @@ import {
   url,
   languages,
   languageNames,
+  searchText,
   type Lang,
 } from "@/lib/journal";
 import {
@@ -33,11 +34,7 @@ interface Props {
 }
 const lang = normalizeLang(Astro.props.lang || Astro.params.lang);
 const c = await getCopy(lang);
-const {
-  main: mainMenu,
-  footer: footerMenu,
-  coast,
-} = await getTranslations(lang);
+const { main: mainMenu, footer: footerMenu } = await getTranslations(lang);
 const posts = await getPosts(lang);
 const pathname = Astro.url.pathname
   .replace(/^\/(en|zh|ms)(?=\/|$)/, "/")
@@ -85,13 +82,9 @@ const searchData = posts.map((p) => ({
   summary: p.text[lang].summary,
   category: c.categories[p.category],
   href: url(lang, `blog/${p.slug}`),
+  searchText: searchText(p, c),
+  sample: p.sample,
 }));
-searchData.push({
-  title: coast.title,
-  summary: coast.intro,
-  category: c.toolsEyebrow,
-  href: url(lang, "coast-fire"),
-});
 type NavItem = { key: string; name: string; url: string };
 const nav = (mainMenu as NavItem[]).map((n) => ({
   key: n.key,
@@ -129,7 +122,7 @@ const alternatePath = (l: Lang) =>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="description" content={description} />
-    {Astro.props.noindex && <meta name="robots" content="noindex,nofollow" />}
+    {Astro.props.noindex && <meta name="robots" content="noindex,follow" />}
     <meta name="theme-color" content={theme.colors.default.theme_color.navy} />
     <title>{pageTitle}</title>
     <link rel="icon" href={config.site.favicon} type="image/svg+xml" />
@@ -221,11 +214,6 @@ const alternatePath = (l: Lang) =>
       )
     }
     <a class="skip-link" href="#main">{c.skip}</a>
-    <div class="topline">
-      <div class="container">
-        <span>{c.journal}</span><span>{c.place}</span>
-      </div>
-    </div>
     <header class="header">
       <div class="container header-inner">
         <a href={url(lang)} class="brand" aria-label={c.brandHome}
@@ -244,8 +232,8 @@ const alternatePath = (l: Lang) =>
           }
         </nav>
         <div class="header-tools">
-          <button class="icon-button" data-search-open aria-label={c.search}
-            ><Icon name="search" /></button
+          <button class="header-search" data-search-open aria-label={c.search}
+            ><Icon name="search" /><span>{c.searchShort}</span></button
           >
           <button
             class="icon-button theme-button desktop-setting"
@@ -327,12 +315,14 @@ const alternatePath = (l: Lang) =>
           {footerNav.map((n) => <a href={n.href}>{n.text}</a>)}
         </nav>
       </div><div class="container footer-bottom">
-        <span>{config.params.copyright}</span><p>{c.footerNote}</p><span
-          class="prototype-note">{c.preview}</span
-        >
+        <span>{config.params.copyright}</span><p>{c.footerNote}</p>
       </div>
     </footer>
-    <dialog class="search-dialog" aria-labelledby="search-title">
+    <dialog
+      class="search-dialog"
+      aria-labelledby="search-title"
+      aria-describedby="search-instructions"
+    >
       <div class="search-head">
         <h2 id="search-title">{c.search}</h2><button
           class="icon-button"
@@ -349,6 +339,9 @@ const alternatePath = (l: Lang) =>
           aria-label={c.search}
         />
       </div>
+      <p class="search-instructions" id="search-instructions">
+        {c.searchInitial}
+      </p>
       <div id="search-results" class="search-results" aria-live="polite"></div>
       <p class="search-hint"><kbd>Esc</kbd> {c.escape}</p>
     </dialog>
@@ -360,9 +353,11 @@ const alternatePath = (l: Lang) =>
         posts: searchData,
         empty: c.searchEmpty,
         initial: c.searchInitial,
+        sample: c.draft,
       }).replace(/</g, "\u003c")}
     />
     <script>
+      import { matchesSearch } from "@/lib/search";
       const root = document.documentElement;
       const themeButtons = document.querySelectorAll<HTMLButtonElement>(
         "[data-theme-toggle]",
@@ -394,11 +389,8 @@ const alternatePath = (l: Lang) =>
         if (!results || !input) return;
         const query = input.value.toLocaleLowerCase().trim();
         results.replaceChildren();
-        const found = data.posts.filter(
-          (p: { title: string; summary: string; category: string }) =>
-            `${p.title} ${p.summary} ${p.category}`
-              .toLocaleLowerCase()
-              .includes(query),
+        const found = data.posts.filter((p: { searchText: string }) =>
+          matchesSearch(p.searchText, query),
         );
         if (!found.length) {
           const p = document.createElement("p");
@@ -408,11 +400,17 @@ const alternatePath = (l: Lang) =>
           return;
         }
         found.forEach(
-          (p: { title: string; category: string; href: string }) => {
+          (p: {
+            title: string;
+            category: string;
+            href: string;
+            sample: boolean;
+          }) => {
             const a = document.createElement("a");
             a.href = p.href;
             const label = document.createElement("span");
-            label.textContent = p.category;
+            label.textContent =
+              p.category + (p.sample ? ` · ${data.sample}` : "");
             const title = document.createElement("strong");
             title.textContent = p.title;
             a.append(label, title);
@@ -458,13 +456,23 @@ const alternatePath = (l: Lang) =>
           openSearch();
         }
       });
-      document
-        .querySelectorAll<HTMLDetailsElement>(".language-picker,.mobile-menu")
-        .forEach((details) =>
-          document.addEventListener("click", (e) => {
-            if (!details.contains(e.target as Node)) details.open = false;
-          }),
-        );
+      const menus = document.querySelectorAll<HTMLDetailsElement>(
+        ".language-picker,.mobile-menu",
+      );
+      document.addEventListener("click", (event) => {
+        menus.forEach((menu) => {
+          if (!menu.contains(event.target as Node)) menu.open = false;
+        });
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape")
+          menus.forEach((menu) => {
+            if (menu.open) {
+              menu.open = false;
+              menu.querySelector<HTMLElement>("summary")?.focus();
+            }
+          });
+      });
     </script>
   </body>
 </html>

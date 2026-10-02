@@ -1,19 +1,14 @@
 {
   "main": [
     {
-      "key": "foundation",
-      "name": "从这里开始",
-      "url": "/start-here"
-    },
-    {
       "key": "articles",
       "name": "文章",
       "url": "/blog"
     },
     {
-      "key": "coast",
-      "name": "计算器",
-      "url": "/coast-fire"
+      "key": "foundation",
+      "name": "从这里开始",
+      "url": "/start-here"
     },
     {
       "key": "about",
@@ -31,11 +26,6 @@
       "key": "foundation",
       "name": "从这里开始",
       "url": "/start-here"
-    },
-    {
-      "key": "coast",
-      "name": "Coast FIRE",
-      "url": "/coast-fire"
     },
     {
       "key": "about",

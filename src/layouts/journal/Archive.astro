@@ -2,87 +2,168 @@
 import Base from "@/layouts/Base.astro";
 import PostCard from "./PostCard.astro";
 import Icon from "./Icon.astro";
-import { getCopy, getPosts, type Lang } from "@/lib/journal";
-const { lang } = Astro.props as { lang: Lang };
-const posts = await getPosts(lang);
+import config from "@/config/config.json";
+import {
+  getCopy,
+  getPosts,
+  topics,
+  topicFor,
+  url,
+  type Lang,
+  type Topic,
+  type Post,
+} from "@/lib/journal";
+interface Props {
+  lang: Lang;
+  topic?: Topic;
+  selectedPosts?: Post[];
+  heading?: string;
+  description?: string;
+  currentPath?: string;
+  legacy?: boolean;
+}
+const {
+  lang,
+  topic,
+  selectedPosts,
+  heading,
+  description,
+  currentPath,
+  legacy = false,
+} = Astro.props;
 const c = await getCopy(lang);
-const categories = [
-  { key: "foundation", label: c.categories.foundation },
-  { key: "questions", label: c.categories.research },
-  { key: "life", label: c.categories.life },
-];
+const allPosts = await getPosts(lang);
+const posts =
+  selectedPosts ||
+  (topic ? allPosts.filter((p) => topicFor(p.category) === topic) : allPosts);
+const title = heading || (topic ? c.topics[topic].title : c.archiveTitle);
+const intro =
+  description || (topic ? c.topics[topic].description : c.archiveText);
+const path = currentPath || (topic ? `topics/${topic}` : "blog");
+const pageURL = new URL(url(lang, path), config.site.base_url).href;
+const published = posts.filter((p) => !p.sample);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: title,
+  url: pageURL,
+  description: intro,
+  inLanguage: lang === "zh" ? "zh-Hans" : lang,
+  isPartOf: { "@id": `${new URL("/", config.site.base_url).href}#website` },
+  ...(published.length
+    ? {
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: published.map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: new URL(url(lang, `blog/${p.slug}`), config.site.base_url)
+              .href,
+            name: p.text[lang].title,
+          })),
+        },
+      }
+    : {}),
+};
 ---
 
-<Base lang={lang} title={c.articles} active="articles" currentPath="blog">
+<Base
+  lang={lang}
+  title={title}
+  description={intro}
+  active="articles"
+  currentPath={path}
+  noindex={(!!topic || legacy) && !published.length}
+  structuredData={structuredData}
+>
   <div class="container archive">
-    <div class="archive-heading">
-      <p class="eyebrow">{c.archiveEyebrow}</p><h1>{c.archiveTitle}</h1><p>
-        {c.archiveText}
-      </p>
-    </div>
+    <header class="page-heading">
+      <p class="eyebrow">{c.archiveEyebrow}</p><h1>{title}</h1><p>{intro}</p>
+    </header>
     <div class="archive-controls">
-      <div class="filter-tabs" role="group" aria-label={c.filterLabel}>
-        <button class="active" data-filter="all" aria-pressed="true"
-          >{c.filterAll}</button
-        >{
-          categories.map((cat) => (
-            <button data-filter={cat.key} aria-pressed="false">
-              {cat.label}
-            </button>
+      <nav class="filter-tabs" aria-label={c.filterLabel}>
+        <a
+          href={url(lang, "blog")}
+          aria-current={!topic && !legacy ? "page" : undefined}>{c.filterAll}</a
+        >
+        {
+          topics.map((t) => (
+            <a
+              href={url(lang, `topics/${t}`)}
+              aria-current={topic === t ? "page" : undefined}
+            >
+              {c.topics[t].title}
+            </a>
           ))
         }
-      </div><label class="archive-search"
-        ><Icon name="search" /><input
-          type="search"
-          id="archive-search"
-          placeholder={c.searchPlaceholder}
-          aria-label={c.search}
-        /></label>
+      </nav>
+      <div class="archive-search-group">
+        <label for="archive-search">{c.search}</label>
+        <div class="archive-search">
+          <Icon name="search" /><input
+            type="search"
+            id="archive-search"
+            placeholder={c.searchPlaceholder}
+            autocomplete="off"
+          />
+          <button
+            class="icon-button"
+            type="button"
+            data-clear-search
+            aria-label={c.clearSearch}
+            hidden><Icon name="close" /></button
+          >
+        </div>
+      </div>
     </div>
-    <p class="result-count" aria-live="polite">
+    <p class="result-count" role="status">
       <span id="result-count">{posts.length}</span>
       {c.showing}
     </p>
     <div class="post-grid archive-grid">
-      {posts.map((p) => <PostCard post={p} lang={lang} showArt={false} />)}
+      {posts.map((p) => <PostCard post={p} lang={lang} />)}
     </div>
     <div id="archive-empty" class="archive-empty" hidden>
-      <Icon name="book" size={32} /><p>{c.searchEmpty}</p>
+      <Icon name="book" size={28} /><h2>{c.searchEmpty}</h2><p>
+        {c.searchHelp}
+      </p>
+      <button class="button-primary" type="button" data-reset-search
+        >{c.clearSearch}</button
+      >
     </div>
   </div>
   <script>
-    const buttons =
-      document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+    import { matchesSearch } from "@/lib/search";
     const cards = document.querySelectorAll<HTMLElement>(
       ".archive-grid .post-card",
     );
     const input = document.querySelector<HTMLInputElement>("#archive-search");
-    const valid = ["all", "questions", "foundation", "life"];
-    const requested =
-      new URLSearchParams(location.search).get("category") || "all";
-    let selected = ["research", "bridge"].includes(requested)
-      ? "questions"
-      : valid.includes(requested)
-        ? requested
-        : "all";
-    const update = () => {
+    const clear = document.querySelector<HTMLButtonElement>(
+      "[data-clear-search]",
+    );
+    const params = new URLSearchParams(location.search);
+    // Preserve old category bookmarks while topic pages use ordinary, crawlable links.
+    const requested = params.get("category");
+    let legacyCategory =
+      requested === "questions" ||
+      requested === "research" ||
+      requested === "bridge"
+        ? "questions"
+        : requested === "foundation" || requested === "life"
+          ? requested
+          : "all";
+    if (input) input.value = params.get("q") || "";
+    function update() {
       let count = 0;
-      buttons.forEach((b) => {
-        const active = b.dataset.filter === selected;
-        b.classList.toggle("active", active);
-        b.setAttribute("aria-pressed", String(active));
-      });
       cards.forEach((card) => {
         const categoryMatches =
-          selected === "all" ||
-          card.dataset.category === selected ||
-          (selected === "questions" &&
+          legacyCategory === "all" ||
+          card.dataset.category === legacyCategory ||
+          (legacyCategory === "questions" &&
             ["research", "bridge"].includes(card.dataset.category || ""));
         const shown =
           categoryMatches &&
-          (card.dataset.search || "").includes(
-            input?.value.toLocaleLowerCase().trim() || "",
-          );
+          matchesSearch(card.dataset.search || "", input?.value || "");
         card.hidden = !shown;
         if (shown) count++;
       });
@@ -90,18 +171,31 @@ const categories = [
       if (counter) counter.textContent = String(count);
       const empty = document.querySelector<HTMLElement>("#archive-empty");
       if (empty) empty.hidden = count > 0;
-    };
-    buttons.forEach((b) =>
-      b.addEventListener("click", () => {
-        selected = b.dataset.filter || "all";
-        const next = new URL(location.href);
-        if (selected === "all") next.searchParams.delete("category");
-        else next.searchParams.set("category", selected);
-        history.replaceState(null, "", next);
-        update();
-      }),
-    );
-    input?.addEventListener("input", update);
+      if (clear) clear.hidden = !input?.value && legacyCategory === "all";
+    }
+    function syncURL() {
+      const next = new URL(location.href);
+      const query = input?.value.trim();
+      if (query) next.searchParams.set("q", query);
+      else next.searchParams.delete("q");
+      if (legacyCategory === "all") next.searchParams.delete("category");
+      history.replaceState(null, "", next);
+    }
+    function reset() {
+      if (input) input.value = "";
+      legacyCategory = "all";
+      syncURL();
+      update();
+      input?.focus();
+    }
+    input?.addEventListener("input", () => {
+      syncURL();
+      update();
+    });
+    clear?.addEventListener("click", reset);
+    document
+      .querySelector("[data-reset-search]")
+      ?.addEventListener("click", reset);
     update();
   </script>
 </Base>

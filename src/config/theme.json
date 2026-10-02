@@ -13,10 +13,7 @@
         "navy": "#152b3c",
         "navy_text": "#f6f8f4",
         "navy_muted": "#b9c7cf",
-        "link": "#365548",
-        "chart_stop": "#1664b5",
-        "chart_epf": "#b45309",
-        "chart_threshold": "#7e3fac"
+        "link": "#365548"
       },
       "text_color": {
         "text": "#52616a",
@@ -32,10 +29,7 @@
         "light": "#20323d",
         "dark": "#edf3ef",
         "surface": "#182731",
-        "link": "#d3ef69",
-        "chart_stop": "#6bb2ff",
-        "chart_epf": "#ffc177",
-        "chart_threshold": "#cc9aff"
+        "link": "#d3ef69"
       },
       "text_color": {
         "text": "#b2c1c5",

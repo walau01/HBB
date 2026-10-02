@@ -48,7 +48,7 @@
   "metadata": {
     "meta_author": "walau01",
     "meta_image": "/images/walau01-social.png",
-    "meta_description": "Personal writing about finance, ETFs, and evidence-based investing."
+    "meta_description": "A Malaysian investing blog sharing research on ETFs, portfolio decisions, investing costs, and everyday life."
   },
   "llms": {
     "generate_llms_txt": true,
