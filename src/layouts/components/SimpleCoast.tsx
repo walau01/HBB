@@ -165,7 +165,7 @@ export default function SimpleCoast({
       ? v * Math.pow(1 + display.inflationRate / 100, a - display.age)
       : v;
   return (
-    <div className="container quick-coast">
+    <div className="quick-coast">
       <header>
         <p className="eyebrow">{c.title}</p>
         <h1>{c.question}</h1>
