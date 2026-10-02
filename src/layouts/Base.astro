@@ -445,6 +445,11 @@ const alternatePath = (l: Lang) =>
         }
       });
       document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && dialog?.open) {
+          event.preventDefault();
+          dialog.close();
+          return;
+        }
         const target = event.target as HTMLElement;
         if (
           (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
