@@ -1,4 +1,6 @@
+# Public pages are available to search engines and user-requested AI browsing.
 User-agent: *
+Disallow: /api/
 Allow: /
 
-Disallow: /api/*
+Sitemap: https://walau01.com/sitemap-index.xml
