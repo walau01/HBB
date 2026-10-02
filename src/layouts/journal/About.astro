@@ -3,10 +3,25 @@ import Base from "@/layouts/Base.astro";
 import { getCopy, url, type Lang } from "@/lib/journal";
 import { getListPage } from "@/lib/contentParser.astro";
 import { render } from "astro:content";
+import config from "@/config/config.json";
 const { lang } = Astro.props as { lang: Lang };
 const c = await getCopy(lang);
 const [about] = await getListPage("about", lang);
 const { Content } = await render(about);
+const profileURL = new URL(url(lang, "about"), config.site.base_url).href;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": profileURL,
+  url: profileURL,
+  mainEntity: {
+    "@type": "Person",
+    "@id": `${profileURL}#person`,
+    name: config.metadata.meta_author,
+    description: c.authorBio,
+    url: profileURL,
+  },
+};
 ---
 
 <Base
@@ -15,6 +30,7 @@ const { Content } = await render(about);
   description={about.data.description}
   active="about"
   currentPath="about"
+  structuredData={structuredData}
   ><div class="container about-page">
     <div class="about-header">
       <p class="eyebrow">{c.aboutEyebrow}</p><h1>{about.data.title}</h1><p>
@@ -45,7 +61,8 @@ const { Content } = await render(about);
             ))
           }
         </section><a class="button-primary" href={url(lang, "blog")}
-          >{c.browse}</a>
+          >{c.browse}</a
+        >
       </div>
     </div>
   </div></Base

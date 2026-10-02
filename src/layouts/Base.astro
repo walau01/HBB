@@ -28,6 +28,8 @@ interface Props {
   canonical?: string;
   active?: string;
   currentPath?: string;
+  structuredData?: Record<string, unknown>;
+  author?: string;
 }
 const lang = normalizeLang(Astro.props.lang || Astro.params.lang);
 const c = await getCopy(lang);
@@ -50,9 +52,12 @@ const active =
       : currentPath === "about"
         ? "about"
         : "");
-const rawTitle = Astro.props.meta_title || Astro.props.title || "walau01";
+const rawTitle =
+  Astro.props.meta_title || Astro.props.title || config.site.title;
 const pageTitle =
-  rawTitle === "walau01" ? c.homeTitle : `${rawTitle} · walau01`;
+  rawTitle === config.site.title
+    ? c.homeTitle
+    : `${rawTitle} · ${config.site.title}`;
 const description = Astro.props.description || c.intro;
 const canonical =
   Astro.props.canonical ||
@@ -61,6 +66,20 @@ const image = new URL(
   Astro.props.image || config.metadata.meta_image,
   config.site.base_url,
 ).href;
+const siteURL = new URL("/", config.site.base_url).href;
+const structuredData =
+  Astro.props.structuredData ||
+  (currentPath === ""
+    ? {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": `${siteURL}#website`,
+        name: config.site.title,
+        alternateName: new URL(siteURL).hostname,
+        url: siteURL,
+        description: config.metadata.meta_description,
+      }
+    : undefined);
 const searchData = posts.map((p) => ({
   title: p.text[lang].title,
   summary: p.text[lang].summary,
@@ -115,8 +134,16 @@ const alternatePath = (l: Lang) =>
     <title>{pageTitle}</title>
     <link rel="icon" href={config.site.favicon} type="image/svg+xml" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="author" content={config.metadata.meta_author} />
+    <meta
+      name="author"
+      content={Astro.props.author || config.metadata.meta_author}
+    />
     <link rel="canonical" href={canonical} />
+    <link
+      rel="sitemap"
+      type="application/xml"
+      href={new URL("sitemap-index.xml", siteURL).href}
+    />
     {
       translatedPage
         .filter((p) => p.exists)
@@ -140,6 +167,7 @@ const alternatePath = (l: Lang) =>
       ).href}
     />
     <meta property="og:title" content={pageTitle} />
+    <meta property="og:site_name" content={config.site.title} />
     <meta property="og:description" content={description} />
     <meta
       property="og:type"
@@ -147,10 +175,27 @@ const alternatePath = (l: Lang) =>
     />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={image} />
+    <meta
+      property="og:image:alt"
+      content={Astro.props.image ? rawTitle : c.homeTitle}
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
+    <meta
+      name="twitter:image:alt"
+      content={Astro.props.image ? rawTitle : c.homeTitle}
+    />
+    {
+      structuredData && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")}
+        />
+      )
+    }
     {
       config.google_tag_manager.enable && (
         <GoogleTagmanager id={config.google_tag_manager.gtm_id} />
@@ -283,7 +328,8 @@ const alternatePath = (l: Lang) =>
         </nav>
       </div><div class="container footer-bottom">
         <span>{config.params.copyright}</span><p>{c.footerNote}</p><span
-          class="prototype-note">{c.preview}</span>
+          class="prototype-note">{c.preview}</span
+        >
       </div>
     </footer>
     <dialog class="search-dialog" aria-labelledby="search-title">
@@ -291,7 +337,8 @@ const alternatePath = (l: Lang) =>
         <h2 id="search-title">{c.search}</h2><button
           class="icon-button"
           data-search-close
-          aria-label={c.close}><Icon name="close" /></button>
+          aria-label={c.close}><Icon name="close" /></button
+        >
       </div>
       <div class="search-input-wrap">
         <Icon name="search" /><input

@@ -2,6 +2,7 @@
 import Base from "@/layouts/Base.astro";
 import { render } from "astro:content";
 import { getCopy, getPosts, url, type Lang, type Post } from "@/lib/journal";
+import config from "@/config/config.json";
 const { lang, post } = Astro.props as { lang: Lang; post: Post };
 const c = await getCopy(lang),
   p = post.text[lang];
@@ -9,6 +10,35 @@ const { Content, headings } = await render(post.entry);
 const sections = headings.filter((h) => h.depth === 2);
 const others = (await getPosts(lang)).filter((p) => p.slug !== post.slug);
 const next = others.find((p) => p.category === post.category) || others[0];
+const articleURL = new URL(url(lang, `blog/${post.slug}`), config.site.base_url)
+  .href;
+const authorURL = new URL(url(lang, "about"), config.site.base_url).href;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": `${articleURL}#article`,
+  url: articleURL,
+  mainEntityOfPage: { "@type": "WebPage", "@id": articleURL },
+  headline: p.title,
+  description: p.summary,
+  inLanguage: lang === "zh" ? "zh-Hans" : lang,
+  author: {
+    "@type": "Person",
+    "@id": `${authorURL}#person`,
+    name: post.entry.data.author,
+    url: authorURL,
+  },
+  isPartOf: {
+    "@type": "WebSite",
+    "@id": `${new URL("/", config.site.base_url).href}#website`,
+  },
+  ...(post.entry.data.date
+    ? { datePublished: post.entry.data.date.toISOString() }
+    : {}),
+  ...(post.entry.data.image
+    ? { image: new URL(post.entry.data.image, config.site.base_url).href }
+    : {}),
+};
 ---
 
 <Base
@@ -18,6 +48,9 @@ const next = others.find((p) => p.category === post.category) || others[0];
   active="articles"
   currentPath={`blog/${post.slug}`}
   noindex={post.sample}
+  image={post.entry.data.image || undefined}
+  structuredData={structuredData}
+  author={post.entry.data.author}
 >
   <div class="container article-page simple-article">
     <a class="text-link back-link" href={url(lang, "blog")}>{c.back}</a>
@@ -30,9 +63,10 @@ const next = others.find((p) => p.category === post.category) || others[0];
         class="author-line"
       >
         <span class="small-monogram" aria-hidden="true">w.</span><span
-          ><strong>{post.entry.data.author}</strong><span
-            >{post.minutes} {c.readTime}</span
-          ></span>
+          ><strong
+            ><a href={url(lang, "about")}>{post.entry.data.author}</a></strong
+          ><span>{post.minutes} {c.readTime}</span></span
+        >
       </div>
     </header>
     <div class="article-layout">
@@ -48,7 +82,7 @@ const next = others.find((p) => p.category === post.category) || others[0];
         <div class="takeaway">
           <p class="eyebrow">{c.takeaway}</p><p>{p.takeaway}</p>
         </div><div class="article-body"><Content /></div>{
-          post.sample && (
+          (post.entry.data.references?.length || post.sample) && (
             <div class="source-box">
               <p class="eyebrow">{c.references}</p>
               {post.entry.data.references ? (
@@ -86,11 +120,25 @@ const next = others.find((p) => p.category === post.category) || others[0];
               )}
             </div>
           )
+        }{
+          post.motif === "coast" && (
+            <aside class="article-tool-callout">
+              <p class="eyebrow">{c.toolsEyebrow}</p>
+              <h2>{c.toolsTitle}</h2>
+              <p>{c.toolsText}</p>
+              <a class="text-link" href={url(lang, "coast-fire")}>
+                {c.toolsLink} →
+              </a>
+            </aside>
+          )
         }<div class="article-end">
           <span class="small-monogram" aria-hidden="true">w.</span><div>
-            <strong>{post.entry.data.author}</strong><p>{c.footerLine}</p>
+            <strong
+              ><a href={url(lang, "about")}>{post.entry.data.author}</a></strong
+            ><p>{c.authorBio}</p>
+            <a class="text-link" href={url(lang, "about")}>{c.about} →</a>
           </div>
-        </div>{
+        </div><p class="article-disclaimer">{c.articleDisclaimer}</p>{
           next && (
             <a class="next-article" href={url(lang, `blog/${next.slug}`)}>
               <>

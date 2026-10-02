@@ -235,9 +235,15 @@ kbd { border: 1px solid var(--line); padding: 2px 4px; font-size: 10px; margin-r
 .source-box { border-block: 1px solid var(--line); padding: 22px 0; margin-top: 45px; }
 .source-box > p:not(.eyebrow) { color: var(--secondary); font-size: 14px; margin: 12px 0; }
 .source-box > a { display: block; font-size: 13px; color: var(--link); text-decoration: underline; text-underline-offset: 4px; margin-top: 12px; }
-.article-end { display: flex; align-items: center; gap: 15px; margin-top: 34px; }
+.article-end { display: flex; align-items: flex-start; gap: 15px; margin-top: 34px; }
 .article-end strong { font-size: 14px; }
-.article-end p { font-size: 12px; color: var(--secondary); }
+.article-end strong a:hover, .author-line strong a:hover { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+.article-end p { font-size: 15px; line-height: 1.75; margin: 5px 0 8px; color: var(--secondary); }
+.article-end .text-link { font-size: 14px; }
+.prose .article-disclaimer { font-size: 14px; line-height: 1.8; color: var(--secondary); margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.article-tool-callout { margin-top: 34px; padding: 24px; background: var(--muted); border: 1px solid var(--line); }
+.article-tool-callout h2 { font-size: 30px; margin: 10px 0; }
+.article-tool-callout > p:not(.eyebrow) { font-size: 16px; line-height: 1.8; color: var(--secondary); margin-bottom: 18px; }
 .about-page { padding: 65px 0 85px; }
 .about-header { max-width: 900px; margin-bottom: 43px; }
 .about-header h1 { font-family: var(--serif); font-size: 78px; font-weight: 400; line-height: 1; letter-spacing: -.02em; margin: 22px 0; }
