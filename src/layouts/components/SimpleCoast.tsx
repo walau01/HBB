@@ -443,7 +443,19 @@ export default function SimpleCoast({
       )}
       <aside className="quick-advanced">
         <p>{c.advancedText}</p>
-        <a className="text-link" href={advancedHref}>
+        <a
+          className="text-link"
+          href={advancedHref}
+          onClick={() => {
+            try {
+              if (snapshot)
+                sessionStorage.setItem(
+                  "walau01-quick-to-advanced",
+                  JSON.stringify(snapshot.plan),
+                );
+            } catch {}
+          }}
+        >
           {c.advanced}
         </a>
       </aside>

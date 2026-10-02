@@ -173,6 +173,11 @@ export default function CoastFire({ copy: c, lang, journalHref }: Props) {
   useEffect(() => {
     try {
       setSaved(localStorage.getItem(storageKey) !== null);
+      const quickPlan = sessionStorage.getItem("walau01-quick-to-advanced");
+      if (quickPlan) {
+        setPlan(parseCoastPlan(quickPlan));
+        sessionStorage.removeItem("walau01-quick-to-advanced");
+      }
     } catch {
       /* Saving remains optional. */
     }
