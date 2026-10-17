@@ -31,6 +31,11 @@
       "key": "about",
       "name": "关于",
       "url": "/about"
+    },
+    {
+      "key": "privacy",
+      "name": "隐私政策",
+      "url": "/privacy-policy"
     }
   ]
 }
