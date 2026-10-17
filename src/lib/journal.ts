@@ -4,7 +4,7 @@ import languageConfig from "@/config/language.json";
 import dictionary from "@/i18n/en.json";
 import { getTranslations, slugSelector } from "@/lib/utils/languageParser";
 
-export type Lang = "en" | "zh" | "ms";
+export type Lang = "en" | "zh";
 export type Category = "research" | "bridge" | "foundation" | "life";
 export const topics = [
   "investing-basics",
@@ -29,7 +29,6 @@ export const languages = languageConfig
 export const languageNames: Record<Lang, string> = {
   en: "EN",
   zh: "中文",
-  ms: "BM",
 };
 export function normalizeLang(lang?: string): Lang {
   return languages.includes(lang as Lang)
@@ -84,7 +83,7 @@ export function toPost(entry: CollectionEntry<"blog">): Post {
     issue: data.issue ?? 1,
     sample: data.sample_draft ?? false,
     entry,
-    text: { en: text, zh: text, ms: text },
+    text: { en: text, zh: text },
   };
 }
 export async function getPosts(lang: Lang): Promise<Post[]> {

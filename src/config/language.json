@@ -10,11 +10,5 @@
     "languageCode": "zh",
     "contentDir": "simplified-chinese",
     "weight": 2
-  },
-  {
-    "languageName": "Bahasa Melayu",
-    "languageCode": "ms",
-    "contentDir": "malay",
-    "weight": 3
   }
 ]

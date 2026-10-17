@@ -37,7 +37,7 @@ const c = await getCopy(lang);
 const { main: mainMenu, footer: footerMenu } = await getTranslations(lang);
 const posts = await getPosts(lang);
 const pathname = Astro.url.pathname
-  .replace(/^\/(en|zh|ms)(?=\/|$)/, "/")
+  .replace(/^\/(en|zh)(?=\/|$)/, "/")
   .replace(/\/{2,}/g, "/");
 const currentPath = Astro.props.currentPath ?? pathname.replace(/^\/|\/$/g, "");
 const active =
@@ -255,11 +255,7 @@ const alternatePath = (l: Lang) =>
                     lang={l}
                     aria-current={l === lang ? "true" : undefined}
                   >
-                    {l === "en"
-                      ? "English"
-                      : l === "zh"
-                        ? "简体中文"
-                        : "Bahasa Melayu"}
+                    {l === "en" ? "English" : "简体中文"}
                   </a>
                 ))
               }
