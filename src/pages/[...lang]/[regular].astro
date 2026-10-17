@@ -2,7 +2,6 @@
 import Base from "@/layouts/Base.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import { supportedLang } from "@/lib/utils/languageParser";
-import PageHeader from "@/partials/PageHeader.astro";
 import StartHere from "@/layouts/journal/StartHere.astro";
 import { normalizeLang } from "@/lib/journal";
 
@@ -44,18 +43,15 @@ const lang = normalizeLang(Astro.params.lang);
       description={description}
       image={image}
     >
-      <PageHeader title={title} />
-      <section class="section-sm">
-        <div class="container">
-          <div class="row justify-center">
-            <div class="lg:col-10">
-              <div class="content">
-                <Content />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div class="container archive">
+        <header class="page-heading">
+          <h1>{title}</h1>
+          {description && <p>{description}</p>}
+        </header>
+        <article class="prose">
+          <div class="article-body"><Content /></div>
+        </article>
+      </div>
     </Base>
   )
 }

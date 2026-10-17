@@ -4,46 +4,20 @@
     "base_url": "https://walau01.com",
     "base_path": "/",
     "trailing_slash": false,
-    "favicon": "/favicon.svg",
-    "logo": "",
-    "logo_darkmode": "",
-    "logo_width": "150",
-    "logo_height": "30",
-    "logo_text": "walau01"
+    "favicon": "/favicon.svg"
   },
   "settings": {
-    "search": true,
-    "sticky_header": true,
-    "theme_switcher": true,
     "default_theme": "light",
-    "pagination": 8,
-    "summary_length": 200,
-    "blog_folder": "blog",
     "default_language": "en",
     "disable_languages": [],
     "default_language_in_subdir": false
   },
-  "announcement": {
-    "enable": false,
-    "expire_days": 7
-  },
   "params": {
-    "contact_form_action": "#",
     "copyright": "© 2026 walau01"
-  },
-  "navigation_button": {
-    "enable": false,
-    "label": "",
-    "link": ""
   },
   "google_tag_manager": {
     "enable": false,
     "gtm_id": "GTM-XXXXXX"
-  },
-  "disqus": {
-    "enable": false,
-    "shortname": "",
-    "settings": {}
   },
   "metadata": {
     "meta_author": "walau01",

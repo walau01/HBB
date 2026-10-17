@@ -1,7 +1,7 @@
 {
   // Cloudflare Workers — Static Assets deployment
-  // Deploy:  npm run deploy:cf-workers
-  // Preview: npm run preview:cf-workers
+  // Deploy:  pnpm run deploy:cf-workers
+  // Preview: pnpm run preview:cf-workers
   "name": "walau01",
   "compatibility_date": "2026-03-02",
   "assets": {

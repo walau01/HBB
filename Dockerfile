@@ -1,23 +1,16 @@
-ARG INSTALLER=pnpm
-
 FROM node:22.20.0-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-ARG INSTALLER
 
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ "${INSTALLER}" == "yarn" ]; then yarn --frozen-lockfile; \
-  elif [ "${INSTALLER}" == "npm" ]; then npm ci; \
-  elif [ "${INSTALLER}" == "pnpm" ]; then corepack enable && corepack prepare pnpm@latest --activate && pnpm i --frozen-lockfile; \
-  else echo "Valid installer not set." && exit 1; \
-  fi
+# pnpm-workspace.yaml carries allowBuilds (sharp, esbuild), so it must be present at install time.
+# corepack picks the pnpm version pinned in package.json's packageManager field.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN corepack enable && pnpm install --frozen-lockfile
 
 
 # Rebuild the source code only when needed
@@ -26,14 +19,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# RUN chmod u+x ./installer && ./installer
-ARG INSTALLER
-RUN \
-  if [ "${INSTALLER}" == "yarn" ]; then yarn build; \
-  elif [ "${INSTALLER}" == "npm" ]; then npm run build; \
-  elif [ "${INSTALLER}" == "pnpm" ]; then pnpm run build; \
-  else echo "Valid installer not set." && exit 1; \
-  fi
+RUN corepack enable && pnpm run build
 
 # Production image, copy all the files and run nginx
 FROM nginx:alpine AS runner
