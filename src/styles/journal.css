@@ -1403,7 +1403,7 @@ html[lang="zh-Hans"] .article-heading h1 {
     padding-block: 27px;
   }
   .footer-main nav {
-    gap: 22px;
+    gap: 0 22px;
   }
   .footer-bottom {
     flex-direction: column;

@@ -31,6 +31,11 @@
       "key": "about",
       "name": "Tentang",
       "url": "/about"
+    },
+    {
+      "key": "privacy",
+      "name": "Dasar privasi",
+      "url": "/privacy-policy"
     }
   ]
 }
