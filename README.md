@@ -1,6 +1,6 @@
 # walau01
 
-A multilingual (English, 简体中文, Bahasa Melayu) personal finance and investing blog built with Astro 6, Tailwind CSS v4 and TypeScript. Live at [walau01.com](https://walau01.com).
+A bilingual (English, 简体中文) personal finance and investing blog built with Astro 6, Tailwind CSS v4 and TypeScript. Live at [walau01.com](https://walau01.com).
 
 Originally based on the [Astroplate](https://github.com/zeon-studio/astroplate) template by Zeon Studio (MIT).
 
