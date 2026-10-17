@@ -194,12 +194,12 @@ const alternatePath = (l: Lang) =>
         <GoogleTagmanager id={config.google_tag_manager.gtm_id} />
       )
     }
-    <script is:inline>
+    <script is:inline define:vars={{ defaultTheme: config.settings.default_theme }}>
       try {
         document.documentElement.dataset.theme =
-          localStorage.getItem("walau01-theme") || "light";
+          localStorage.getItem("walau01-theme") || defaultTheme;
       } catch {
-        document.documentElement.dataset.theme = "light";
+        document.documentElement.dataset.theme = defaultTheme;
       }
       document.documentElement.classList.toggle(
         "dark",
@@ -354,7 +354,7 @@ const alternatePath = (l: Lang) =>
         empty: c.searchEmpty,
         initial: c.searchInitial,
         sample: c.draft,
-      }).replace(/</g, "\u003c")}
+      }).replace(/</g, "\\u003c")}
     />
     <script>
       import { matchesSearch } from "@/lib/search";

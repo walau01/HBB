@@ -70,7 +70,7 @@ async function getAstroI18nConfig() {
 
   // Remove named imports from astro/config (we polyfill them below)
   content = content.replace(
-    /import\s+\{\s*defineConfig\s*,\s*fontProviders\s*\}\s+from\s+['"]astro\/config['"];?\s*\n/,
+    /import\s+\{[^}]*\bdefineConfig\b[^}]*\}\s+from\s+['"]astro\/config['"];?\s*\n/,
     "\n",
   );
 
