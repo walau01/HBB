@@ -51,3 +51,34 @@
   font-display: swap;
   src: url(/fonts/noto-serif-sc-900-subset.woff2) format("woff2");
 }
+/* Sign lettering, subset to the letters on the signs (src/config/topics.json). */
+@font-face {
+  font-family: "Alfa Slab One";
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/sign-alfa-slab-one.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Fredoka";
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/sign-fredoka-700.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Shrikhand";
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/sign-shrikhand.woff2) format("woff2");
+}
+@font-face {
+  font-family: "ZCOOL KuaiLe";
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/sign-zcool-kuaile.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Ma Shan Zheng";
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/sign-ma-shan-zheng.woff2) format("woff2");
+}

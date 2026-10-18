@@ -141,74 +141,6 @@ svg {
 .skip-link:focus {
   top: 12px;
 }
-.header {
-  padding: 0;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: var(--paper);
-  border-bottom: 1px solid var(--line);
-}
-.header-inner {
-  display: flex;
-  align-items: center;
-  min-height: 82px;
-  gap: 32px;
-}
-.brand {
-  display: inline-flex;
-  align-items: baseline;
-  font:
-    400 36px/1.1 var(--font-secondary),
-    sans-serif;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-.brand span {
-  color: var(--red-text);
-}
-.brand i {
-  display: none;
-}
-/* Night: the logo is a red neon tube, "01" a gold one. */
-[data-theme="dark"] .brand {
-  color: var(--color-neon-core);
-  text-shadow: var(--glow-red);
-}
-[data-theme="dark"] .brand span {
-  color: var(--color-neon-gold);
-  text-shadow: var(--glow-gold);
-}
-.desktop-nav {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-  margin-left: auto;
-}
-.desktop-nav a {
-  position: relative;
-  padding-block: 17px;
-  font-size: 15px;
-  font-weight: 550;
-  white-space: nowrap;
-}
-.desktop-nav a[aria-current="page"]::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 10px;
-  height: 2px;
-  background: var(--link);
-}
-.desktop-nav a:hover {
-  color: var(--link);
-}
-.header-tools {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
 .icon-button {
   display: grid;
   place-items: center;
@@ -222,70 +154,11 @@ svg {
 .icon-button:hover {
   background: var(--muted);
 }
-.header-search {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 12px;
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  font-size: 14px;
-}
-.header-search:hover {
-  background: var(--muted);
-}
-.icon-sun {
-  display: none;
-}
-[data-theme="dark"] .icon-moon {
-  display: none;
-}
-[data-theme="dark"] .icon-sun {
-  display: block;
-}
 summary {
   list-style: none;
   cursor: pointer;
 }
 summary::-webkit-details-marker {
-  display: none;
-}
-.language-picker {
-  position: relative;
-}
-.language-picker summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  min-width: 48px;
-  font-size: 14px;
-  font-weight: 600;
-}
-.language-menu {
-  position: absolute;
-  top: 50px;
-  right: 0;
-  width: 178px;
-  padding: 6px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  border-radius: 8px;
-  box-shadow: 0 8px 25px #00000012;
-}
-.language-menu a {
-  display: block;
-  padding: 10px 12px;
-  font-size: 15px;
-  border-radius: 4px;
-}
-.language-menu a:hover,
-.language-menu a[aria-current] {
-  background: var(--muted);
-}
-.mobile-menu {
   display: none;
 }
 .eyebrow {
@@ -481,56 +354,6 @@ summary::-webkit-details-marker {
   padding: 2px 7px;
   border: 1px solid var(--line);
   border-radius: 4px;
-}
-.footer {
-  border-top: 1px solid var(--line);
-}
-.footer-main {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 30px;
-  padding-block: 32px;
-}
-.footer .brand {
-  font-size: 29px;
-}
-.footer-main p {
-  font-size: 14px;
-  color: var(--secondary);
-  margin-top: 10px;
-}
-.footer-main nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 28px;
-  font-size: 15px;
-}
-.footer-main nav a {
-  padding-block: 10px;
-}
-.footer-main nav a:hover {
-  color: var(--link);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 30px;
-  padding-block: 20px;
-  border-top: 1px solid var(--line);
-  color: var(--secondary);
-  font-size: 13px;
-  line-height: 1.7;
-}
-.footer-bottom > span {
-  flex-shrink: 0;
-}
-.footer-bottom > p {
-  max-width: 510px;
-  text-align: right;
 }
 .search-dialog {
   margin: auto;
@@ -1224,15 +1047,6 @@ html[lang="zh-Hans"] .article-heading h1 {
   .blog-intro {
     gap: 35px;
   }
-  .header-inner {
-    gap: 22px;
-  }
-  .desktop-nav {
-    gap: 19px;
-  }
-  .header-tools {
-    gap: 4px;
-  }
   .post-grid {
     gap: 18px;
   }
@@ -1248,65 +1062,6 @@ html[lang="zh-Hans"] .article-heading h1 {
   }
 }
 @media (max-width: 900px) {
-  .desktop-nav,
-  .header-tools .desktop-setting {
-    display: none;
-  }
-  .header-inner {
-    min-height: 72px;
-    justify-content: space-between;
-  }
-  .mobile-menu {
-    display: block;
-  }
-  .mobile-menu > summary {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 5px;
-  }
-  .mobile-menu[open] > summary {
-    background: var(--muted);
-  }
-  .mobile-menu nav {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    display: grid;
-    padding: 12px 24px 18px;
-    border-bottom: 1px solid var(--line);
-    background: var(--paper);
-    box-shadow: 0 12px 20px #00000008;
-  }
-  .mobile-menu nav > a {
-    min-height: 48px;
-    padding: 10px 8px;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  .mobile-menu nav > a[aria-current] {
-    background: var(--muted);
-  }
-  .mobile-settings {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 12px 0 0;
-    margin-top: 10px;
-    border-top: 1px solid var(--line);
-    font-size: 14px;
-  }
-  .mobile-settings a {
-    padding: 9px 8px;
-    min-height: 44px;
-  }
-  .mobile-settings a[aria-current] {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
   .post-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1334,20 +1089,6 @@ html[lang="zh-Hans"] .article-heading h1 {
 @media (max-width: 650px) {
   .container {
     width: calc(100% - 40px);
-  }
-  .brand {
-    font-size: 30px;
-  }
-  .header-inner {
-    gap: 12px;
-  }
-  .header-search {
-    width: 44px;
-    justify-content: center;
-    padding: 0;
-  }
-  .header-search > span {
-    display: none;
   }
   .blog-intro {
     grid-template-columns: 1fr;
@@ -1414,23 +1155,6 @@ html[lang="zh-Hans"] .article-heading h1 {
   }
   .post-card-foot {
     padding-top: 20px;
-  }
-  .footer-main {
-    align-items: start;
-    flex-direction: column;
-    gap: 18px;
-    padding-block: 27px;
-  }
-  .footer-main nav {
-    gap: 0 22px;
-  }
-  .footer-bottom {
-    flex-direction: column;
-    gap: 10px;
-    font-size: 13px;
-  }
-  .footer-bottom > p {
-    text-align: left;
   }
   .archive {
     padding-block: 34px 48px;

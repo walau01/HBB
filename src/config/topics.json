@@ -1,0 +1,50 @@
+[
+  {
+    "id": "investing-101",
+    "order": 1,
+    "sign": "enamel",
+    "name": { "en": "Investing 101", "zh": "投资101" },
+    "signText": { "en": "Investing", "zh": "投资" },
+    "description": {
+      "en": "How investing actually works: ETFs, compounding, risk and return, explained from zero.",
+      "zh": "投资到底怎么运作？ETF、复利、风险与回报，从零讲起。"
+    },
+    "awning": { "day": ["#2F5F9E", "#F4F1EA"], "night": ["#1A2A40", "#3A4250"] }
+  },
+  {
+    "id": "beneath-the-surface",
+    "order": 2,
+    "sign": "wave",
+    "name": { "en": "Beneath the Surface", "zh": "水面之下" },
+    "signText": { "en": "Beneath the Surface", "zh": "水面之下" },
+    "description": {
+      "en": "The questions behind the headline: costs, returns, market timing, and what the evidence really says.",
+      "zh": "标题背后的问题：成本、回报、择时，以及证据到底怎么说。"
+    },
+    "awning": { "day": ["#17777C", "#F4F1EA"], "night": ["#0E2B2D", "#36474A"] }
+  },
+  {
+    "id": "fire",
+    "order": 3,
+    "sign": "flame",
+    "name": { "en": "FIRE", "zh": "FIRE 财务自由" },
+    "signText": { "en": "FIRE", "zh": "财务自由" },
+    "description": {
+      "en": "How much is enough, how long it takes, and what early retirement can look like in Malaysia.",
+      "zh": "要存多少才够？要多久？在马来西亚提早退休可以是什么样子。"
+    },
+    "awning": { "day": ["#D9661A", "#F6E7CC"], "night": ["#3A1C0A", "#433A30"] }
+  },
+  {
+    "id": "off-the-clock",
+    "order": 4,
+    "sign": "bulbs",
+    "name": { "en": "Off the Clock", "zh": "下班以后" },
+    "signText": { "en": "Off the Clock", "zh": "下班以后" },
+    "description": {
+      "en": "Things I build, workflows from my day job, and life outside the spreadsheet.",
+      "zh": "我做的小东西、工作上的流程，还有表格以外的生活。"
+    },
+    "awning": { "day": ["#1F5A3D", "#F3E3C0"], "night": ["#14281E", "#40382A"] }
+  }
+]

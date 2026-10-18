@@ -37,7 +37,7 @@
         "Share a useful conclusion, including what could change it."
       ]
     ],
-    "footerLine": "Thinking aloud. Checking the evidence.",
+    "footerLine": "Rational finance and side thoughts.",
     "authorBio": "A Malaysian investor sharing research on ETFs, portfolio decisions and investing costs.",
     "articleDisclaimer": "Content on walau01.com is for information and education only. It is not professional financial advice or a personal investment recommendation.",
     "footerNote": "Personal research and reflections. General information, not individual financial advice.",
@@ -133,6 +133,12 @@
         "title": "Life",
         "description": "Notes on fitness, AI, work, and everyday life. A little room for the things beyond investing."
       }
-    }
+    },
+    "day": "Day",
+    "night": "Night",
+    "themeLabel": "Colour theme:",
+    "topicsLabel": "Topics",
+    "articleCount": "{n} articles",
+    "articleCountOne": "1 article"
   }
 }

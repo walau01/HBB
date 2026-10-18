@@ -1,0 +1,695 @@
+---
+// One signboard per topic, in four variants (spec 3.4) and three sizes:
+// L (home topics row), M (topic page hero), S (badge on cards and boards).
+// Everything is drawn in em, so the size only changes the font-size.
+// Day: painted / enamel boards. Night: neon, lit by src/styles/neon.css.
+import type { Lang } from "@/lib/journal";
+import type { Topic } from "@/lib/topics";
+
+interface Props {
+  topic: Topic;
+  lang: Lang;
+  size?: "L" | "M" | "S";
+  href?: string;
+  /** Accessible name; defaults to the topic name. */
+  label?: string;
+  class?: string;
+}
+const { topic, lang, size = "L", href, label, class: className } = Astro.props;
+const Tag = href ? "a" : "div";
+const text = topic.signText[lang];
+const name = label || topic.name[lang];
+const bulbs = Array.from({ length: 11 });
+---
+
+<Tag
+  href={href}
+  class:list={["sign", `sign--${topic.sign}`, `sign--${size}`, className]}
+  aria-label={name}
+  role={href ? undefined : "img"}
+  lang={lang === "zh" ? "zh-Hans" : "en"}
+  data-neon
+>
+  {
+    topic.sign === "enamel" && (
+      <span class="board" aria-hidden="true">
+        <span class="pin" />
+        <span class="rivet rivet--tl" />
+        <span class="rivet rivet--tr" />
+        <span class="rivet rivet--bl" />
+        <span class="rivet rivet--br" />
+        <span class="chip chip--a" />
+        <span class="chip chip--b" />
+        <span class="badge">
+          <span>101</span>
+        </span>
+        <span class="word">{text}</span>
+      </span>
+    )
+  }
+  {
+    topic.sign === "wave" && (
+      <span class="board" aria-hidden="true">
+        <span class="word">{text}</span>
+        <span class="water">
+          <svg class="wave" viewBox="0 0 240 12" preserveAspectRatio="none">
+            <path d="M0 6q7.5-6 15 0t15 0 15 0 15 0 15 0 15 0 15 0 15 0 15 0 15 0 15 0 15 0 15 0 15 0 15 0 15 0" />
+          </svg>
+          <span class="bubble bubble--a" />
+          <span class="bubble bubble--b" />
+          <span class="bubble bubble--c" />
+          <span class="bubble bubble--d" />
+        </span>
+      </span>
+    )
+  }
+  {
+    topic.sign === "flame" && (
+      <span class="board" aria-hidden="true">
+        <svg class="flame" viewBox="0 0 40 60">
+          <path
+            class="flame-outer"
+            d="M20 57c-10 0-16-7-16-16 0-9 6-14 8-22 1 5 4 8 6 9 0-9 3-17 10-25 0 9 4 14 7 20 3 5 5 10 5 17 0 10-9 17-20 17Z"
+          />
+          <path
+            class="flame-core"
+            d="M20 52c-5 0-8-4-8-9 0-5 3-8 5-12 1 3 3 5 4 5 0-4 2-8 5-12 1 5 3 8 4 11 1 3 2 5 2 8 0 5-5 9-12 9Z"
+          />
+        </svg>
+        <span class="words">
+          <span class="word">FIRE</span>
+          {lang === "zh" && <span class="sub">{text}</span>}
+        </span>
+      </span>
+    )
+  }
+  {
+    topic.sign === "bulbs" && (
+      <span class="board" aria-hidden="true">
+        <span class="bulbs bulbs--top">
+          {bulbs.map(() => (
+            <span />
+          ))}
+        </span>
+        <span class="bulbs bulbs--bottom">
+          {bulbs.map(() => (
+            <span />
+          ))}
+        </span>
+        <span class="drink">
+          <svg class="coupe" viewBox="0 0 44 52">
+            <path d="M3 8h34c0 11-7 18-17 18S3 19 3 8Z" />
+            <path d="M20 26v18M10 47h20" />
+            <path class="garnish" d="M30 9l8-8" />
+            <circle class="cherry" cx="31" cy="7" r="3.2" />
+          </svg>
+          <span class="fizz fizz--a" />
+          <span class="fizz fizz--b" />
+          <span class="fizz fizz--c" />
+          <svg class="clock" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 12V5.5M12 12v4.5" />
+          </svg>
+        </span>
+        <span class="word">{text}</span>
+      </span>
+    )
+  }
+</Tag>
+
+<style>
+  .sign {
+    display: inline-block;
+    font-size: 10px;
+    line-height: 1;
+    vertical-align: top;
+    color: inherit;
+    text-decoration: none;
+  }
+  .sign--M {
+    font-size: 13px;
+  }
+  .sign--S {
+    font-size: 5.5px;
+  }
+  .board {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22em;
+    height: 10.4em;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 0.5em 0 rgb(0 0 0 / 0.28);
+    transition: transform 0.15s ease;
+  }
+  a.sign:hover .board {
+    transform: translateY(-0.3em) rotate(-1deg);
+  }
+  a.sign:focus-visible {
+    outline: 3px solid var(--red-text);
+    outline-offset: 6px;
+  }
+  .sign--S .board {
+    box-shadow: 0 0.4em 0 rgb(0 0 0 / 0.28);
+  }
+  :global([data-theme="dark"]) .board {
+    box-shadow: none;
+  }
+
+  /* ── Investing 101: blue enamel plate ─────────────────────────── */
+  .sign--enamel .board {
+    gap: 0.9em;
+    padding: 0 1.2em;
+    border: 0.4em solid #f4f1ea;
+    border-radius: 1.2em;
+    background: #1e4fa0;
+  }
+  .sign--enamel .pin {
+    position: absolute;
+    inset: 0.5em;
+    border: 0.15em solid #e64a3b;
+    border-radius: 0.7em;
+  }
+  .rivet {
+    position: absolute;
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff, #9aa6b5);
+  }
+  .rivet--tl {
+    top: 0.15em;
+    left: 0.15em;
+  }
+  .rivet--tr {
+    top: 0.15em;
+    right: 0.15em;
+  }
+  .rivet--bl {
+    bottom: 0.15em;
+    left: 0.15em;
+  }
+  .rivet--br {
+    bottom: 0.15em;
+    right: 0.15em;
+  }
+  /* Chipped enamel. */
+  .chip {
+    position: absolute;
+    border-radius: 40% 60% 50% 45%;
+    background: #0b1a33;
+  }
+  .chip--a {
+    top: 1.6em;
+    right: 2.6em;
+    width: 0.7em;
+    height: 0.4em;
+    transform: rotate(-20deg);
+  }
+  .chip--b {
+    bottom: 1.5em;
+    left: 7.6em;
+    width: 0.45em;
+    height: 0.35em;
+  }
+  .sign--enamel .badge {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 5.2em;
+    height: 5.2em;
+    border-radius: 50%;
+    background: #f4f1ea;
+    box-shadow:
+      inset 0 0 0 0.3em #f4f1ea,
+      inset 0 0 0 0.45em #1e4fa0;
+    color: #1e4fa0;
+  }
+  .sign--enamel .badge span {
+    font-family: "Alfa Slab One", var(--display);
+    font-size: 1.9em;
+  }
+  .sign--enamel .word {
+    position: relative;
+    color: #fff;
+    font-family: "Alfa Slab One", var(--display);
+    font-size: 1.9em;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-shadow: 0 0.1em 0 rgb(0 0 0 / 0.25);
+  }
+  .sign--enamel:lang(zh) .word {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 3.6em;
+    letter-spacing: 0.12em;
+  }
+  :global([data-theme="dark"]) .sign--enamel .board {
+    border: 0.3em solid #d8fbff;
+    background: #050d1a;
+    box-shadow:
+      0 0 0.8em #5ee7ff,
+      0 0 2.6em #19c9f0,
+      inset 0 0 1.4em rgb(25 201 240 / 0.55);
+  }
+  :global([data-theme="dark"]) .sign--enamel .pin {
+    border-color: #ff7ac8;
+    box-shadow:
+      0 0 0.6em var(--color-neon-pink),
+      inset 0 0 0.4em var(--color-neon-pink);
+  }
+  :global([data-theme="dark"]) .sign--enamel :is(.rivet, .chip) {
+    display: none;
+  }
+  :global([data-theme="dark"]) .sign--enamel .badge {
+    background: transparent;
+    box-shadow:
+      inset 0 0 0 0.2em #d8fbff,
+      0 0 0.8em #3fdfff,
+      inset 0 0 0.6em #3fdfff;
+    color: #efffff;
+    text-shadow: var(--glow-cyan);
+  }
+  :global([data-theme="dark"]) .sign--enamel .word {
+    color: #efffff;
+    text-shadow: var(--glow-cyan);
+  }
+
+  /* ── Beneath the Surface: teal board, wave, underwater strip ───── */
+  .sign--wave .board {
+    flex-direction: column;
+    justify-content: flex-start;
+    border: 0.3em solid #e9f4f1;
+    border-radius: 0.8em;
+    background: #17676c;
+  }
+  .sign--wave .word {
+    display: grid;
+    place-items: center;
+    height: 5.6em;
+    padding: 0 0.6em;
+    color: #fff;
+    font-family: "Fredoka", var(--display);
+    font-weight: 700;
+    font-size: 2em;
+    line-height: 1;
+    text-align: center;
+    text-shadow: 0 0.1em 0 rgb(0 0 0 / 0.2);
+    height: 2.8em;
+  }
+  .sign--wave:lang(zh) .word {
+    font-family: "ZCOOL KuaiLe", var(--display);
+    font-weight: 400;
+    font-size: 3.4em;
+    letter-spacing: 0.15em;
+    height: 1.7em;
+  }
+  .water {
+    position: relative;
+    flex: 1;
+    align-self: stretch;
+    background: #0c4a4e;
+  }
+  .wave {
+    position: absolute;
+    top: -0.6em;
+    left: 0;
+    width: 200%;
+    height: 1.2em;
+    overflow: visible;
+  }
+  .wave path {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.4;
+    vector-effect: non-scaling-stroke;
+  }
+  .sign--S .wave path {
+    stroke-width: 1.4;
+  }
+  .bubble {
+    position: absolute;
+    bottom: 0.6em;
+    width: 0.7em;
+    height: 0.7em;
+    border: 0.15em solid rgb(255 255 255 / 0.75);
+    border-radius: 50%;
+  }
+  .bubble--a {
+    left: 3em;
+    bottom: 1.4em;
+  }
+  .bubble--b {
+    left: 7em;
+    width: 0.5em;
+    height: 0.5em;
+  }
+  .bubble--c {
+    left: 13em;
+    bottom: 1em;
+    width: 0.9em;
+    height: 0.9em;
+  }
+  .bubble--d {
+    left: 17.5em;
+    width: 0.5em;
+    height: 0.5em;
+  }
+  :global([data-theme="dark"]) .sign--wave .board {
+    border-color: #1d5258;
+    background: #04161a;
+  }
+  :global([data-theme="dark"]) .sign--wave .word {
+    color: #eaf8ff;
+    text-shadow:
+      0 0 0.3em #fff,
+      0 0 1em #7fd8ff,
+      0 0 2.4em #2aa8ff;
+  }
+  :global([data-theme="dark"]) .water {
+    background: #031014;
+  }
+  :global([data-theme="dark"]) .wave path {
+    stroke: #c9fbff;
+  }
+  :global([data-theme="dark"]) .wave {
+    filter: drop-shadow(0 0 0.3em #3fdfff) drop-shadow(0 0 0.8em #19c9f0);
+    animation: sign-ripple 3.2s linear infinite;
+  }
+  :global([data-theme="dark"]) .bubble {
+    border-color: #8ff3ff;
+    box-shadow: 0 0 0.4em #19c9f0;
+    animation: sign-bubble 4s ease-in infinite;
+  }
+  :global([data-theme="dark"]) .bubble--b {
+    animation-delay: 1.2s;
+  }
+  :global([data-theme="dark"]) .bubble--c {
+    animation-delay: 2.1s;
+  }
+  :global([data-theme="dark"]) .bubble--d {
+    animation-delay: 3s;
+  }
+
+  /* ── FIRE: charcoal board, glass-tube flame ──────────────────── */
+  .sign--flame .board {
+    gap: 1.2em;
+    border: 0.35em solid #4a4642;
+    border-radius: 0.6em;
+    background: #262422;
+  }
+  .flame {
+    width: 4.4em;
+    height: 6.6em;
+    overflow: visible;
+  }
+  .flame path {
+    fill: none;
+    stroke-width: 2.6;
+    stroke-linejoin: round;
+  }
+  .flame-outer {
+    stroke: #8c857c;
+  }
+  .flame-core {
+    stroke: #6f6a63;
+  }
+  .sign--flame .words {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .sign--flame .word {
+    color: #ede4d3;
+    font-family: var(--font-secondary), sans-serif;
+    font-size: 7em;
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    transform: scaleY(1.12);
+  }
+  .sign--flame:lang(zh) .word {
+    font-size: 4.6em;
+  }
+  .sign--flame .sub {
+    margin-top: 0.3em;
+    color: #ede4d3;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 2em;
+    letter-spacing: 0.12em;
+  }
+  :global([data-theme="dark"]) .sign--flame .board {
+    border-color: #2d2a27;
+    background: #110f0e;
+  }
+  :global([data-theme="dark"]) .flame-outer {
+    stroke: #ff8a3d;
+    filter: drop-shadow(0 0 0.15em #fff) drop-shadow(0 0 0.5em #ff7a1a)
+      drop-shadow(0 0 1.2em #ff5a00);
+  }
+  :global([data-theme="dark"]) .flame-core {
+    stroke: #ffe066;
+    filter: drop-shadow(0 0 0.15em #fff) drop-shadow(0 0 0.5em #ffd23a);
+  }
+  :global([data-theme="dark"]) .flame {
+    transform-origin: 50% 95%;
+    animation: sign-flame 1.6s ease-in-out infinite;
+  }
+  :global([data-theme="dark"]) .flame-core {
+    transform-origin: 50% 90%;
+    animation: sign-flame-core 0.9s ease-in-out infinite;
+  }
+  :global([data-theme="dark"]) .sign--flame :is(.word, .sub) {
+    color: #fff4e6;
+    text-shadow:
+      0 0 0.04em #fff,
+      0 0 0.15em #ffb46a,
+      0 0 0.4em #ff8a00;
+  }
+
+  /* ── Off the Clock: kopitiam green board, bulbs, cocktail ─────── */
+  .sign--bulbs .board {
+    gap: 0.8em;
+    padding: 0 1.2em;
+    border: 0.3em solid #f3e3c0;
+    border-radius: 0.6em;
+    background: repeating-linear-gradient(
+      90deg,
+      #1f5a3d 0 1.8em,
+      #1c5338 1.8em 2em
+    );
+  }
+  .bulbs {
+    position: absolute;
+    left: 0.8em;
+    right: 0.8em;
+    display: flex;
+    justify-content: space-between;
+  }
+  .bulbs--top {
+    top: 0.45em;
+  }
+  .bulbs--bottom {
+    bottom: 0.45em;
+  }
+  .bulbs span {
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: #ede5d2;
+  }
+  .drink {
+    position: relative;
+    flex: none;
+    width: 4.4em;
+    height: 5.6em;
+  }
+  .coupe {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 4.4em;
+    height: 5.2em;
+  }
+  .coupe path {
+    fill: none;
+    stroke: #f3e3c0;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .coupe .cherry {
+    fill: #e64a3b;
+  }
+  .clock {
+    position: absolute;
+    right: -0.4em;
+    top: -0.3em;
+    width: 2.2em;
+    height: 2.2em;
+    border-radius: 50%;
+    background: #f3e3c0;
+  }
+  .clock circle {
+    fill: none;
+    stroke: #1f5a3d;
+    stroke-width: 2.4;
+  }
+  .clock path {
+    fill: none;
+    stroke: #1f5a3d;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+  }
+  .fizz {
+    position: absolute;
+    width: 0.4em;
+    height: 0.4em;
+    border-radius: 50%;
+    background: #f3e3c0;
+    opacity: 0;
+  }
+  .fizz--a {
+    left: 1.2em;
+    top: 2.2em;
+  }
+  .fizz--b {
+    left: 2em;
+    top: 2.4em;
+  }
+  .fizz--c {
+    left: 2.8em;
+    top: 2.2em;
+  }
+  .sign--bulbs .word {
+    color: #f3e3c0;
+    font-family: "Shrikhand", var(--display);
+    font-size: 2.15em;
+    line-height: 1.15;
+    text-shadow: 0.12em 0.12em 0 #0e2e1f;
+    white-space: nowrap;
+  }
+  .sign--bulbs:lang(zh) .word {
+    font-family: "Ma Shan Zheng", var(--display);
+    font-size: 3.8em;
+    letter-spacing: 0.08em;
+  }
+  :global([data-theme="dark"]) .sign--bulbs .board {
+    border: 0.2em solid #ffb25b;
+    background: #120a03;
+    box-shadow:
+      0 0 0.8em #ff9a2e,
+      0 0 2.2em #ff7a00,
+      inset 0 0 1em rgb(255 140 40 / 0.4);
+  }
+  :global([data-theme="dark"]) .bulbs span {
+    background: #ffd27a;
+    box-shadow: 0 0 0.6em 0.2em rgb(255 190 90 / 0.95);
+    animation: sign-chase 0.9s steps(1) infinite;
+  }
+  :global([data-theme="dark"]) .bulbs span:nth-child(even) {
+    animation-delay: 0.45s;
+  }
+  :global([data-theme="dark"]) .coupe path {
+    stroke: #ffe7c2;
+    filter: drop-shadow(0 0 0.3em #ff9a2e);
+  }
+  :global([data-theme="dark"]) .clock {
+    background: transparent;
+    box-shadow: 0 0 0.4em #ff9a2e;
+  }
+  :global([data-theme="dark"]) .clock :is(circle, path) {
+    stroke: #ffe7c2;
+  }
+  :global([data-theme="dark"]) .fizz {
+    background: #fff4dc;
+    animation: sign-fizz 1.8s ease-in infinite;
+  }
+  :global([data-theme="dark"]) .fizz--b {
+    animation-delay: 0.6s;
+  }
+  :global([data-theme="dark"]) .fizz--c {
+    animation-delay: 1.2s;
+  }
+  :global([data-theme="dark"]) .sign--bulbs .word {
+    color: #ffe7c2;
+    text-shadow:
+      0 0 0.1em #fff,
+      0 0 0.3em #ff9a2e,
+      0 0 0.7em #ff6a00;
+  }
+
+  /* Small badges keep the look but drop the busy motion. */
+  :global([data-theme="dark"])
+    .sign--S
+    :is(.wave, .bubble, .bulbs span, .fizz, .flame, .flame-core) {
+    animation: none;
+  }
+
+  @keyframes sign-ripple {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes sign-bubble {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-2.6em);
+      opacity: 0;
+    }
+  }
+  @keyframes sign-flame {
+    0%,
+    100% {
+      transform: scale(1, 1) skewX(0);
+    }
+    25% {
+      transform: scale(0.97, 1.04) skewX(-2deg);
+    }
+    50% {
+      transform: scale(1.02, 0.97) skewX(1.5deg);
+    }
+    75% {
+      transform: scale(0.98, 1.03) skewX(-1deg);
+    }
+  }
+  @keyframes sign-flame-core {
+    0%,
+    100% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scaleY(0.9);
+      opacity: 0.85;
+    }
+  }
+  @keyframes sign-chase {
+    50% {
+      opacity: 0.25;
+    }
+  }
+  @keyframes sign-fizz {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-1.6em);
+      opacity: 0;
+    }
+  }
+</style>

@@ -1,0 +1,93 @@
+---
+// Cornice → rod → striped awning with a scalloped valance. One continuous
+// strip; each segment takes its topic's day and night stripe colours.
+import type { Topic } from "@/lib/topics";
+
+interface Props {
+  topics: Topic[];
+  class?: string;
+}
+const { topics, class: className } = Astro.props;
+---
+
+<div class:list={["awning", className]} aria-hidden="true">
+  <div class="awning-cornice">
+    {topics.map(() => <span />)}
+  </div>
+  <div class="awning-rod"></div>
+  <div class="awning-stripes">
+    {
+      topics.map((t) => (
+        <span
+          style={{
+            "--awn-a": t.awning.day[0],
+            "--awn-b": t.awning.day[1],
+            "--awn-na": t.awning.night[0],
+            "--awn-nb": t.awning.night[1],
+          }}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .awning {
+    --cornice: #fbf6ec;
+    --cornice-shade: #d9cfbf;
+    --rod: #4a4038;
+    --awn-shadow: rgb(40 30 20 / 0.35);
+  }
+  :global([data-theme="dark"]) .awning {
+    --cornice: #2a2520;
+    --cornice-shade: #1a1714;
+    --rod: #3a3530;
+    --awn-shadow: rgb(0 0 0 / 0.7);
+  }
+  .awning-cornice {
+    display: flex;
+    height: 30px;
+    background: var(--cornice);
+    border-bottom: 5px solid var(--cornice-shade);
+  }
+  /* Three plaster studs per unit. */
+  .awning-cornice span {
+    --stud: radial-gradient(
+      circle,
+      var(--cornice-shade) 3.5px,
+      transparent 4px
+    );
+    flex: 1 1 0;
+    background:
+      var(--stud) calc(50% - 13px) 50% / 8px 8px no-repeat,
+      var(--stud) 50% 50% / 8px 8px no-repeat,
+      var(--stud) calc(50% + 13px) 50% / 8px 8px no-repeat;
+  }
+  .awning-rod {
+    height: 6px;
+    background: var(--rod);
+  }
+  .awning-stripes {
+    display: flex;
+    filter: drop-shadow(0 4px 3px var(--awn-shadow));
+  }
+  .awning-stripes span {
+    --a: var(--awn-a);
+    --b: var(--awn-b);
+    flex: 1 1 0;
+    height: 48px;
+    background:
+      radial-gradient(circle at 9px 0, var(--a) 8.5px, transparent 9px) 0 34px /
+        36px 14px repeat-x,
+      radial-gradient(circle at 27px 0, var(--b) 8.5px, transparent 9px) 0
+        34px / 36px 14px repeat-x,
+      linear-gradient(rgb(0 0 0 / 0.3), transparent 10px) 0 0 / 100% 34px
+        no-repeat,
+      repeating-linear-gradient(90deg, var(--a) 0 18px, var(--b) 18px 36px) 0
+        0 / 100% 34px no-repeat;
+  }
+  :global([data-theme="dark"]) .awning-stripes span {
+    --a: var(--awn-na);
+    --b: var(--awn-nb);
+  }
+</style>
