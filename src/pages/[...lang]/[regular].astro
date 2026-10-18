@@ -30,10 +30,11 @@ const { page } = Astro.props;
 const { title, meta_title, description, image } = page.data;
 const { Content } = await render(page);
 const lang = normalizeLang(Astro.params.lang);
+const slug = Astro.params.regular;
 ---
 
 {
-  Astro.params.regular === "start-here" ? (
+  slug === "start-here" ? (
     <StartHere lang={lang} />
   ) : (
     <Base
@@ -42,14 +43,15 @@ const lang = normalizeLang(Astro.params.lang);
       meta_title={meta_title}
       description={description}
       image={image}
+      currentPath={slug}
     >
-      <div class="container archive">
-        <header class="page-heading">
-          <h1>{title}</h1>
-          {description && <p>{description}</p>}
-        </header>
+      <div class="page-narrow plain-page">
+        <h1 class="page-title">{title}</h1>
+        {description && <p class="page-intro">{description}</p>}
         <article class="prose">
-          <div class="article-body"><Content /></div>
+          <div class="article-body">
+            <Content />
+          </div>
         </article>
       </div>
     </Base>

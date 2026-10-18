@@ -1,0 +1,119 @@
+---
+// The shop row: cornice, rod, one continuous awning, and each topic's sign
+// hanging directly below it with its article count. Swipes on phones.
+import Awning from "@/layouts/components/Awning.astro";
+import Signboard from "@/layouts/components/Signboard.astro";
+import { url, type JournalCopy, type Lang, type Post } from "@/lib/journal";
+import { articleCount, topicList, type Topic } from "@/lib/topics";
+
+interface Props {
+  lang: Lang;
+  copy: JournalCopy;
+  posts: Post[];
+  topics?: Topic[];
+  size?: "L" | "S";
+  id?: string;
+  label?: string;
+}
+const {
+  lang,
+  copy: c,
+  posts,
+  topics = topicList,
+  size = "L",
+  id,
+  label,
+} = Astro.props;
+const count = (t: Topic) => posts.filter((p) => p.topic.id === t.id).length;
+const separator = lang === "zh" ? "，" : ", ";
+---
+
+<section
+  class:list={["topics-row", `topics-row--${size}`]}
+  id={id}
+  aria-label={label || c.topicsLabel}
+>
+  {label !== "" && <p class="section-label">{label || c.topicsLabel}</p>}
+  <div class="topics-scroll">
+    <div class="topics-inner" style={{ "--units": topics.length }}>
+      <Awning topics={topics} class={size === "S" ? "awning--small" : ""} />
+      <ul class="topics-signs">
+        {
+          topics.map((t) => (
+            <li>
+              <Signboard
+                topic={t}
+                lang={lang}
+                size={size}
+                href={url(lang, `topics/${t.id}`)}
+                label={`${t.name[lang]}${separator}${articleCount(count(t), c)}`}
+              />
+              <span class="topics-count" aria-hidden="true">
+                {articleCount(count(t), c)}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .topics-row {
+    max-width: 1320px;
+    margin-inline: auto;
+  }
+  .topics-row .section-label {
+    padding-inline: 40px;
+  }
+  .topics-scroll {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    padding-bottom: 14px;
+  }
+  .topics-inner {
+    min-width: calc(var(--units) * 240px);
+    padding: 0 15px;
+  }
+  .topics-row--S .topics-inner {
+    min-width: calc(var(--units) * 150px);
+  }
+  .topics-signs {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .topics-signs li {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding-top: 12px;
+    scroll-snap-align: center;
+  }
+  .topics-count {
+    color: var(--secondary);
+    font: 600 13px/1 var(--mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .topics-row--S .topics-count {
+    font-size: 11px;
+  }
+  .topics-row :global(.awning--small .awning-cornice) {
+    height: 18px;
+  }
+  @media (max-width: 700px) {
+    .topics-row .section-label {
+      padding-inline: 20px;
+    }
+    .topics-row--L .topics-inner {
+      min-width: 0;
+      width: calc(var(--units) * 78vw);
+    }
+  }
+</style>

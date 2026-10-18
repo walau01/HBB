@@ -1,0 +1,169 @@
+---
+// Topic landing page, themed by the topic's sign.
+import Base from "@/layouts/Base.astro";
+import ArticleBoard from "@/layouts/components/ArticleBoard.astro";
+import Awning from "@/layouts/components/Awning.astro";
+import PriceTag from "@/layouts/components/PriceTag.astro";
+import Signboard from "@/layouts/components/Signboard.astro";
+import TopicsRow from "@/layouts/components/TopicsRow.astro";
+import config from "@/config/config.json";
+import {
+  countText,
+  getCopy,
+  getPosts,
+  groupByTopic,
+  tagCounts,
+  url,
+  type Lang,
+} from "@/lib/journal";
+import { topicList, type Topic } from "@/lib/topics";
+
+interface Props {
+  lang: Lang;
+  topic: Topic;
+}
+const { lang, topic } = Astro.props;
+const c = await getCopy(lang);
+const all = await getPosts(lang);
+const posts = groupByTopic(all).find((g) => g.topic.id === topic.id)!.posts;
+const name = topic.name[lang];
+const description = topic.description[lang];
+const path = `topics/${topic.id}`;
+const pageURL = new URL(url(lang, path), config.site.base_url).href;
+const published = posts.filter((p) => !p.sample);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name,
+  url: pageURL,
+  description,
+  inLanguage: lang === "zh" ? "zh-Hans" : lang,
+  isPartOf: { "@id": `${new URL("/", config.site.base_url).href}#website` },
+  ...(published.length
+    ? {
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: published.map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: new URL(url(lang, `blog/${p.slug}`), config.site.base_url)
+              .href,
+            name: p.title,
+          })),
+        },
+      }
+    : {}),
+};
+---
+
+<Base
+  lang={lang}
+  title={name}
+  description={description}
+  active="articles"
+  currentPath={path}
+  noindex={!published.length}
+  structuredData={structuredData}
+>
+  <header class="topic-hero">
+    <Awning topics={[topic]} />
+    <div class="topic-hero-body">
+      <h1 class="sr-only">{name}</h1>
+      <Signboard topic={topic} lang={lang} size="M" />
+      <p class="topic-description">{description}</p>
+      <p class="topic-count">
+        {countText(posts.length, c.topicCount, c.topicCountOne)}
+      </p>
+    </div>
+  </header>
+
+  <div class="page-wide">
+    <nav class="tag-filter" aria-label={c.tagsTitle} data-tag-filter>
+      <PriceTag text={c.tagAll} href={url(lang, path)} current dataTag="" />
+      {
+        tagCounts(posts).map((t) => (
+          <PriceTag
+            text={t.label}
+            href={url(lang, `tags/${t.slug}`)}
+            dataTag={t.slug}
+          />
+        ))
+      }
+    </nav>
+    <ArticleBoard
+      lang={lang}
+      copy={c}
+      title={name}
+      posts={posts}
+      tone={topic.sign}
+      showTags
+      id="topic-articles"
+    />
+  </div>
+
+  <TopicsRow
+    lang={lang}
+    copy={c}
+    posts={all}
+    topics={topicList.filter((t) => t.id !== topic.id)}
+    size="S"
+    label={c.otherTopics}
+  />
+</Base>
+
+<script>
+  // With JavaScript, tags filter the list in place; without it they are
+  // plain links to the tag pages.
+  const nav = document.querySelector<HTMLElement>("[data-tag-filter]");
+  const items = document.querySelectorAll<HTMLElement>("[data-board-item]");
+  nav?.addEventListener("click", (event) => {
+    const tag = (event.target as HTMLElement).closest<HTMLAnchorElement>(
+      "a[data-tag]",
+    );
+    if (!tag || event.metaKey || event.ctrlKey) return;
+    event.preventDefault();
+    const wanted = tag.dataset.tag || "";
+    nav
+      .querySelectorAll("a[data-tag]")
+      .forEach((a) =>
+        a === tag
+          ? a.setAttribute("aria-current", "page")
+          : a.removeAttribute("aria-current"),
+      );
+    items.forEach((item) => {
+      item.hidden =
+        !!wanted && !(item.dataset.tags || "").split(" ").includes(wanted);
+    });
+  });
+</script>
+
+<style>
+  .topic-hero-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 20px 48px;
+    text-align: center;
+  }
+  .topic-description {
+    max-width: 56ch;
+    margin-top: 12px;
+    color: var(--secondary);
+    font-size: 19px;
+  }
+  .topic-count {
+    font: 600 13px/1 var(--mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 10px;
+    margin-bottom: 32px;
+  }
+  .page-wide + :global(.topics-row) {
+    margin-top: 72px;
+  }
+</style>

@@ -2,14 +2,11 @@
 title: "What does an ETF actually own?"
 description: "An ETF explained with a simple example, plus where to check its investments and costs."
 author: "walau01"
-categories: ["Foundation"]
-tags: ["foundation"]
+tags: ["ETF", "fees"]
+topic: "investing-101"
 draft: false
-journal_category: "foundation"
 minutes: 2
-motif: "etf"
 order: 3
-issue: 3
 sample_draft: true
 takeaway: "Look at what a fund owns, how it chooses investments and what it costs. Its name alone cannot tell you that."
 references:

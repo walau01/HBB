@@ -6,6 +6,8 @@ import "@/styles/neon.css";
 import Icon from "@/layouts/journal/Icon.astro";
 import Header from "@/layouts/components/Header.astro";
 import Footer from "@/layouts/components/Footer.astro";
+import Signboard from "@/layouts/components/Signboard.astro";
+import { topicList } from "@/lib/topics";
 import config from "@/config/config.json";
 import theme from "@/config/theme.json";
 import { getTranslations } from "@/lib/utils/languageParser";
@@ -17,6 +19,7 @@ import {
   languages,
   languageNames,
   searchText,
+  shortMinutes,
   type Lang,
 } from "@/lib/journal";
 import {
@@ -82,12 +85,11 @@ const structuredData =
       }
     : undefined);
 const searchData = posts.map((p) => ({
-  title: p.text[lang].title,
-  summary: p.text[lang].summary,
-  category: c.categories[p.category],
+  title: p.title,
+  topic: p.topic.id,
   href: url(lang, `blog/${p.slug}`),
-  searchText: searchText(p, c),
-  sample: p.sample,
+  minutes: shortMinutes(p.minutes, c),
+  searchText: searchText(p, lang),
 }));
 type NavItem = { key: string; name: string; url: string };
 const nav = (mainMenu as NavItem[]).map((n) => ({
@@ -198,7 +200,10 @@ const alternatePath = (l: Lang) =>
         <GoogleTagmanager id={config.google_tag_manager.gtm_id} />
       )
     }
-    <script is:inline define:vars={{ defaultTheme: config.settings.default_theme }}>
+    <script
+      is:inline
+      define:vars={{ defaultTheme: config.settings.default_theme }}
+    >
       try {
         document.documentElement.dataset.theme =
           localStorage.getItem("walau01-theme") || defaultTheme;
@@ -236,27 +241,37 @@ const alternatePath = (l: Lang) =>
       aria-labelledby="search-title"
       aria-describedby="search-instructions"
     >
-      <div class="search-head">
-        <h2 id="search-title">{c.search}</h2><button
-          class="icon-button"
-          data-search-close
-          aria-label={c.close}><Icon name="close" /></button
-        >
+      <div class="search-pad">
+        <div class="search-head">
+          <h2 id="search-title">{c.search}</h2><button
+            class="icon-button"
+            data-search-close
+            aria-label={c.close}><Icon name="close" /></button
+          >
+        </div>
+        <div class="search-input-wrap">
+          <Icon name="search" /><input
+            id="journal-search"
+            type="search"
+            placeholder={c.searchPlaceholder}
+            autocomplete="off"
+            aria-label={c.search}
+          />
+        </div>
+        <p class="search-instructions" id="search-instructions">
+          {c.searchInitial}
+        </p>
+        <div id="search-results" class="search-results" aria-live="polite">
+        </div>
+        <p class="search-hint"><kbd>Esc</kbd> {c.escape}</p>
       </div>
-      <div class="search-input-wrap">
-        <Icon name="search" /><input
-          id="journal-search"
-          type="search"
-          placeholder={c.searchPlaceholder}
-          autocomplete="off"
-          aria-label={c.search}
-        />
-      </div>
-      <p class="search-instructions" id="search-instructions">
-        {c.searchInitial}
-      </p>
-      <div id="search-results" class="search-results" aria-live="polite"></div>
-      <p class="search-hint"><kbd>Esc</kbd> {c.escape}</p>
+      {
+        topicList.map((t) => (
+          <template data-topic-badge={t.id}>
+            <Signboard topic={t} lang={lang} size="S" />
+          </template>
+        ))
+      }
     </dialog>
     <script
       is:inline
@@ -265,8 +280,6 @@ const alternatePath = (l: Lang) =>
       set:html={JSON.stringify({
         posts: searchData,
         empty: c.searchEmpty,
-        initial: c.searchInitial,
-        sample: c.draft,
       }).replace(/</g, "\\u003c")}
     />
     <script>
@@ -316,18 +329,22 @@ const alternatePath = (l: Lang) =>
         found.forEach(
           (p: {
             title: string;
-            category: string;
+            topic: string;
             href: string;
-            sample: boolean;
+            minutes: string;
           }) => {
             const a = document.createElement("a");
             a.href = p.href;
-            const label = document.createElement("span");
-            label.textContent =
-              p.category + (p.sample ? ` · ${data.sample}` : "");
+            const badge = document.querySelector<HTMLTemplateElement>(
+              `template[data-topic-badge="${p.topic}"]`,
+            );
+            if (badge) a.append(badge.content.cloneNode(true));
             const title = document.createElement("strong");
             title.textContent = p.title;
-            a.append(label, title);
+            const time = document.createElement("span");
+            time.className = "search-time";
+            time.textContent = p.minutes;
+            a.append(title, time);
             results.append(a);
           },
         );
@@ -375,9 +392,8 @@ const alternatePath = (l: Lang) =>
           openSearch();
         }
       });
-      const menus = document.querySelectorAll<HTMLDetailsElement>(
-        ".header-menu",
-      );
+      const menus =
+        document.querySelectorAll<HTMLDetailsElement>(".header-menu");
       document.addEventListener("click", (event) => {
         menus.forEach((menu) => {
           if (!menu.contains(event.target as Node)) menu.open = false;

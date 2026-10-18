@@ -1,3 +1,17 @@
 # Bahasa Melayu was retired; send old /ms/ links to the English page.
 /ms /  301
 /ms/* /:splat 301
+
+# Old topics → the new topic pages (2026 redesign).
+/topics/investing-basics /topics/investing-101 301
+/topics/investing-questions /topics/beneath-the-surface 301
+/topics/life /topics/off-the-clock 301
+/zh/topics/investing-basics /zh/topics/investing-101 301
+/zh/topics/investing-questions /zh/topics/beneath-the-surface 301
+/zh/topics/life /zh/topics/off-the-clock 301
+
+# Categories were replaced by topics and tags.
+/categories /blog 301
+/categories/* /blog 301
+/zh/categories /zh/blog 301
+/zh/categories/* /zh/blog 301

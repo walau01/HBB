@@ -1,0 +1,63 @@
+---
+// Tilted green band of article questions, separated by ✦. Decorative: the
+// same articles are listed as links on the board below.
+interface Props {
+  questions: string[];
+}
+const { questions } = Astro.props;
+const line = questions.join(" ✦ ") + " ✦ ";
+---
+
+<div class="question-banner" aria-hidden="true">
+  <div class="question-track">
+    <span>{line}</span><span>{line}</span>
+  </div>
+</div>
+
+<style>
+  .question-banner {
+    margin: 24px -20px;
+    padding: 16px 0;
+    overflow: hidden;
+    background: var(--kopi);
+    color: var(--mustard);
+    box-shadow: 0 6px 0 var(--shadow);
+    transform: rotate(-2deg);
+    font:
+      400 34px/1 var(--font-secondary),
+      var(--display);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  :global(:lang(zh)) .question-banner {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 30px;
+  }
+  :global([data-theme="dark"]) .question-banner {
+    color: var(--color-neon-gold);
+    text-shadow: var(--glow-gold);
+    box-shadow: none;
+  }
+  .question-track {
+    display: flex;
+    width: max-content;
+    animation: question-scroll 60s linear infinite;
+  }
+  .question-track span {
+    padding-right: 0.5em;
+  }
+  .question-banner:hover .question-track {
+    animation-play-state: paused;
+  }
+  @keyframes question-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .question-track {
+      animation: none;
+    }
+  }
+</style>

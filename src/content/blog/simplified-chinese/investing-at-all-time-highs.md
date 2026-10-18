@@ -2,14 +2,11 @@
 title: "市场创新高时应该投资吗？"
 description: "现在投资还是等待？看看公平比较需要哪些条件。"
 author: "walau01"
-categories: ["观念与证据"]
-tags: ["bridge"]
+tags: ["择时", "长期投资"]
+topic: "beneath-the-surface"
 draft: false
-journal_category: "bridge"
 minutes: 2
-motif: "ath"
 order: 2
-issue: 2
 sample_draft: true
 takeaway: "新高可以是研究的起点，但还不是完整的投资规则。"
 ---

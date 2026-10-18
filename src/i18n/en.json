@@ -1,144 +1,81 @@
 {
   "journal": {
-    "place": "PENANG, MALAYSIA",
-    "about": "About",
-    "search": "Search articles",
-    "menu": "Menu",
-    "theme": "Switch colour theme",
-    "language": "Language",
-    "eyebrow": "AN INDEPENDENT INVESTING BLOG",
-    "intro": "Notes on ETFs, investing costs, and the decisions behind a portfolio. Sharing what I learn, from a Malaysian perspective.",
-    "browse": "Browse articles",
-    "read": "Read article",
-    "draft": "Sample draft",
-    "recent": "From the blog",
-    "all": "All articles",
-    "categories": {
-      "research": "Investing questions",
-      "bridge": "Investing questions",
-      "foundation": "Investing basics",
-      "life": "Life"
-    },
-    "methodTitle": "How I research an article",
-    "steps": [
-      [
-        "01",
-        "Ask a real question",
-        "Begin with something that matters to an investor."
-      ],
-      [
-        "02",
-        "Read the evidence",
-        "Look at the source, the method, and what might be missing."
-      ],
-      [
-        "03",
-        "Keep the trade-offs",
-        "Share a useful conclusion, including what could change it."
-      ]
-    ],
-    "footerLine": "Rational finance and side thoughts.",
-    "authorBio": "A Malaysian investor sharing research on ETFs, portfolio decisions and investing costs.",
-    "articleDisclaimer": "Content on walau01.com is for information and education only. It is not professional financial advice or a personal investment recommendation.",
-    "footerNote": "Personal research and reflections. General information, not individual financial advice.",
-    "archiveEyebrow": "LEARN AT YOUR OWN PACE",
-    "archiveTitle": "Articles",
-    "archiveText": "Find a question worth exploring. Browse by topic, or search for something on your mind.",
-    "filterAll": "All articles",
-    "filterLabel": "Choose a topic",
-    "searchPlaceholder": "Search a topic or question…",
-    "searchEmpty": "No articles match that search.",
-    "searchInitial": "Search titles, topics, or words inside an article.",
-    "showing": "articles",
-    "readTime": "min read",
-    "back": "Back to articles",
-    "toc": "In this article",
-    "takeaway": "Main takeaway",
-    "references": "Sources to explore",
-    "sampleNotice": "This is sample editorial content for the design prototype, not a published research article.",
-    "aboutEyebrow": "A NOTE FROM WALAU01",
-    "notFound": "Page not found",
-    "footerNav": "Footer",
     "skip": "Skip to content",
-    "close": "Close search",
-    "escape": "to close",
-    "homeTitle": "walau01 · ETFs & investing from Malaysia",
     "brandHome": "walau01 home",
-    "sourceIntro": "A finished research article will cite original sources beside its claims and numbers. These are starting points for further research.",
-    "notebook": "WALAU01 / THE NOTEBOOK",
-    "mediaPlay": "Play animation",
-    "mediaPause": "Pause animation",
-    "nextArticle": "Read next",
-    "guide": {
-      "title": "Start here",
-      "intro": "New to investing? Follow these three steps. You do not need to know the technical terms first.",
-      "welcomeTitle": "New to investing?",
-      "welcomeText": "A short reading guide, with a clear explanation at each step.",
-      "link": "Follow the beginner guide",
-      "steps": [
-        {
-          "title": "Understand what you own",
-          "text": "What is an ETF? See how a fund holds a collection of investments and why its contents matter.",
-          "action": "Read about ETFs"
-        },
-        {
-          "title": "See how money grows",
-          "text": "Understand compounding with a simple example, an image and an animation.",
-          "action": "See the example"
-        },
-        {
-          "title": "Understand the costs",
-          "text": "Learn why fund expenses and the price of buying or selling both matter when choosing an ETF.",
-          "action": "Read about ETF costs"
-        }
-      ],
-      "sample": "The articles below are sample drafts, as labelled. They are not published research.",
-      "more": "Ready for more? Browse articles by topic.",
-      "glossaryTitle": "Three terms you will meet",
-      "terms": [
-        {
-          "term": "ETF",
-          "meaning": "Exchange-traded fund: a fund you can buy and sell on an exchange. Its investments depend on the fund."
-        },
-        {
-          "term": "Compounding",
-          "meaning": "Growth builds on your starting money and on earlier growth."
-        },
-        {
-          "term": "Fees",
-          "meaning": "The costs of owning a fund and buying or selling investments. Small differences can add up over time."
-        }
-      ],
-      "homeTitle": "Start with the essentials."
-    },
-    "headline": "Investing, explained simply.",
-    "searchShort": "Search",
-    "clearSearch": "Clear search",
-    "searchHelp": "Try a shorter phrase or another word.",
-    "exploreTopics": "Explore a topic",
-    "topicsTitle": "Topics",
-    "tagsTitle": "Tags",
-    "taxonomyDescription": "Browse articles about {topic}, with clear explanations and a Malaysian perspective.",
-    "notFoundText": "This page may have moved or been removed. You can find something to read in the blog.",
-    "topics": {
-      "investing-basics": {
-        "title": "Investing basics",
-        "description": "Start with ETFs, compounding, and the costs of investing. Plain-language explanations for building your understanding."
-      },
-      "investing-questions": {
-        "title": "Investing questions",
-        "description": "Explore ETF costs, portfolio choices, and common investing claims. Follow the evidence and the trade-offs, with Malaysia in the picture."
-      },
-      "life": {
-        "title": "Life",
-        "description": "Notes on fitness, AI, work, and everyday life. A little room for the things beyond investing."
-      }
-    },
+    "menu": "Menu",
+    "language": "Language",
+    "themeLabel": "Colour theme:",
     "day": "Day",
     "night": "Night",
-    "themeLabel": "Colour theme:",
+    "search": "Search articles",
+    "searchShort": "Search",
+    "searchPlaceholder": "Try ETF or FIRE",
+    "searchEmpty": "No articles match. Try another word.",
+    "searchInitial": "Search titles, topics, or words inside an article.",
+    "close": "Close search",
+    "escape": "to close",
+    "clearSearch": "Clear search",
+    "footerNav": "Footer",
+    "footerLine": "Rational finance and side thoughts.",
+    "footerNote": "Personal research and reflections. General information, not individual financial advice.",
+    "homeTitle": "walau01 · Rational finance and side thoughts",
+    "taglineA": "Rational finance",
+    "taglineB": "and side thoughts.",
+    "intro": "Notes on ETFs, investing costs, and the decisions behind a portfolio. Sharing what I learn, from a Malaysian perspective.",
+    "exploreTopics": "Explore Topics",
+    "aboutAuthor": "About the author",
+    "chitTitle": "Can't decide? Start here",
+    "chitNote": "No jargon needed first.",
+    "chitButton": "Start reading →",
+    "total": "TOTAL",
+    "stamp": "RATIONAL FINANCE · SIDE THOUGHTS · ",
+    "stampLabel": "Rational finance, side thoughts",
     "topicsLabel": "Topics",
     "articleCount": "{n} articles",
-    "articleCountOne": "1 article"
+    "articleCountOne": "1 article",
+    "minShort": "{n} MIN",
+    "minRead": "{n} min read",
+    "minReadStamp": "{n} MIN READ",
+    "boardTitle": "All articles",
+    "boardText": "Every article so far, grouped by topic, with read times.",
+    "boardNote": "All articles are sample drafts while the research is checked.",
+    "aboutTitle": "About the author",
+    "authorBio": "A Malaysian investor sharing research on ETFs, portfolio decisions and investing costs.",
+    "aboutLink": "More about me →",
+    "otherTopics": "Other topics",
+    "tagAll": "All",
+    "filterLabel": "Choose a topic",
+    "toc": "In this article",
+    "takeaway": "The short version",
+    "sources": "Sources",
+    "tagsTitle": "Tags",
+    "tagsText": "Every tag used so far, with how many articles carry it.",
+    "next": "Next up",
+    "back": "All articles",
+    "articleDisclaimer": "Content on walau01.com is for information and education only. It is not professional financial advice or a personal investment recommendation.",
+    "resultsCount": "{n} articles",
+    "resultsCountOne": "1 article",
+    "searchHelp": "Try a shorter phrase or another word.",
+    "tagPageTitle": "Tagged: {tag}",
+    "tagPageText": "Every article tagged {tag}, from all topics.",
+    "startIntro": "Three short reads, in order. No jargon needed first.",
+    "startAfter": "Then explore the topics",
+    "startWhy": [
+      "See what a fund really holds before you buy one.",
+      "Watch how time does part of the work, and what the assumptions mean.",
+      "Learn why both owning costs and trading costs matter when you compare ETFs."
+    ],
+    "read": "Read →",
+    "topicsPageText": "Pick a topic to see its articles.",
+    "notFound": "Walau, page not found.",
+    "notFoundText": "This page moved or never existed.",
+    "notFoundButton": "Back to home",
+    "mediaPlay": "Play animation",
+    "mediaPause": "Pause animation",
+    "author": "Author",
+    "startTitle": "Start here",
+    "topicsTitle": "Topics",
+    "topicCount": "{n} articles",
+    "topicCountOne": "1 article"
   }
 }

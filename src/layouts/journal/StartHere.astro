@@ -1,68 +1,63 @@
 ---
+// Start here: the order chit expanded into a page, with a fixed beginner path.
 import Base from "@/layouts/Base.astro";
-import { getCopy, url, type Lang } from "@/lib/journal";
+import OrderChit from "@/layouts/components/OrderChit.astro";
+import TopicsRow from "@/layouts/components/TopicsRow.astro";
+import {
+  beginnerPath,
+  getCopy,
+  getPosts,
+  pickSlugs,
+  type Lang,
+} from "@/lib/journal";
 const { lang } = Astro.props as { lang: Lang };
 const c = await getCopy(lang);
-const links = [
-  "blog/what-you-own-in-an-etf",
-  "blog/the-quiet-work-of-compounding",
-  "blog/are-malaysian-etfs-bad",
-];
+const posts = await getPosts(lang);
+const steps = pickSlugs(posts, beginnerPath);
 ---
 
 <Base
   lang={lang}
-  title={c.guide.title}
-  description={c.guide.intro}
+  title={c.startTitle}
+  description={c.startIntro}
   active="foundation"
   currentPath="start-here"
 >
-  <div class="container beginner-guide">
-    <header>
-      <p class="eyebrow">walau01</p><h1>{c.guide.title}</h1><p>
-        {c.guide.intro}
-      </p>
-    </header>
-    <p class="guide-sample">{c.guide.sample}</p>
-    <ol class="guide-steps">
-      {
-        c.guide.steps.map((step, i) => (
-          <li>
-            <>
-              <span class="guide-number" aria-hidden="true">
-                {i + 1}
-              </span>
-              <div>
-                <>
-                  <h2>{step.title}</h2>
-                  <p>{step.text}</p>
-                  <a class="text-link" href={url(lang, links[i])}>
-                    {step.action} →
-                  </a>
-                </>
-              </div>
-            </>
-          </li>
-        ))
-      }
-    </ol>
-    <section class="guide-glossary">
-      <h2>{c.guide.glossaryTitle}</h2><dl>
-        {
-          c.guide.terms.map((term) => (
-            <div>
-              <>
-                <dt>{term.term}</dt>
-                <dd>{term.meaning}</dd>
-              </>
-            </div>
-          ))
-        }
-      </dl>
-    </section>
-    <p class="guide-more">
-      {c.guide.more}
-      <a class="text-link" href={url(lang, "blog")}>{c.browse} →</a>
-    </p>
+  <div class="start-page">
+    <OrderChit
+      class="start-chit"
+      lang={lang}
+      copy={c}
+      title={c.chitTitle}
+      titleTag="h1"
+      intro={c.startIntro}
+      picks={steps}
+      why={c.startWhy}
+      button={false}
+    />
   </div>
+  <TopicsRow lang={lang} copy={c} posts={posts} size="S" label={c.startAfter} />
 </Base>
+
+<style>
+  .start-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 72px 24px 80px;
+  }
+  .start-page :global(.chit-title) {
+    font-size: 18px;
+  }
+  .start-page :global(.chit-list) {
+    gap: 22px;
+  }
+  .start-page :global(.chit-body > a:first-child) {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  @media (max-width: 600px) {
+    .start-page {
+      padding: 56px 12px 56px;
+    }
+  }
+</style>

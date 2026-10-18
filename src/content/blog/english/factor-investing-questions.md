@@ -2,14 +2,11 @@
 title: "Can an investing strategy improve returns?"
 description: "Questions to ask before trusting an investment strategy with your money."
 author: "walau01"
-categories: ["Core Research"]
-tags: ["research"]
+tags: ["strategy", "evidence"]
+topic: "beneath-the-surface"
 draft: false
-journal_category: "research"
 minutes: 2
-motif: "factor"
 order: 4
-issue: 4
 sample_draft: true
 takeaway: "A good result in the past is a reason to investigate a strategy, not a guarantee about its future."
 ---

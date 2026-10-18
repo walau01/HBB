@@ -2,14 +2,11 @@
 title: "ETF 到底持有什么？"
 description: "用一个简单例子认识 ETF，并了解在哪里查看它的投资与费用。"
 author: "walau01"
-categories: ["基础知识"]
-tags: ["foundation"]
+tags: ["ETF", "费用"]
+topic: "investing-101"
 draft: false
-journal_category: "foundation"
 minutes: 2
-motif: "etf"
 order: 3
-issue: 3
 sample_draft: true
 takeaway: "先看基金持有什么、如何选择投资，以及需要支付什么费用。名称本身无法告诉你这些。"
 references:

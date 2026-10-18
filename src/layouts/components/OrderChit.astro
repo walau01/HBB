@@ -1,0 +1,302 @@
+---
+// Tilted paper receipt: heading, numbered articles with read times, TOTAL,
+// barcode and a dark button, with the stamp on its corner. With `random`,
+// the browser swaps in three random articles on each visit; the HTML keeps
+// the given picks for search engines and visitors without JavaScript.
+import Stamp from "@/layouts/components/Stamp.astro";
+import {
+  shortMinutes,
+  url,
+  type JournalCopy,
+  type Lang,
+  type Post,
+} from "@/lib/journal";
+
+interface Props {
+  lang: Lang;
+  copy: JournalCopy;
+  title: string;
+  picks: Post[];
+  /** Every article, for the random picks. */
+  pool?: Post[];
+  note?: string;
+  intro?: string;
+  /** Start here: each step gets a "why read this" line and a Read link. */
+  why?: string[];
+  button?: boolean;
+  titleTag?: "h1" | "h2";
+  class?: string;
+}
+const {
+  lang,
+  copy: c,
+  title,
+  picks,
+  pool,
+  note,
+  intro,
+  why,
+  button = true,
+  titleTag: Title = "h2",
+  class: className,
+} = Astro.props;
+const item = (p: Post) => ({
+  title: p.title,
+  href: url(lang, `blog/${p.slug}`),
+  minutes: p.minutes,
+});
+const total = picks.reduce((sum, p) => sum + p.minutes, 0);
+const bars =
+  "M2 0v30M6 0v30M9 0v30M15 0v30M18 0v30M24 0v30M26 0v30M31 0v30M37 0v30M40 0v30M44 0v30M50 0v30M53 0v30M57 0v30M63 0v30M65 0v30M71 0v30M76 0v30M79 0v30M83 0v30M89 0v30M92 0v30M98 0v30M101 0v30M106 0v30M112 0v30M115 0v30M119 0v30M124 0v30M127 0v30M133 0v30M138 0v30M141 0v30M146 0v30M150 0v30M156 0v30M159 0v30M163 0v30M169 0v30M172 0v30M177 0v30M183 0v30M186 0v30M190 0v30M196 0v30M198 0v30";
+---
+
+<div class:list={["chit-wrap", className]} data-chit={pool ? "" : undefined}>
+  <div class="chit">
+    <div class="chit-paper">
+      <Title class="chit-title">{title}</Title>
+      {intro && <p class="chit-intro">{intro}</p>}
+      <p class="chit-rule" aria-hidden="true"></p>
+      <ol class="chit-list" data-chit-list>
+        {
+          picks.map((p, i) => (
+            <li>
+              <span class="chit-qty" aria-hidden="true">
+                {why ? `${i + 1}x` : "1x"}
+              </span>
+              <span class="chit-body">
+                <a href={url(lang, `blog/${p.slug}`)}>{p.title}</a>
+                {why && <span class="chit-why">{why[i]}</span>}
+                {why && (
+                  <a class="chit-read" href={url(lang, `blog/${p.slug}`)}>
+                    {c.read}
+                  </a>
+                )}
+              </span>
+              <span class="chit-min">{shortMinutes(p.minutes, c)}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="chit-rule" aria-hidden="true"></p>
+      <p class="chit-total">
+        <span>{c.total}</span><span data-chit-total
+          >{shortMinutes(total, c)}</span
+        >
+      </p>
+      {note && <p class="chit-note">{note}</p>}
+      <svg class="chit-barcode" viewBox="0 0 200 30" aria-hidden="true"
+        ><path d={bars}></path></svg
+      >
+      {
+        button && (
+          <a
+            class="chit-button"
+            href={url(lang, `blog/${picks[0].slug}`)}
+            data-chit-start
+          >
+            {c.chitButton}
+          </a>
+        )
+      }
+    </div>
+    <div class="chit-zigzag" aria-hidden="true"></div>
+  </div>
+  <Stamp class="chit-stamp" text={c.stamp} label={c.stampLabel} />
+  {
+    pool && (
+      <script
+        is:inline
+        type="application/json"
+        data-chit-pool
+        set:html={JSON.stringify({
+          posts: pool.map(item),
+          min: c.minShort,
+        }).replace(/</g, "\\u003c")}
+      />
+    )
+  }
+</div>
+
+<script>
+  // Three random articles on each visit (the HTML ships sensible defaults).
+  document.querySelectorAll<HTMLElement>("[data-chit]").forEach((chit) => {
+    const data = JSON.parse(
+      chit.querySelector("[data-chit-pool]")?.textContent || "{}",
+    ) as {
+      posts?: { title: string; href: string; minutes: number }[];
+      min?: string;
+    };
+    const posts = data.posts || [];
+    const items = chit.querySelectorAll<HTMLLIElement>("[data-chit-list] li");
+    if (posts.length < items.length) return;
+    const picks = [...posts]
+      .map((p) => ({ p, r: Math.random() }))
+      .sort((a, b) => a.r - b.r)
+      .slice(0, items.length)
+      .map(({ p }) => p);
+    const minutes = (n: number) =>
+      (data.min || "{n}").replace("{n}", String(n));
+    items.forEach((li, i) => {
+      const link = li.querySelector("a");
+      const time = li.querySelector(".chit-min");
+      if (link) {
+        link.href = picks[i].href;
+        link.textContent = picks[i].title;
+      }
+      if (time) time.textContent = minutes(picks[i].minutes);
+    });
+    const total = chit.querySelector("[data-chit-total]");
+    if (total)
+      total.textContent = minutes(picks.reduce((s, p) => s + p.minutes, 0));
+    const start = chit.querySelector<HTMLAnchorElement>("[data-chit-start]");
+    if (start) start.href = picks[0].href;
+  });
+</script>
+
+<style>
+  .chit-wrap {
+    position: relative;
+    padding: 30px 0 0 10px;
+  }
+  .chit {
+    transform: rotate(-3deg);
+    filter: drop-shadow(10px 14px 0 rgb(28 23 18 / 0.18));
+  }
+  :global([data-theme="dark"]) .chit {
+    filter: drop-shadow(0 0 40px rgb(255 190 110 / 0.35));
+  }
+  .chit-paper {
+    padding: 28px 28px 18px;
+    background: var(--chit);
+    color: var(--chit-ink);
+    font: 15px/1.6 var(--mono);
+  }
+  .chit-title {
+    margin: 0;
+    /* Leave room for the stamp on the corner. */
+    padding-inline: 0 92px;
+    font: 600 15px/1.5 var(--mono);
+    letter-spacing: 0.18em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .chit-intro {
+    margin-top: 6px;
+    padding-right: 92px;
+    color: #5c5142;
+    font-size: 14px;
+    text-align: center;
+  }
+  .chit-rule {
+    margin: 14px 0;
+    border-top: 2px dashed var(--chit-rule);
+  }
+  .chit-list {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .chit-list li {
+    display: flex;
+    gap: 12px;
+  }
+  .chit-qty,
+  .chit-min {
+    flex: none;
+    font-weight: 600;
+  }
+  .chit-min {
+    white-space: nowrap;
+  }
+  .chit-body {
+    display: grid;
+    flex: 1;
+    gap: 4px;
+  }
+  .chit-body > a:first-child:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .chit-why {
+    color: #5c5142;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .chit-read {
+    justify-self: start;
+    font-weight: 600;
+    color: #9e1b14;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .chit-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  .chit-note {
+    margin-top: 8px;
+    color: #5c5142;
+    font-size: 13px;
+  }
+  .chit-barcode {
+    display: block;
+    width: 100%;
+    height: 30px;
+    margin-top: 14px;
+  }
+  .chit-barcode path {
+    stroke: var(--chit-ink);
+    stroke-width: 2;
+  }
+  .chit-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    padding: 13px;
+    background: var(--chit-ink);
+    color: var(--chit);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+  .chit-button:hover {
+    background: #c8261d;
+    color: #fff8ea;
+  }
+  .chit-paper :focus-visible {
+    outline: 3px solid #c8261d;
+    outline-offset: 3px;
+  }
+  .chit-zigzag {
+    height: 14px;
+    background:
+      linear-gradient(135deg, var(--chit) 7px, transparent 0) 0 0 / 14px 14px
+        repeat-x,
+      linear-gradient(225deg, var(--chit) 7px, transparent 0) 0 0 / 14px 14px
+        repeat-x;
+  }
+  .chit-wrap :global(.chit-stamp) {
+    position: absolute;
+    top: -30px;
+    right: -18px;
+    transform: rotate(12deg);
+  }
+  @media (max-width: 700px) {
+    .chit {
+      transform: rotate(-1.5deg);
+    }
+    .chit-wrap :global(.chit-stamp) {
+      width: 120px;
+      height: 120px;
+      top: -36px;
+      right: -8px;
+    }
+    .chit-paper {
+      padding: 24px 20px 16px;
+      font-size: 14px;
+    }
+  }
+</style>

@@ -1,6 +1,6 @@
 ---
 import Archive from "@/layouts/journal/Archive.astro";
-import { getCopy, getPosts, normalizeLang } from "@/lib/journal";
+import { getPosts, normalizeLang } from "@/lib/journal";
 import { supportedLang } from "@/lib/utils/languageParser";
 import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import { slugify } from "@/lib/utils/textConverter";
@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   return (
     await Promise.all(
       supportedLang.map(async (lang) =>
-        (await getTaxonomy(normalizeLang(lang), "tags")).map((value) => ({
+        (await getTaxonomy(normalizeLang(lang))).map((value) => ({
           params: { lang: lang || undefined, tag: value },
         })),
       ),
@@ -16,21 +16,11 @@ export async function getStaticPaths() {
   ).flat();
 }
 const lang = normalizeLang(Astro.params.lang);
-const c = await getCopy(lang);
+const slug = Astro.params.tag!;
 const posts = (await getPosts(lang)).filter((p) =>
-  p.entry.data.tags.some((label) => slugify(label) === Astro.params.tag),
+  p.tags.some((label) => slugify(label) === slug),
 );
-const title =
-  posts[0]?.entry.data.tags.find(
-    (label) => slugify(label) === Astro.params.tag,
-  ) || Astro.params.tag!;
+const label = posts[0]?.tags.find((t) => slugify(t) === slug) || slug;
 ---
 
-<Archive
-  lang={lang}
-  selectedPosts={posts}
-  heading={title}
-  description={c.taxonomyDescription.replace("{topic}", title)}
-  currentPath={`tags/${Astro.params.tag}`}
-  legacy
-/>
+<Archive lang={lang} tag={{ slug, label, posts }} />

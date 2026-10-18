@@ -16,7 +16,7 @@ interface Props {
   class?: string;
 }
 const { topic, lang, size = "L", href, label, class: className } = Astro.props;
-const Tag = href ? "a" : "div";
+const Tag = href ? "a" : "span";
 const text = topic.signText[lang];
 const name = label || topic.name[lang];
 const bulbs = Array.from({ length: 11 });
