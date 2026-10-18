@@ -8,7 +8,7 @@ Originally based on the [Astroplate](https://github.com/zeon-studio/astroplate) 
 
 - Journal-style home, article archive with topic filters and in-page search
 - Site-wide search dialog (`/` or `Ctrl/⌘ + K`)
-- Light / dark theme
+- Day / Night theme with neon at night (`src/styles/neon.css`, `src/lib/neon.ts`)
 - Tags, categories and topic pages
 - Translations validated at build time (`scripts/validateTranslations.js`)
 - Sitemap that respects each page's canonical URL and `noindex`
@@ -32,7 +32,10 @@ pnpm install
 pnpm run dev      # local dev server
 pnpm run build    # validate translations, build to dist/, generate llms files
 pnpm run check    # type-check
+pnpm run fonts    # re-download fonts; rerun after adding Chinese headings or copy
 ```
+
+Fonts are self-hosted in `public/fonts`. The Chinese display font (Noto Serif SC 900) is subset to the characters used in `src/i18n/zh.json`, the 中文 menus and article titles and headings, so rerun `pnpm run fonts` when those change.
 
 ## LLM files
 

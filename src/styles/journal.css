@@ -1,27 +1,3 @@
-@font-face {
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 400 800;
-  font-display: swap;
-  src: url(/fonts/dm-sans-latin.woff2) format("woff2");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: "Libre Caslon Display";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(/fonts/libre-caslon-display-latin.woff2) format("woff2");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-
 :root {
   --paper: var(--color-body);
   --surface: var(--color-surface);
@@ -35,10 +11,38 @@
   --navy-text: var(--color-navy-text);
   --navy-muted: var(--color-navy-muted);
   --link: var(--color-link);
-  --serif: var(--font-secondary), Georgia, "Noto Serif CJK SC", serif;
+  --red: var(--color-red);
+  --red-dark: var(--color-red-dark);
+  --red-text: var(--color-red-text);
+  --on-red: var(--color-on-red);
+  --mustard: var(--color-mustard);
+  --mustard-ink: var(--color-mustard-ink);
+  --kopi: var(--color-kopi);
+  --on-kopi: var(--color-on-kopi);
+  --chit: var(--color-paper);
+  --chit-ink: var(--color-paper-ink);
+  --chit-rule: var(--color-paper-rule);
+  --shadow: var(--color-shadow);
+  --cjk-sans:
+    "PingFang SC", "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei",
+    "Hiragino Sans GB", sans-serif;
+  --display:
+    var(--font-secondary), "walau01 Serif SC", "Noto Serif SC",
+    "Noto Serif CJK SC", serif;
   --sans:
     var(--font-primary), -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    var(--cjk-sans);
+  --mono:
+    var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, monospace,
+    var(--cjk-sans);
+  /* Older rules still ask for --serif; it is the display face now. */
+  --serif: var(--display);
+}
+/* 中文 pages: Noto Serif SC 900 leads the display stack. */
+:root:lang(zh) {
+  --display:
+    "walau01 Serif SC", "Noto Serif SC", "Noto Serif CJK SC",
+    var(--font-secondary), serif;
 }
 [data-theme="dark"] {
   --paper: var(--color-darkmode-body);
@@ -47,7 +51,15 @@
   --secondary: var(--color-darkmode-text);
   --line: var(--color-darkmode-border);
   --muted: var(--color-darkmode-light);
+  --navy: var(--color-darkmode-navy);
   --link: var(--color-darkmode-link);
+  --red: var(--color-darkmode-red);
+  --red-dark: var(--color-darkmode-red-dark);
+  --red-text: var(--color-darkmode-red-text);
+  --on-red: var(--color-darkmode-on-red);
+  --kopi: var(--color-darkmode-kopi);
+  --chit: var(--color-darkmode-paper);
+  --shadow: var(--color-darkmode-shadow);
   color-scheme: dark;
 }
 * {
@@ -146,19 +158,26 @@ svg {
 .brand {
   display: inline-flex;
   align-items: baseline;
-  font-size: 33px;
-  line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: -0.075em;
+  font:
+    400 36px/1.1 var(--font-secondary),
+    sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 .brand span {
-  font-weight: 450;
+  color: var(--red-text);
 }
 .brand i {
-  width: 7px;
-  height: 7px;
-  margin-left: 5px;
-  background: var(--link);
+  display: none;
+}
+/* Night: the logo is a red neon tube, "01" a gold one. */
+[data-theme="dark"] .brand {
+  color: var(--color-neon-core);
+  text-shadow: var(--glow-red);
+}
+[data-theme="dark"] .brand span {
+  color: var(--color-neon-gold);
+  text-shadow: var(--glow-gold);
 }
 .desktop-nav {
   display: flex;

@@ -1,0 +1,106 @@
+/*
+ * Night neon. Anything marked [data-neon] is a neon tube: components give it
+ * its lit look under [data-theme="dark"] using the glows below, and this file
+ * handles the motion (flicker-on, hum, random blink). The glow is decoration
+ * only: lit text must keep its contrast without it.
+ */
+:root {
+  --glow-red:
+    0 0 4px var(--color-neon-core), 0 0 12px var(--color-neon-red),
+    0 0 28px var(--color-neon-red-deep);
+  --glow-red-big:
+    0 0 6px var(--color-neon-core), 0 0 18px var(--color-neon-red),
+    0 0 42px var(--color-neon-red-deep), 0 0 80px var(--color-neon-red-deep);
+  --glow-gold:
+    0 0 4px var(--color-neon-core), 0 0 12px var(--color-neon-gold-glow),
+    0 0 26px var(--color-neon-amber);
+  --glow-pink:
+    0 0 4px var(--color-neon-core), 0 0 10px var(--color-neon-pink),
+    0 0 26px var(--color-neon-pink);
+  --glow-cyan:
+    0 0 4px var(--color-neon-core), 0 0 12px var(--color-neon-cyan),
+    0 0 26px var(--color-neon-cyan);
+}
+
+@keyframes neon-flicker-on {
+  0% {
+    opacity: 0.1;
+  }
+  6% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0.15;
+  }
+  18% {
+    opacity: 1;
+  }
+  22% {
+    opacity: 0.35;
+  }
+  30% {
+    opacity: 1;
+  }
+  34% {
+    opacity: 0.6;
+  }
+  40%,
+  100% {
+    opacity: 1;
+  }
+}
+/* A rare, subtle dip, like a tube on a tired transformer. */
+@keyframes neon-hum {
+  0%,
+  95%,
+  100% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.55;
+  }
+  97% {
+    opacity: 1;
+  }
+  98.5% {
+    opacity: 0.75;
+  }
+}
+@keyframes neon-double-blink {
+  0%,
+  30%,
+  60%,
+  100% {
+    opacity: 1;
+  }
+  15%,
+  45% {
+    opacity: 0.2;
+  }
+}
+
+[data-theme="dark"] [data-neon] {
+  animation: neon-hum 7s calc(var(--neon-order, 0) * 1.3s) infinite;
+}
+/* Set for a moment when Night is switched on: tubes light one by one. */
+[data-theme="dark"][data-lighting] [data-neon] {
+  animation:
+    neon-flicker-on 1.1s linear calc(var(--neon-order, 0) * 0.25s) both,
+    neon-hum 7s calc(1.2s + var(--neon-order, 0) * 0.25s) infinite;
+}
+[data-theme="dark"] [data-neon][data-neon-blink] {
+  animation: neon-double-blink 0.6s linear;
+}
+
+/* Reduced motion: everything rests in its final, lit and still state. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
