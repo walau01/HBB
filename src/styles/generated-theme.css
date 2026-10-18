@@ -6,37 +6,66 @@
 
 @theme {
   /* === Colors === */
-  --color-primary: #152b3c;
-  --color-body: #fafbf9;
-  --color-border: #d9dfdf;
-  --color-light: #edf1ed;
-  --color-dark: #152b3c;
-  --color-surface: #ffffff;
-  --color-accent: #d3ef69;
-  --color-accent-ink: #203817;
-  --color-navy: #152b3c;
-  --color-navy-text: #f6f8f4;
-  --color-navy-muted: #b9c7cf;
-  --color-link: #365548;
-  --color-text: #52616a;
-  --color-text-dark: #152b3c;
-  --color-text-light: #52616a;
+  --color-primary: #1C1712;
+  --color-body: #F5E9D2;
+  --color-border: #D8C7A6;
+  --color-light: #EFE1C4;
+  --color-dark: #1C1712;
+  --color-surface: #FFFDF7;
+  --color-accent: #F2B705;
+  --color-accent-ink: #1C1712;
+  --color-navy: #0F3D2E;
+  --color-navy-text: #F5E9D2;
+  --color-navy-muted: #C9B88F;
+  --color-link: #C8261D;
+  --color-red: #C8261D;
+  --color-red-dark: #9E1B14;
+  --color-red-text: #C8261D;
+  --color-on-red: #FFF8EA;
+  --color-mustard: #F2B705;
+  --color-mustard-ink: #1C1712;
+  --color-kopi: #0F3D2E;
+  --color-on-kopi: #F5E9D2;
+  --color-paper: #FFFDF7;
+  --color-paper-ink: #1C1712;
+  --color-paper-rule: #B9A889;
+  --color-shadow: #1C1712;
+  --color-neon-core: #FFFFFF;
+  --color-neon-red: #FF3B2E;
+  --color-neon-red-deep: #E81E1E;
+  --color-neon-gold: #FFE9A8;
+  --color-neon-gold-glow: #FFC22E;
+  --color-neon-amber: #FF9A00;
+  --color-neon-pink: #FF2D95;
+  --color-neon-cyan: #19C9F0;
+  --color-text: #4E4538;
+  --color-text-dark: #1C1712;
+  --color-text-light: #4E4538;
 
   /* === Darkmode Colors === */
-  --color-darkmode-primary: #edf3ef;
-  --color-darkmode-body: #111b23;
-  --color-darkmode-border: #35464f;
-  --color-darkmode-light: #20323d;
-  --color-darkmode-dark: #edf3ef;
-  --color-darkmode-surface: #182731;
-  --color-darkmode-link: #d3ef69;
-  --color-darkmode-text: #b2c1c5;
-  --color-darkmode-text-dark: #edf3ef;
-  --color-darkmode-text-light: #b2c1c5;
+  --color-darkmode-primary: #F3E6CF;
+  --color-darkmode-body: #0D0B0A;
+  --color-darkmode-border: #2C2620;
+  --color-darkmode-light: #1A1714;
+  --color-darkmode-dark: #F3E6CF;
+  --color-darkmode-surface: #171310;
+  --color-darkmode-navy: #081A13;
+  --color-darkmode-link: #F2B705;
+  --color-darkmode-red: #3A0B09;
+  --color-darkmode-red-dark: #240605;
+  --color-darkmode-red-text: #FF6B5E;
+  --color-darkmode-on-red: #F3E6CF;
+  --color-darkmode-kopi: #081A13;
+  --color-darkmode-paper: #EFE4CB;
+  --color-darkmode-shadow: #000000;
+  --color-darkmode-text: #B9AC96;
+  --color-darkmode-text-dark: #F3E6CF;
+  --color-darkmode-text-light: #B9AC96;
 
   /* === Font Families === */
-  --font-primary: DM Sans, sans-serif;
-  --font-secondary: Libre Caslon Display, serif;
+  --font-primary: Archivo, sans-serif;
+  --font-secondary: Anton, sans-serif;
+  --font-mono: IBM Plex Mono, monospace;
 
   /* === Font Sizes === */
   --text-base: 16px;

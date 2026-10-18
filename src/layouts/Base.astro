@@ -1,6 +1,8 @@
 ---
 import "@/styles/main.css";
+import "@/styles/fonts.css";
 import "@/styles/journal.css";
+import "@/styles/neon.css";
 import Icon from "@/layouts/journal/Icon.astro";
 import config from "@/config/config.json";
 import theme from "@/config/theme.json";
@@ -123,7 +125,7 @@ const alternatePath = (l: Lang) =>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="description" content={description} />
     {Astro.props.noindex && <meta name="robots" content="noindex,follow" />}
-    <meta name="theme-color" content={theme.colors.default.theme_color.navy} />
+    <meta name="theme-color" content={theme.colors.default.theme_color.red} />
     <title>{pageTitle}</title>
     <link rel="icon" href={config.site.favicon} type="image/svg+xml" />
     <meta name="generator" content={Astro.generator} />
@@ -216,7 +218,7 @@ const alternatePath = (l: Lang) =>
     <a class="skip-link" href="#main">{c.skip}</a>
     <header class="header">
       <div class="container header-inner">
-        <a href={url(lang)} class="brand" aria-label={c.brandHome}
+        <a href={url(lang)} class="brand" aria-label={c.brandHome} data-neon
           >walau<span>01</span><i aria-hidden="true"></i></a
         >
         <nav class="desktop-nav" aria-label={c.menu}>
@@ -354,6 +356,7 @@ const alternatePath = (l: Lang) =>
     />
     <script>
       import { matchesSearch } from "@/lib/search";
+      import { syncNeon } from "@/lib/neon";
       const root = document.documentElement;
       const themeButtons = document.querySelectorAll<HTMLButtonElement>(
         "[data-theme-toggle]",
@@ -372,8 +375,10 @@ const alternatePath = (l: Lang) =>
             localStorage.setItem("walau01-theme", root.dataset.theme);
           } catch {}
           syncTheme();
+          syncNeon(true);
         }),
       );
+      syncNeon();
       const dialog =
         document.querySelector<HTMLDialogElement>(".search-dialog");
       const input = document.querySelector<HTMLInputElement>("#journal-search");
