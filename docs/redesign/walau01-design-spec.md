@@ -83,7 +83,7 @@ Everything stops for visitors with **reduced motion** turned on (they see the li
 | **Signboard** | One component with 4 variants (3.4). Sizes: L (home row), M (topic page hero), S (badge on cards and boards) |
 | **Order chit** | Tilted paper receipt with dashed rules, zig-zag bottom edge, barcode, dark button. Lists 3 articles chosen at random on each visit (with a sensible default for search engines and visitors without JavaScript) |
 | **Stamp** | Round mustard stamp, circular text, "?!" in the middle |
-| **Article board** | Kopi-green board, double inner frame, title. Grouped by topic: group header = topic name in mustard display type with a mustard rule under it (one language only). Each item: code chip · title · dotted leader · read time, with a one-line description underneath |
+| **Article board** | Kopi-green board, double inner frame, title. Grouped by topic: group header = topic name in mustard display type with a mustard rule under it (one language only). Each item: title · dotted leader · read time, with a one-line description underneath |
 | **Question banner** | Tilted green band of article questions, separated by ✦ |
 | **Shutter** | Grey roller shutter with a paper notice — used only on the 404 page |
 | **Tag** | Small paper price-tag shape with a string hole; text = tag name |
@@ -128,7 +128,7 @@ Tilted green band listing the article questions (in the page's language). Smooth
 ### 3.6 All articles board
 - Same format as the earlier mockup: green board, title, short description, then **groups by topic in two columns**.
 - **Group header:** the topic name in mustard display type with a mustard line under it — **in the page's language only** (no "INVESTING QUESTIONS 投资问题" pairs).
-- **Each item:** code chip (I1, B1, F1, O1…) · title · dotted leader · read time, with a one-line description under the title.
+- **Each item:** title · dotted leader · read time, with a one-line description under the title. No item codes.
 - Title **All articles**; description **Every article so far, grouped by topic, with read times.**
 - Footnote while articles are drafts: **All articles are sample drafts while the research is checked.**
 - Night: title gold neon.
@@ -154,7 +154,7 @@ One template, themed by the topic's sign.
 1. **Header.**
 2. **Hero:** full-width awning in the topic's colours, the topic's sign at size M centred under it, then the topic description (see copy deck) and `N articles`.
 3. **Tag filter:** row of paper price tags — "All" + the tags used in this topic. Selecting a tag filters the list (works without JavaScript as plain links to tag pages).
-4. **Article list:** a board in the topic's colour family (enamel blue, deep teal, charcoal, kopitiam green). Each item: code (I1…), title, one-line description, read time with dotted leader, small tags.
+4. **Article list:** a board in the topic's colour family (enamel blue, deep teal, charcoal, kopitiam green). Each item: title, one-line description, read time with dotted leader, small tags.
 5. **Other topics:** the remaining signs at size S in a mini awning row.
 6. **Footer.**
 
@@ -167,7 +167,7 @@ Night: hero sign lit (flicker-on), board text keeps normal contrast; only the si
 Goal: the theme frames the article; the reading area stays calm.
 
 1. **Header.**
-2. **Banner:** strip of the topic's awning, then a band in the topic's colour with: small (S) topic sign + article code (e.g. B2), large title (Anton / Noto Serif SC), description, and a meta line **author · publish date · read time** (e.g. "walau01 · 12 Oct 2026 · 4 min read" / 「walau01 · 2026年10月12日 · 阅读 4 分钟」). A round read-time stamp ("4 MIN READ" / 「阅读 4 分钟」) on the right.
+2. **Banner:** strip of the topic's awning, then a band in the topic's colour with: small (S) topic sign, large title (Anton / Noto Serif SC), description, and a meta line **author · publish date · read time** (e.g. "walau01 · 12 Oct 2026 · 4 min read" / 「walau01 · 2026年10月12日 · 阅读 4 分钟」). A round read-time stamp ("4 MIN READ" / 「阅读 4 分钟」) on the right.
 3. **Body layout (desktop):** left column = receipt-style table of contents (**In this article / 本文内容**) listing sections with numbers, TOTAL read time; right column = article (max ~700px).
 4. **Top of article:** **The short version / 重点先讲** box (red block, cream text, mustard label) — the article's takeaway.
 5. **Article body:** section headings in display font with red section numbers; body text in Archivo / system sans at 19px, line height 1.75; pull quotes with a big mustard quote mark; images and GIFs in a framed figure with caption; "what would change my mind" style lists as checkbox rows.
@@ -337,8 +337,7 @@ Opened from the header (or `/` and `Ctrl/⌘ K`).
 |---|---|
 | Article frontmatter | `topic`: `investing-101` \| `beneath-the-surface` \| `fire` \| `off-the-clock` (replaces `journal_category`); `tags`: list; keep `title`, `description`, `takeaway`, `minutes`, `references`, `draft` |
 | Topic config | One file listing each topic: id, order, names (EN/中文), descriptions, sign variant, awning colours |
-| Visibility | All four topics always show. FIRE starts with placeholder sample articles (`sample_draft: true`) |
-| Item codes | Generated per topic in publish order (I1, I2…, B1…, F1…, O1…) |
+| Visibility | All four topics always show. FIRE starts with placeholder articles, shown **without** a "Sample draft" label |
 | Order chit | Picks 3 random published articles in the browser on each visit; the HTML ships with 3 default picks |
 | Routes | `/topics/<topic>` (new), `/blog`, `/blog/<slug>`, `/tags`, `/tags/<tag>`, `/start-here`, `/about`, `/privacy-policy`, 404; Chinese under `/zh/…` |
 | Redirects | Old topic and category URLs → matching new topic page; `/ms/*` → English (already in place) |
@@ -368,7 +367,7 @@ Current articles → topics:
 
 ---
 
-## 16. Open questions
+## 16. Resolved
 
-1. Placeholder FIRE articles: show them with the "Sample draft" label (like the current drafts), or hide the label?
-2. Article codes on cards (I1, B1…): keep them as a design detail, or drop them now that the copy avoids menu wording?
+1. Placeholder FIRE articles show **without** a "Sample draft" label.
+2. Article codes (I1, B1…) are **dropped** everywhere.
