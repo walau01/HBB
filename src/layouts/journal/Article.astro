@@ -98,7 +98,6 @@ const structuredData = {
           <Signboard
             topic={post.topic}
             lang={lang}
-            size="S"
             href={url(lang, `topics/${post.topic.id}`)}
           />
           <h1>{post.title}</h1>
@@ -113,6 +112,15 @@ const structuredData = {
               ))
             }
           </p>
+          {
+            post.tags.length > 0 && (
+              <nav class="article-tags" aria-label={c.tagsTitle}>
+                {post.tags.map((t) => (
+                  <PriceTag text={t} href={url(lang, `tags/${slugify(t)}`)} />
+                ))}
+              </nav>
+            )
+          }
         </div>
         <Stamp
           class="article-stamp"
@@ -174,16 +182,6 @@ const structuredData = {
             </ol>
           </section>
         ) : null
-      }
-
-      {
-        post.tags.length > 0 && (
-          <section class="article-tags" aria-label={c.tagsTitle}>
-            {post.tags.map((t) => (
-              <PriceTag text={t} href={url(lang, `tags/${slugify(t)}`)} />
-            ))}
-          </section>
-        )
       }
 
       <p class="article-disclaimer">{c.articleDisclaimer}</p>
@@ -400,7 +398,7 @@ const structuredData = {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 36px;
+    margin-top: 20px;
   }
   .article-disclaimer {
     margin-top: 40px;
