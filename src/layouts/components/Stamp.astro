@@ -1,0 +1,73 @@
+---
+// Round mustard stamp with circular text and "?!" (or other) in the middle.
+interface Props {
+  text: string;
+  label: string;
+  center?: string;
+  class?: string;
+}
+const { text, label, center = "?!", class: className } = Astro.props;
+const id = `stamp-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg
+  class:list={["stamp", className]}
+  viewBox="0 0 200 200"
+  role="img"
+  aria-label={label}
+>
+  <defs>
+    <path id={id} d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"
+    ></path>
+  </defs>
+  <circle cx="100" cy="100" r="98" class="stamp-disc"></circle>
+  <circle cx="100" cy="100" r="58" class="stamp-ring"></circle>
+  <text class="stamp-text"><textPath href={`#${id}`}>{text}</textPath></text>
+  <text
+    x="100"
+    y={center.length > 3 ? 112 : 124}
+    text-anchor="middle"
+    class="stamp-center">{center}</text
+  >
+</svg>
+
+<style>
+  .stamp {
+    display: block;
+    width: 160px;
+    height: 160px;
+    overflow: visible;
+  }
+  .stamp-disc {
+    fill: var(--mustard);
+  }
+  .stamp-ring {
+    fill: none;
+    stroke: var(--mustard-ink);
+    stroke-width: 2.5;
+  }
+  .stamp-text {
+    fill: var(--mustard-ink);
+    font-family: var(--font-secondary), var(--display);
+    font-size: 17px;
+    letter-spacing: 3.2px;
+  }
+  .stamp:lang(zh) .stamp-text {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+  .stamp-center {
+    fill: #c8261d;
+    font-family: var(--font-secondary), var(--display);
+    font-size: 66px;
+  }
+  .stamp:lang(zh) .stamp-center {
+    font-family: var(--display);
+    font-weight: 900;
+  }
+  :global([data-theme="dark"]) .stamp {
+    filter: drop-shadow(0 0 18px rgb(255 194 46 / 0.35));
+  }
+</style>

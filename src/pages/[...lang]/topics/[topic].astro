@@ -1,11 +1,12 @@
 ---
-import Archive from "@/layouts/journal/Archive.astro";
+import TopicPage from "@/layouts/journal/TopicPage.astro";
 import { supportedLang } from "@/lib/utils/languageParser";
-import { topics, normalizeLang } from "@/lib/journal";
+import { normalizeLang } from "@/lib/journal";
+import { topicList } from "@/lib/topics";
 export function getStaticPaths() {
   return supportedLang.flatMap((lang) =>
-    topics.map((topic) => ({
-      params: { lang: lang || undefined, topic },
+    topicList.map((topic) => ({
+      params: { lang: lang || undefined, topic: topic.id },
       props: { topic },
     })),
   );
@@ -14,4 +15,4 @@ const { topic } = Astro.props;
 const lang = normalizeLang(Astro.params.lang);
 ---
 
-<Archive lang={lang} topic={topic} />
+<TopicPage lang={lang} topic={topic} />

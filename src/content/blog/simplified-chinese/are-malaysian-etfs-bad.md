@@ -2,14 +2,11 @@
 title: "马来西亚的 ETF，真的不好吗？"
 description: "比较持有 ETF 的费用，以及买入和卖出时的费用。"
 author: "walau01"
-categories: ["核心研究"]
-tags: ["research"]
+tags: ["ETF", "费用", "马来西亚"]
+topic: "beneath-the-surface"
 draft: false
-journal_category: "research"
 minutes: 4
-motif: "costs"
 order: 1
-issue: 1
 sample_draft: true
 takeaway: "判断 ETF 便宜不便宜，先把持有成本和交易成本分开看。"
 ---

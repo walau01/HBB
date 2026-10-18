@@ -1,45 +1,37 @@
 ---
+// All articles (/blog): the board with every article grouped by topic, plus
+// a topic filter, search and tags. Also used for /tags/<tag> (a flat list
+// with topic badges).
 import Base from "@/layouts/Base.astro";
-import PostCard from "./PostCard.astro";
+import ArticleBoard from "@/layouts/components/ArticleBoard.astro";
+import PriceTag from "@/layouts/components/PriceTag.astro";
+import Signboard from "@/layouts/components/Signboard.astro";
 import Icon from "./Icon.astro";
 import config from "@/config/config.json";
 import {
+  countText,
   getCopy,
   getPosts,
-  topics,
-  topicFor,
+  groupByTopic,
+  tagCounts,
   url,
   type Lang,
-  type Topic,
   type Post,
 } from "@/lib/journal";
+import { topicList } from "@/lib/topics";
+
 interface Props {
   lang: Lang;
-  topic?: Topic;
-  selectedPosts?: Post[];
-  heading?: string;
-  description?: string;
-  currentPath?: string;
-  legacy?: boolean;
+  /** A tag page: only these posts, as a flat list. */
+  tag?: { slug: string; label: string; posts: Post[] };
 }
-const {
-  lang,
-  topic,
-  selectedPosts,
-  heading,
-  description,
-  currentPath,
-  legacy = false,
-} = Astro.props;
+const { lang, tag } = Astro.props;
 const c = await getCopy(lang);
 const allPosts = await getPosts(lang);
-const posts =
-  selectedPosts ||
-  (topic ? allPosts.filter((p) => topicFor(p.category) === topic) : allPosts);
-const title = heading || (topic ? c.topics[topic].title : c.archiveTitle);
-const intro =
-  description || (topic ? c.topics[topic].description : c.archiveText);
-const path = currentPath || (topic ? `topics/${topic}` : "blog");
+const posts = tag ? tag.posts : allPosts;
+const title = tag ? c.tagPageTitle.replace("{tag}", tag.label) : c.boardTitle;
+const intro = tag ? c.tagPageText.replace("{tag}", tag.label) : c.boardText;
+const path = tag ? `tags/${tag.slug}` : "blog";
 const pageURL = new URL(url(lang, path), config.site.base_url).href;
 const published = posts.filter((p) => !p.sample);
 const structuredData = {
@@ -59,12 +51,22 @@ const structuredData = {
             position: i + 1,
             url: new URL(url(lang, `blog/${p.slug}`), config.site.base_url)
               .href,
-            name: p.text[lang].title,
+            name: p.title,
           })),
         },
       }
     : {}),
 };
+// Old /blog?category=… bookmarks → the matching topic page.
+const legacy = Object.fromEntries(
+  [
+    ["foundation", "investing-101"],
+    ["research", "beneath-the-surface"],
+    ["bridge", "beneath-the-surface"],
+    ["questions", "beneath-the-surface"],
+    ["life", "off-the-clock"],
+  ].map(([from, to]) => [from, url(lang, `topics/${to}`)]),
+);
 ---
 
 <Base
@@ -73,129 +75,283 @@ const structuredData = {
   description={intro}
   active="articles"
   currentPath={path}
-  noindex={(!!topic || legacy) && !published.length}
+  noindex={!published.length}
   structuredData={structuredData}
 >
-  <div class="container archive">
-    <header class="page-heading">
-      <p class="eyebrow">{c.archiveEyebrow}</p><h1>{title}</h1><p>{intro}</p>
-    </header>
-    <div class="archive-controls">
-      <nav class="filter-tabs" aria-label={c.filterLabel}>
-        <a
-          href={url(lang, "blog")}
-          aria-current={!topic && !legacy ? "page" : undefined}>{c.filterAll}</a
-        >
-        {
-          topics.map((t) => (
-            <a
-              href={url(lang, `topics/${t}`)}
-              aria-current={topic === t ? "page" : undefined}
+  {
+    !tag && (
+      <script is:inline define:vars={{ legacy }}>
+        const category = new URLSearchParams(location.search).get("category");
+        if (category && legacy[category]) location.replace(legacy[category]);
+      </script>
+    )
+  }
+  <div class="page-wide archive-page">
+    <ArticleBoard
+      lang={lang}
+      copy={c}
+      title={title}
+      titleTag="h1"
+      description={intro}
+      groups={tag ? undefined : groupByTopic(posts)}
+      posts={tag ? posts : undefined}
+      badges={!!tag}
+      footnote={!tag && posts.some((p) => p.sample) ? c.boardNote : undefined}
+      id="all-articles"
+    >
+      {
+        !tag && (
+          <div class="archive-controls" slot="controls">
+            <nav
+              class="archive-topics"
+              aria-label={c.filterLabel}
+              data-topic-filter
             >
-              {c.topics[t].title}
-            </a>
-          ))
-        }
-      </nav>
-      <div class="archive-search-group">
-        <label for="archive-search">{c.search}</label>
-        <div class="archive-search">
-          <Icon name="search" /><input
-            type="search"
-            id="archive-search"
-            placeholder={c.searchPlaceholder}
-            autocomplete="off"
-          />
-          <button
-            class="icon-button"
-            type="button"
-            data-clear-search
-            aria-label={c.clearSearch}
-            hidden><Icon name="close" /></button
-          >
-        </div>
+              <a
+                class="archive-all"
+                href={url(lang, "blog")}
+                aria-current="page"
+                data-topic=""
+              >
+                {c.tagAll}
+              </a>
+              {topicList.map((t) => (
+                <Signboard
+                  topic={t}
+                  lang={lang}
+                  size="S"
+                  href={url(lang, `topics/${t.id}`)}
+                  class="archive-topic"
+                />
+              ))}
+            </nav>
+            <div class="archive-search">
+              <label for="archive-search">{c.search}</label>
+              <div class="archive-search-field">
+                <Icon name="search" />
+                <input
+                  type="search"
+                  id="archive-search"
+                  placeholder={c.searchPlaceholder}
+                  autocomplete="off"
+                />
+                <button
+                  class="icon-button"
+                  type="button"
+                  data-clear-search
+                  aria-label={c.clearSearch}
+                  hidden
+                >
+                  <Icon name="close" />
+                </button>
+              </div>
+            </div>
+            <nav class="archive-tags" aria-label={c.tagsTitle}>
+              {tagCounts(posts).map((t) => (
+                <PriceTag text={t.label} href={url(lang, `tags/${t.slug}`)} />
+              ))}
+            </nav>
+            <p class="archive-count" role="status">
+              <span
+                data-result-count
+                data-many={c.resultsCount}
+                data-one={c.resultsCountOne}
+              >
+                {countText(posts.length, c.resultsCount, c.resultsCountOne)}
+              </span>
+            </p>
+          </div>
+        )
+      }
+      <div class="archive-empty" data-archive-empty hidden>
+        <p>{c.searchEmpty}</p>
+        <button class="btn btn-secondary" type="button" data-reset-search>
+          {c.clearSearch}
+        </button>
       </div>
-    </div>
-    <p class="result-count" role="status">
-      <span id="result-count">{posts.length}</span>
-      {c.showing}
-    </p>
-    <div class="post-grid archive-grid">
-      {posts.map((p) => <PostCard post={p} lang={lang} />)}
-    </div>
-    <div id="archive-empty" class="archive-empty" hidden>
-      <Icon name="book" size={28} /><h2>{c.searchEmpty}</h2><p>
-        {c.searchHelp}
-      </p>
-      <button class="button-primary" type="button" data-reset-search
-        >{c.clearSearch}</button
-      >
-    </div>
+    </ArticleBoard>
   </div>
-  <script>
-    import { matchesSearch } from "@/lib/search";
-    const cards = document.querySelectorAll<HTMLElement>(
-      ".archive-grid .post-card",
-    );
-    const input = document.querySelector<HTMLInputElement>("#archive-search");
-    const clear = document.querySelector<HTMLButtonElement>(
-      "[data-clear-search]",
-    );
-    const params = new URLSearchParams(location.search);
-    // Preserve old category bookmarks while topic pages use ordinary, crawlable links.
-    const requested = params.get("category");
-    let legacyCategory =
-      requested === "questions" ||
-      requested === "research" ||
-      requested === "bridge"
-        ? "questions"
-        : requested === "foundation" || requested === "life"
-          ? requested
-          : "all";
-    if (input) input.value = params.get("q") || "";
-    function update() {
-      let count = 0;
-      cards.forEach((card) => {
-        const categoryMatches =
-          legacyCategory === "all" ||
-          card.dataset.category === legacyCategory ||
-          (legacyCategory === "questions" &&
-            ["research", "bridge"].includes(card.dataset.category || ""));
-        const shown =
-          categoryMatches &&
-          matchesSearch(card.dataset.search || "", input?.value || "");
-        card.hidden = !shown;
-        if (shown) count++;
-      });
-      const counter = document.querySelector("#result-count");
-      if (counter) counter.textContent = String(count);
-      const empty = document.querySelector<HTMLElement>("#archive-empty");
-      if (empty) empty.hidden = count > 0;
-      if (clear) clear.hidden = !input?.value && legacyCategory === "all";
-    }
-    function syncURL() {
-      const next = new URL(location.href);
-      const query = input?.value.trim();
-      if (query) next.searchParams.set("q", query);
-      else next.searchParams.delete("q");
-      if (legacyCategory === "all") next.searchParams.delete("category");
-      history.replaceState(null, "", next);
-    }
-    function reset() {
-      if (input) input.value = "";
-      legacyCategory = "all";
-      syncURL();
-      update();
-      input?.focus();
-    }
-    input?.addEventListener("input", () => {
-      syncURL();
-      update();
-    });
-    clear?.addEventListener("click", reset);
-    document
-      .querySelector("[data-reset-search]")
-      ?.addEventListener("click", reset);
-    update();
-  </script>
 </Base>
+
+<script>
+  import { matchesSearch } from "@/lib/search";
+  const items = document.querySelectorAll<HTMLElement>("[data-board-item]");
+  const groups = document.querySelectorAll<HTMLElement>("[data-board-group]");
+  const input = document.querySelector<HTMLInputElement>("#archive-search");
+  const clear = document.querySelector<HTMLButtonElement>(
+    "[data-clear-search]",
+  );
+  const filter = document.querySelector<HTMLElement>("[data-topic-filter]");
+  const counter = document.querySelector<HTMLElement>("[data-result-count]");
+  const empty = document.querySelector<HTMLElement>("[data-archive-empty]");
+  let topic = "";
+
+  if (input) input.value = new URLSearchParams(location.search).get("q") || "";
+
+  function update() {
+    let count = 0;
+    items.forEach((item) => {
+      const shown =
+        (!topic || item.dataset.topic === topic) &&
+        matchesSearch(item.dataset.search || "", input?.value || "");
+      item.hidden = !shown;
+      if (shown) count++;
+    });
+    groups.forEach((group) => {
+      group.hidden = !group.querySelector("[data-board-item]:not([hidden])");
+    });
+    if (counter)
+      counter.textContent =
+        count === 1
+          ? counter.dataset.one || ""
+          : (counter.dataset.many || "").replace("{n}", String(count));
+    if (empty) empty.hidden = count > 0;
+    if (clear) clear.hidden = !input?.value;
+  }
+  function syncURL() {
+    const next = new URL(location.href);
+    const query = input?.value.trim();
+    if (query) next.searchParams.set("q", query);
+    else next.searchParams.delete("q");
+    history.replaceState(null, "", next);
+  }
+  function setTopic(next: string, link?: Element) {
+    topic = next;
+    filter?.querySelectorAll("a").forEach((a) => {
+      if (a === link) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+    update();
+  }
+  // Topic signs are links to the topic pages; with JavaScript they filter
+  // this list instead (Ctrl/⌘-click still opens the topic page).
+  filter?.addEventListener("click", (event) => {
+    const link = (event.target as HTMLElement).closest("a");
+    if (!link || event.metaKey || event.ctrlKey || event.shiftKey) return;
+    event.preventDefault();
+    const id =
+      link.dataset.topic ?? link.getAttribute("href")?.split("/").pop();
+    setTopic(id || "", link);
+  });
+  input?.addEventListener("input", () => {
+    syncURL();
+    update();
+  });
+  function reset() {
+    if (input) input.value = "";
+    syncURL();
+    setTopic("", filter?.querySelector(".archive-all") || undefined);
+    input?.focus();
+  }
+  clear?.addEventListener("click", reset);
+  document
+    .querySelector("[data-reset-search]")
+    ?.addEventListener("click", reset);
+  update();
+</script>
+
+<style>
+  .archive-page {
+    padding-top: 48px;
+  }
+  .archive-controls {
+    display: grid;
+    gap: 22px;
+    max-width: 920px;
+    margin: 32px auto 0;
+  }
+  .archive-topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+  }
+  .archive-all {
+    display: grid;
+    place-items: center;
+    min-width: 72px;
+    height: 57px;
+    padding: 0 16px;
+    border: 2px solid var(--board-dash);
+    color: var(--board-ink);
+    font: 600 14px/1 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .archive-all[aria-current] {
+    border-color: var(--board-gold);
+    background: var(--board-gold);
+    color: #1c1712;
+  }
+  .archive-topics :global(.archive-topic) {
+    border-radius: 4px;
+    outline-offset: 4px;
+  }
+  .archive-topics :global(.archive-topic[aria-current]) {
+    outline: 3px solid var(--board-gold);
+  }
+  .archive-search {
+    display: grid;
+    gap: 8px;
+    max-width: 560px;
+    width: 100%;
+    margin-inline: auto;
+  }
+  .archive-search label {
+    color: var(--board-soft);
+    font: 600 12px/1.4 var(--mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .archive-search-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 6px 4px 14px;
+    background: var(--board-ink);
+    color: #1c1712;
+    border-radius: 4px;
+  }
+  .archive-search-field input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 17px;
+    box-shadow: none;
+  }
+  .archive-search-field input::placeholder {
+    color: #6b5f4e;
+  }
+  .archive-search-field :global(.icon-button:hover) {
+    background: rgb(0 0 0 / 0.08);
+  }
+  .archive-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .archive-count {
+    color: var(--board-soft);
+    font: 600 13px/1 var(--mono);
+    letter-spacing: 0.1em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .archive-empty {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    padding: 32px 0 8px;
+    text-align: center;
+    font-size: 18px;
+  }
+  .archive-empty :global(.btn-secondary) {
+    border-color: var(--board-ink);
+    color: var(--board-ink);
+  }
+</style>

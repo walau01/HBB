@@ -29,6 +29,6 @@
     "generate_llms_full_txt": true,
     "generate_individual_md": true,
     "include": [],
-    "exclude": ["/design/**", "/zh/design/**", "/en/design/**"]
+    "exclude": []
   }
 }

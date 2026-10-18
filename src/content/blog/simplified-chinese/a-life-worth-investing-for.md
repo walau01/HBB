@@ -2,14 +2,11 @@
 title: "值得为它投资的生活。"
 description: "聊聊日常、好奇心，以及投资组合究竟要支持怎样的生活。"
 author: "walau01"
-categories: ["投资之外"]
-tags: ["life"]
+tags: ["生活"]
+topic: "off-the-clock"
 draft: false
-journal_category: "life"
 minutes: 2
-motif: "life"
 order: 5
-issue: 5
 sample_draft: true
 takeaway: "投资组合只是生活的一部分。也给剩下的部分留一点空间。"
 ---

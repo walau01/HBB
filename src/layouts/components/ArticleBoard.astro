@@ -1,0 +1,335 @@
+---
+// Kopi-green menu board with a double inner frame. Lists articles as
+// title · dotted leader · read time, with a one-line description; grouped
+// by topic (two columns) or as one list. Topic pages use their own colours.
+import Signboard from "@/layouts/components/Signboard.astro";
+import {
+  searchText,
+  shortMinutes,
+  url,
+  type JournalCopy,
+  type Lang,
+  type Post,
+} from "@/lib/journal";
+import type { Topic } from "@/lib/topics";
+import { slugify } from "@/lib/utils/textConverter";
+
+interface Props {
+  lang: Lang;
+  copy: JournalCopy;
+  title: string;
+  titleTag?: "h1" | "h2";
+  description?: string;
+  footnote?: string;
+  /** Grouped by topic, or a single list. */
+  groups?: { topic: Topic; posts: Post[] }[];
+  posts?: Post[];
+  /** Colour family: kopi green, or the topic's own board. */
+  tone?: "kopi" | Topic["sign"];
+  /** Topic badge (S sign) on each item, for mixed lists. */
+  badges?: boolean;
+  /** Small tags under each item. */
+  showTags?: boolean;
+  id?: string;
+}
+const {
+  lang,
+  copy: c,
+  title,
+  titleTag: Title = "h2",
+  description,
+  footnote,
+  groups,
+  posts,
+  tone = "kopi",
+  badges = false,
+  showTags = false,
+  id,
+} = Astro.props;
+const titleId = `${id || "board"}-title`;
+const shownGroups = groups?.filter((g) => g.posts.length);
+---
+
+<section
+  class:list={["board", `board--${tone}`]}
+  id={id}
+  aria-labelledby={titleId}
+>
+  <div class="board-frame">
+    <Title class="board-title" id={titleId} data-neon>{title}</Title>
+    {description && <p class="board-text">{description}</p>}
+    <slot name="controls" />
+    {
+      shownGroups ? (
+        <div class="board-groups">
+          {shownGroups.map((g) => (
+            <section class="board-group" data-board-group={g.topic.id}>
+              <h3 class="board-group-title">
+                <a href={url(lang, `topics/${g.topic.id}`)}>
+                  {g.topic.name[lang]}
+                </a>
+              </h3>
+              <ul class="board-list">
+                {g.posts.map((p) => (
+                  <li
+                    data-board-item
+                    data-topic={p.topic.id}
+                    data-tags={p.tags.map(slugify).join(" ")}
+                    data-search={searchText(p, lang)}
+                  >
+                    <a class="board-item" href={url(lang, `blog/${p.slug}`)}>
+                      <span class="board-item-title">{p.title}</span>
+                      <span class="board-leader" aria-hidden="true" />
+                      <span class="board-time">
+                        {shortMinutes(p.minutes, c)}
+                      </span>
+                    </a>
+                    <p class="board-item-text">{p.summary}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <ul class="board-list board-list--single">
+          {posts?.map((p) => (
+            <li
+              data-board-item
+              data-topic={p.topic.id}
+              data-tags={p.tags.map(slugify).join(" ")}
+              data-search={searchText(p, lang)}
+            >
+              <a class="board-item" href={url(lang, `blog/${p.slug}`)}>
+                {badges && (
+                  <span class="board-badge">
+                    <Signboard topic={p.topic} lang={lang} size="S" />
+                  </span>
+                )}
+                <span class="board-item-title">{p.title}</span>
+                <span class="board-leader" aria-hidden="true" />
+                <span class="board-time">{shortMinutes(p.minutes, c)}</span>
+              </a>
+              <p class="board-item-text">{p.summary}</p>
+              {showTags && p.tags.length > 0 && (
+                <p class="board-tags">
+                  {p.tags.map((t) => (
+                    <a href={url(lang, `tags/${slugify(t)}`)}>#{t}</a>
+                  ))}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <slot />
+    {footnote && <p class="board-note">{footnote}</p>}
+  </div>
+</section>
+
+<style>
+  .board {
+    --board: #0f3d2e;
+    --board-ink: #f5e9d2;
+    --board-soft: #c9d6cc;
+    --board-rule: #c9b88f;
+    --board-dash: #6e8b7c;
+    --board-gold: #f2b705;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--board);
+    color: var(--board-ink);
+    box-shadow: 10px 10px 0 var(--shadow);
+  }
+  .board--enamel {
+    --board: #183f80;
+    --board-soft: #cfd9ec;
+    --board-dash: #6e86b5;
+  }
+  .board--wave {
+    --board: #0e4c50;
+    --board-soft: #c6dddc;
+    --board-dash: #5f8f90;
+  }
+  .board--flame {
+    --board: #262422;
+    --board-soft: #d3cbbe;
+    --board-dash: #6b655d;
+  }
+  .board--bulbs {
+    --board: #174a32;
+  }
+  :global([data-theme="dark"]) .board {
+    --board: #081a13;
+    --board-ink: #f3e6cf;
+    --board-gold: #ffe9a8;
+    box-shadow: 0 0 0 1px #1e3329;
+  }
+  :global([data-theme="dark"]) .board--enamel {
+    --board: #07142b;
+    box-shadow: 0 0 0 1px #1b2b4a;
+  }
+  :global([data-theme="dark"]) .board--wave {
+    --board: #041a1c;
+    box-shadow: 0 0 0 1px #173436;
+  }
+  :global([data-theme="dark"]) .board--flame {
+    --board: #121110;
+    box-shadow: 0 0 0 1px #2d2a27;
+  }
+  .board-frame {
+    padding: 40px 44px 36px;
+    border: 3px double var(--board-rule);
+    border-radius: 5px;
+  }
+  .board-title {
+    margin: 0;
+    color: var(--board-gold);
+    font: 400 clamp(44px, 6vw, 72px) / 1 var(--display);
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .board-title:lang(zh),
+  :global(:lang(zh)) .board-title {
+    font-weight: 900;
+  }
+  :global([data-theme="dark"]) .board-title {
+    color: var(--color-neon-gold);
+    text-shadow: var(--glow-gold);
+  }
+  .board-text {
+    max-width: 52ch;
+    margin: 12px auto 0;
+    color: var(--board-soft);
+    text-align: center;
+  }
+  .board-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 56px;
+    margin-top: 40px;
+  }
+  .board-group-title {
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--board-gold);
+    color: var(--board-gold);
+    font: 400 28px/1.1 var(--display);
+    text-transform: uppercase;
+  }
+  :global(:lang(zh)) .board-group-title {
+    font-weight: 900;
+    font-size: 26px;
+  }
+  .board-group-title a:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+  .board-list {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .board-list--single {
+    max-width: 820px;
+    margin: 36px auto 0;
+  }
+  .board-list li {
+    padding: 12px 0 14px;
+    border-bottom: 1px dashed var(--board-dash);
+  }
+  .board-list li:last-child {
+    border-bottom: 0;
+  }
+  .board-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .board-item-title {
+    font-weight: 800;
+    font-size: 19px;
+    line-height: 1.35;
+  }
+  .board-item:hover .board-item-title {
+    text-decoration: underline;
+    text-decoration-color: var(--board-gold);
+    text-underline-offset: 4px;
+  }
+  .board-leader {
+    flex: 1;
+    min-width: 24px;
+    border-bottom: 2px dotted var(--board-dash);
+    transform: translateY(-4px);
+  }
+  .board-time {
+    flex: none;
+    color: var(--board-gold);
+    font: 600 14px/1 var(--mono);
+    letter-spacing: 0.06em;
+  }
+  .board-badge {
+    flex: none;
+    align-self: center;
+  }
+  .board-item-text {
+    margin-top: 4px;
+    color: var(--board-soft);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .board-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 6px;
+    font: 600 12px/1.4 var(--mono);
+  }
+  .board-tags a {
+    color: var(--board-gold);
+  }
+  .board-tags a:hover {
+    text-decoration: underline;
+  }
+  .board-note {
+    margin-top: 32px;
+    color: var(--board-soft);
+    font: 600 12px/1.5 var(--mono);
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .board :global(:focus-visible) {
+    outline-color: var(--board-gold);
+  }
+  @media (max-width: 800px) {
+    .board-frame {
+      padding: 28px 18px 26px;
+    }
+    .board-groups {
+      grid-template-columns: 1fr;
+    }
+    .board {
+      padding: 8px;
+      box-shadow: 6px 6px 0 var(--shadow);
+    }
+  }
+  @media (max-width: 480px) {
+    .board-item {
+      flex-wrap: wrap;
+    }
+    .board-leader {
+      display: none;
+    }
+    .board-time {
+      order: -1;
+      width: 100%;
+    }
+    .board-item-title {
+      font-size: 18px;
+    }
+  }
+</style>

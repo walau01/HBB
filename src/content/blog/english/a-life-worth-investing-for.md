@@ -2,14 +2,11 @@
 title: "A life worth investing for."
 description: "A note on routines, curiosity, and remembering what the portfolio is supposed to support."
 author: "walau01"
-categories: ["Beyond investing"]
 tags: ["life"]
+topic: "off-the-clock"
 draft: false
-journal_category: "life"
 minutes: 2
-motif: "life"
 order: 5
-issue: 5
 sample_draft: true
 takeaway: "A portfolio is part of a life. It is worth making room for the rest of it."
 ---

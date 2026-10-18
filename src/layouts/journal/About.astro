@@ -1,11 +1,13 @@
 ---
 import Base from "@/layouts/Base.astro";
-import { getCopy, url, type Lang } from "@/lib/journal";
+import TopicsRow from "@/layouts/components/TopicsRow.astro";
+import { getCopy, getPosts, url, type Lang } from "@/lib/journal";
 import { getListPage } from "@/lib/contentParser.astro";
 import { render } from "astro:content";
 import config from "@/config/config.json";
 const { lang } = Astro.props as { lang: Lang };
 const c = await getCopy(lang);
+const posts = await getPosts(lang);
 const [about] = await getListPage("about", lang);
 const { Content } = await render(about);
 const profileURL = new URL(url(lang, "about"), config.site.base_url).href;
@@ -26,44 +28,67 @@ const structuredData = {
 
 <Base
   lang={lang}
-  title={c.about}
+  title={c.aboutTitle}
   description={about.data.description}
   active="about"
   currentPath="about"
   structuredData={structuredData}
-  ><div class="container about-page">
-    <div class="about-header">
-      <p class="eyebrow">{c.aboutEyebrow}</p><h1>{about.data.title}</h1><p>
-        {about.data.description}
-      </p>
-    </div><div class="about-layout">
-      <div class="about-mark" aria-hidden="true">
-        <span>walau<br /><em>01.</em></span><small>{c.place}</small>
-      </div><div class="about-prose">
-        <div class="markdown-about"><Content /></div><ul class="principles">
-          {
-            (about.data.principles || []).map((p, i) => (
-              <li>
-                <span>0{i + 1}</span>
-                {p}
-              </li>
-            ))
-          }
-        </ul><section class="about-method">
-          <h2>{c.methodTitle}</h2>{
-            c.steps.map((step) => (
-              <div>
-                <>
-                  <h3>{step[1]}</h3>
-                  <p>{step[2]}</p>
-                </>
-              </div>
-            ))
-          }
-        </section><a class="button-primary" href={url(lang, "blog")}
-          >{c.browse}</a
-        >
-      </div>
-    </div>
-  </div></Base
 >
+  <div class="page-narrow about-page">
+    <header class="about-hero">
+      <span class="monogram monogram--large" aria-hidden="true">w.</span>
+      <div>
+        <h1 class="page-title">{c.aboutTitle}</h1>
+        <p class="about-bio">{about.data.description}</p>
+      </div>
+    </header>
+    <div class="prose">
+      <h2 class="about-subtitle">{about.data.title}</h2>
+      <div class="article-body"><Content /></div>
+    </div>
+    <div class="button-row about-links">
+      <a class="btn btn-primary" href={url(lang, "start-here")}
+        >{c.startTitle} <span aria-hidden="true">→</span></a
+      >
+      <a class="btn btn-secondary" href={url(lang, "blog")}>{c.boardTitle}</a>
+    </div>
+  </div>
+  <TopicsRow lang={lang} copy={c} posts={posts} size="S" />
+</Base>
+
+<style>
+  .about-page {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+  .about-hero {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+  .about-bio {
+    margin-top: 12px;
+    color: var(--secondary);
+    font-size: 20px;
+    line-height: 1.55;
+  }
+  .about-subtitle {
+    margin-bottom: 16px;
+    font: 400 32px/1.15 var(--display);
+    text-transform: uppercase;
+  }
+  :global(:lang(zh)) .about-subtitle {
+    font-weight: 900;
+  }
+  .about-links {
+    margin-top: 40px;
+  }
+  @media (max-width: 600px) {
+    .about-hero {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+  }
+</style>

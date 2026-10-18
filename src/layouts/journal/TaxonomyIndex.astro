@@ -1,47 +1,77 @@
 ---
+// /tags: a wall of paper price tags hanging from a string, with counts.
 import Base from "@/layouts/Base.astro";
-import { getCopy, getPosts, url, type Lang } from "@/lib/journal";
-import { slugify } from "@/lib/utils/textConverter";
+import PriceTag from "@/layouts/components/PriceTag.astro";
+import { getCopy, getPosts, tagCounts, url, type Lang } from "@/lib/journal";
 interface Props {
   lang: Lang;
-  taxonomy: "categories" | "tags";
 }
-const { lang, taxonomy } = Astro.props;
+const { lang } = Astro.props;
 const c = await getCopy(lang);
 const posts = await getPosts(lang);
-const values = new Map<string, { label: string; count: number }>();
-posts.forEach((post) =>
-  post.entry.data[taxonomy].forEach((label) => {
-    const key = slugify(label);
-    values.set(key, { label, count: (values.get(key)?.count || 0) + 1 });
-  }),
+const tags = tagCounts(posts).sort(
+  (a, b) => b.count - a.count || a.label.localeCompare(b.label, lang),
 );
-const title = taxonomy === "categories" ? c.topicsTitle : c.tagsTitle;
 ---
 
 <Base
   lang={lang}
-  title={title}
-  description={c.archiveText}
+  title={c.tagsTitle}
+  description={c.tagsText}
   active="articles"
-  currentPath={taxonomy}
+  currentPath="tags"
   noindex={!posts.some((p) => !p.sample)}
 >
-  <div class="container archive">
-    <header class="page-heading">
-      <p class="eyebrow">{c.archiveEyebrow}</p><h1>{title}</h1><p>
-        {c.archiveText}
-      </p>
-    </header>
-    <nav class="taxonomy-links" aria-label={title}>
+  <div class="page-wide tags-page">
+    <h1 class="page-title">{c.tagsTitle}</h1>
+    <p class="page-intro">{c.tagsText}</p>
+    <ul class="tag-wall">
       {
-        [...values].map(([key, value]) => (
-          <a href={url(lang, `${taxonomy}/${key}`)}>
-            {value.label}
-            <span>{value.count}</span>
-          </a>
+        tags.map((t, i) => (
+          <li style={{ "--tilt": `${((i * 7) % 9) - 4}deg` }}>
+            <PriceTag
+              text={t.label}
+              href={url(lang, `tags/${t.slug}`)}
+              count={t.count}
+            />
+          </li>
         ))
       }
-    </nav>
+    </ul>
   </div>
 </Base>
+
+<style>
+  .tags-page {
+    padding-top: 56px;
+  }
+  .tag-wall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px 18px;
+    margin: 48px 0 0;
+    padding: 0 0 0 4px;
+    list-style: none;
+    /* The string. */
+    background: repeating-linear-gradient(
+      transparent 0 10px,
+      var(--secondary) 10px 12px,
+      transparent 12px 92px
+    );
+  }
+  .tag-wall li {
+    position: relative;
+    padding-top: 22px;
+    transform-origin: 12px 11px;
+    transform: rotate(var(--tilt));
+  }
+  /* Each tag hangs from the string by its hole. */
+  .tag-wall li::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 11px;
+    height: 29px;
+    border-left: 1.5px solid var(--secondary);
+  }
+</style>

@@ -6,10 +6,11 @@ Originally based on the [Astroplate](https://github.com/zeon-studio/astroplate) 
 
 ## Features
 
-- Journal-style home, article archive with topic filters and in-page search
+- Kopitiam signboard design: shop-row topic signs, article boards, order-chit start page (spec: `docs/redesign/walau01-design-spec.md`)
+- Four topics (`src/config/topics.json`), each with its own page, sign and awning; articles pick one with `topic:` in their frontmatter
 - Site-wide search dialog (`/` or `Ctrl/⌘ + K`)
 - Day / Night theme with neon at night (`src/styles/neon.css`, `src/lib/neon.ts`)
-- Tags, categories and topic pages
+- Topic and tag pages; old topic and category URLs redirect (`public/_redirects`)
 - Translations validated at build time (`scripts/validateTranslations.js`)
 - Sitemap that respects each page's canonical URL and `noindex`
 - LLM-ready output (`llms.txt`, `llms-full.txt`, and per-page `.md`)
@@ -19,7 +20,8 @@ Originally based on the [Astroplate](https://github.com/zeon-studio/astroplate) 
 - `src/content/blog/<language>/` — articles (Markdown / MDX); one folder per language in `src/config/language.json`
 - `src/content/{about,authors,pages}/` — About page, author profile, standalone pages (Start here, Privacy policy)
 - `src/i18n/*.json` — interface copy for each language
-- `src/layouts/journal/` — page layouts; `src/layouts/Base.astro` holds the header, footer, search and SEO tags
+- `src/layouts/journal/` — page layouts; `src/layouts/Base.astro` holds SEO tags and search
+- `src/layouts/components/` — header, footer, signboards, awning, article board, order chit, stamp, price tags
 - `src/layouts/shortcodes/` — components auto-imported into MDX (Button, Notice, Tabs, Accordion, Video, Youtube)
 - `src/config/` — site settings, menus, theme colours
 

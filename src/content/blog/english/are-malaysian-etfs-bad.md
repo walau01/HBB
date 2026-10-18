@@ -2,14 +2,11 @@
 title: "Are Malaysian ETFs actually bad?"
 description: "Compare the costs of owning an ETF with the costs of buying and selling it."
 author: "walau01"
-categories: ["Core Research"]
-tags: ["research"]
+tags: ["ETF", "fees", "Malaysia"]
+topic: "beneath-the-surface"
 draft: false
-journal_category: "research"
 minutes: 4
-motif: "costs"
 order: 1
-issue: 1
 sample_draft: true
 takeaway: "Before calling an ETF cheap, separate the costs of owning it from the costs of buying and selling it."
 ---

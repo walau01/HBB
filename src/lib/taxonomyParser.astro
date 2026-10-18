@@ -2,13 +2,12 @@
 import { getPosts, normalizeLang } from "@/lib/journal";
 import { slugify } from "@/lib/utils/textConverter";
 
-type Taxonomy = "categories" | "tags";
-// Use the same publication policy as the blog; private drafts never create taxonomy pages.
-export const getAllTaxonomy = async (lang: string, name: Taxonomy) =>
+// Use the same publication policy as the blog; private drafts never create tag pages.
+export const getAllTaxonomy = async (lang: string) =>
   (await getPosts(normalizeLang(lang))).flatMap((post) =>
-    post.entry.data[name].map(slugify),
+    post.tags.map(slugify),
   );
-export const getTaxonomy = async (lang: string, name: Taxonomy) => [
-  ...new Set(await getAllTaxonomy(lang, name)),
+export const getTaxonomy = async (lang: string) => [
+  ...new Set(await getAllTaxonomy(lang)),
 ];
 ---

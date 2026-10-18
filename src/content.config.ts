@@ -19,18 +19,14 @@ const blogCollection = defineCollection({
     ...commonFields,
     description: z.string().optional(),
     author: z.string().default(config.metadata.meta_author),
-    categories: z.array(z.string()).default(() => ["others"]),
-    tags: z.array(z.string()).default(() => ["others"]),
+    tags: z.array(z.string()).default(() => []),
     draft: z.boolean().optional(),
-    journal_category: z
-      .enum(["research", "bridge", "foundation", "life"])
+    // One of the ids in src/config/topics.json; required on every article.
+    topic: z
+      .enum(["investing-101", "beneath-the-surface", "fire", "off-the-clock"])
       .optional(),
     minutes: z.number().positive().optional(),
-    motif: z
-      .enum(["costs", "ath", "etf", "factor", "life", "growth"])
-      .optional(),
     order: z.number().optional(),
-    issue: z.number().optional(),
     sample_draft: z.boolean().optional(),
     takeaway: z.string().optional(),
     references: z

@@ -72,6 +72,14 @@ for (const filename of [...filenames].sort()) {
     );
   }
 
+  const topics = new Set(availableVersions.map(({ data }) => data.topic));
+  if (topics.size > 1) {
+    errors.push(`${filename}: topic must match across available translations`);
+  }
+  if (availableVersions.some(({ data }) => !data.topic)) {
+    errors.push(`${filename}: every article needs a topic`);
+  }
+
   const dates = new Set(
     availableVersions.map(({ data }) =>
       data.date ? new Date(data.date).toISOString() : "missing",
@@ -82,6 +90,23 @@ for (const filename of [...filenames].sort()) {
       `${filename}: publication date must match across available translations`,
     );
   }
+}
+
+// Interface copy: every language needs the same keys as English.
+const keysOf = (value, prefix = "") =>
+  Object.entries(value).flatMap(([key, v]) =>
+    v && typeof v === "object" && !Array.isArray(v)
+      ? keysOf(v, `${prefix}${key}.`)
+      : [`${prefix}${key}`],
+  );
+const copy = (code) =>
+  JSON.parse(fs.readFileSync(path.join(root, `src/i18n/${code}.json`), "utf8"));
+const english = new Set(keysOf(copy("en")));
+for (const language of languages) {
+  const keys = new Set(keysOf(copy(language.languageCode)));
+  for (const key of english)
+    if (!keys.has(key))
+      errors.push(`src/i18n/${language.languageCode}.json: missing "${key}"`);
 }
 
 if (errors.length > 0) {
