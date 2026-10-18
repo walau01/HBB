@@ -1,10 +1,9 @@
 ---
 // All articles (/blog): the board with every article grouped by topic, plus
-// a topic filter, search and tags. Also used for /tags/<tag> (a flat list
+// a topic filter and search. Also used for /tags/<tag> (a flat list
 // with topic badges).
 import Base from "@/layouts/Base.astro";
 import ArticleBoard from "@/layouts/components/ArticleBoard.astro";
-import PriceTag from "@/layouts/components/PriceTag.astro";
 import Signboard from "@/layouts/components/Signboard.astro";
 import Icon from "./Icon.astro";
 import config from "@/config/config.json";
@@ -13,7 +12,6 @@ import {
   getCopy,
   getPosts,
   groupByTopic,
-  tagCounts,
   url,
   type Lang,
   type Post,
@@ -146,11 +144,6 @@ const legacy = Object.fromEntries(
                 </button>
               </div>
             </div>
-            <nav class="archive-tags" aria-label={c.tagsTitle}>
-              {tagCounts(posts).map((t) => (
-                <PriceTag text={t.label} href={url(lang, `tags/${t.slug}`)} />
-              ))}
-            </nav>
             <p class="archive-count" role="status">
               <span
                 data-result-count
@@ -328,12 +321,6 @@ const legacy = Object.fromEntries(
   }
   .archive-search-field :global(.icon-button:hover) {
     background: rgb(0 0 0 / 0.08);
-  }
-  .archive-tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
   }
   .archive-count {
     color: var(--board-soft);

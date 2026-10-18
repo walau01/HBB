@@ -30,12 +30,13 @@ const separator = lang === "zh" ? "，" : ", ";
 
 <section
   class:list={["topics-row", `topics-row--${size}`]}
+  style={{ "--units": topics.length }}
   id={id}
   aria-label={label || c.topicsLabel}
 >
   {label !== "" && <p class="section-label">{label || c.topicsLabel}</p>}
   <div class="topics-scroll">
-    <div class="topics-inner" style={{ "--units": topics.length }}>
+    <div class="topics-inner">
       <Awning topics={topics} class={size === "S" ? "awning--small" : ""} />
       <ul class="topics-signs">
         {
@@ -60,12 +61,20 @@ const separator = lang === "zh" ? "，" : ", ";
 </section>
 
 <style>
+  /* Each unit is one sign wide plus a small gap, so the signs sit close
+     together under one continuous awning. */
   .topics-row {
+    --unit: 284px;
     max-width: 1320px;
     margin-inline: auto;
   }
+  .topics-row--S {
+    --unit: 150px;
+  }
   .topics-row .section-label {
-    padding-inline: 40px;
+    width: min(calc(var(--units) * var(--unit)), 100%);
+    margin-inline: auto;
+    padding-inline: 15px;
   }
   .topics-scroll {
     overflow-x: auto;
@@ -74,11 +83,10 @@ const separator = lang === "zh" ? "，" : ", ";
     padding-bottom: 14px;
   }
   .topics-inner {
-    min-width: calc(var(--units) * 240px);
+    width: calc(var(--units) * var(--unit));
+    margin-inline: auto;
     padding: 0 15px;
-  }
-  .topics-row--S .topics-inner {
-    min-width: calc(var(--units) * 150px);
+    box-sizing: content-box;
   }
   .topics-signs {
     display: flex;
@@ -91,29 +99,30 @@ const separator = lang === "zh" ? "，" : ", ";
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
     padding-top: 12px;
     scroll-snap-align: center;
   }
   .topics-count {
-    color: var(--secondary);
-    font: 600 13px/1 var(--mono);
-    letter-spacing: 0.14em;
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
   .topics-row--S .topics-count {
-    font-size: 11px;
+    font-size: 13px;
   }
   .topics-row :global(.awning--small .awning-cornice) {
     height: 18px;
   }
   @media (max-width: 700px) {
-    .topics-row .section-label {
-      padding-inline: 20px;
+    .topics-row--L {
+      --unit: 80vw;
     }
-    .topics-row--L .topics-inner {
-      min-width: 0;
-      width: calc(var(--units) * 78vw);
+    .topics-row .section-label {
+      width: auto;
+      padding-inline: 20px;
     }
   }
 </style>
