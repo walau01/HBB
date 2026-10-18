@@ -1,0 +1,322 @@
+---
+// Red signboard band: logo, menu, search, Day/Night pill and EN/中文.
+// Phone: logo · search · Day/Night · menu button (EN/中文 inside the menu).
+import Icon from "@/layouts/journal/Icon.astro";
+import { url, type JournalCopy, type Lang } from "@/lib/journal";
+
+interface Props {
+  lang: Lang;
+  copy: JournalCopy;
+  nav: { key: string; text: string; href: string }[];
+  active: string;
+  languages: { lang: Lang; label: string; href: string }[];
+}
+const { lang, copy: c, nav, active, languages } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href={url(lang)} class="logo" aria-label={c.brandHome} data-neon
+      >WALAU<span>01</span></a
+    >
+    <nav class="header-nav" aria-label={c.menu}>
+      {
+        nav.map((n) => (
+          <a href={n.href} aria-current={active === n.key ? "page" : undefined}>
+            {n.text}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="header-tools">
+      <button class="header-round" data-search-open aria-label={c.search}
+        ><Icon name="search" /></button
+      >
+      <button class="theme-pill" data-theme-toggle
+        ><span class="theme-icon-day"><Icon name="sun" size={18} /></span><span
+          class="theme-icon-night"><Icon name="moon" size={18} /></span
+        ><span class="sr-only">{c.themeLabel}</span><span class="theme-day"
+          >{c.day}</span
+        ><span class="theme-night">{c.night}</span></button
+      >
+      <div class="lang-switch" role="group" aria-label={c.language}>
+        {
+          languages.map((l) => (
+            <a
+              href={l.href}
+              lang={l.lang === "zh" ? "zh-Hans" : l.lang}
+              aria-current={l.lang === lang ? "true" : undefined}
+            >
+              {l.label}
+            </a>
+          ))
+        }
+      </div>
+      <details class="header-menu">
+        <summary aria-label={c.menu}><Icon name="menu" size={24} /></summary>
+        <div class="header-menu-panel">
+          <nav aria-label={c.menu}>
+            {
+              nav.map((n) => (
+                <a
+                  href={n.href}
+                  aria-current={active === n.key ? "page" : undefined}
+                >
+                  {n.text}
+                </a>
+              ))
+            }
+          </nav>
+          <div class="lang-switch" role="group" aria-label={c.language}>
+            {
+              languages.map((l) => (
+                <a
+                  href={l.href}
+                  lang={l.lang === "zh" ? "zh-Hans" : l.lang}
+                  aria-current={l.lang === lang ? "true" : undefined}
+                >
+                  {l.label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--red);
+    color: var(--on-red);
+    border-bottom: 4px solid var(--red-dark);
+  }
+  .site-header-inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    max-width: 1320px;
+    min-height: 80px;
+    margin-inline: auto;
+    padding: 10px 40px;
+  }
+  .logo {
+    font:
+      400 44px/1 var(--font-secondary),
+      sans-serif;
+    letter-spacing: 0.02em;
+    color: var(--on-red);
+  }
+  .logo span {
+    color: var(--mustard);
+  }
+  :global([data-theme="dark"]) .logo {
+    color: var(--color-neon-core);
+    text-shadow: var(--glow-red);
+  }
+  :global([data-theme="dark"]) .logo span {
+    color: var(--color-neon-gold);
+    text-shadow: var(--glow-gold);
+  }
+  .header-nav {
+    display: flex;
+    gap: 28px;
+    flex-grow: 1;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  :global(:lang(zh)) .header-nav {
+    font-size: 16px;
+    letter-spacing: 0.12em;
+  }
+  .header-nav a {
+    position: relative;
+    padding-block: 14px;
+  }
+  .header-nav a:hover,
+  .header-nav a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 8px;
+    text-decoration-color: var(--mustard);
+  }
+  .header-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .header-round {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 2px solid currentColor;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+  }
+  .header-round:hover {
+    background: var(--red-dark);
+  }
+  .theme-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 46px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--mustard);
+    color: var(--mustard-ink);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .theme-pill:hover {
+    box-shadow: 3px 3px 0 var(--shadow);
+  }
+  .theme-night,
+  .theme-icon-night,
+  :global([data-theme="dark"]) .theme-day,
+  :global([data-theme="dark"]) .theme-icon-day {
+    display: none;
+  }
+  :global([data-theme="dark"]) .theme-night,
+  :global([data-theme="dark"]) .theme-icon-night {
+    display: inline;
+  }
+  .lang-switch {
+    display: flex;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--red-dark);
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .lang-switch a {
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+  }
+  .lang-switch a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .lang-switch a[aria-current] {
+    background: var(--mustard);
+    color: var(--mustard-ink);
+    text-decoration: none;
+  }
+  .site-header :global(:focus-visible) {
+    outline: 3px solid var(--mustard);
+    outline-offset: 3px;
+  }
+  .header-menu {
+    display: none;
+  }
+  .header-menu > summary {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 6px;
+  }
+  .header-menu[open] > summary {
+    background: var(--red-dark);
+  }
+  .header-menu-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: grid;
+    gap: 14px;
+    padding: 12px 20px 20px;
+    background: var(--red);
+    border-bottom: 4px solid var(--red-dark);
+  }
+  .header-menu-panel nav {
+    display: grid;
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .header-menu-panel nav a {
+    padding: 12px 4px;
+    border-bottom: 1px dashed var(--red-dark);
+  }
+  .header-menu-panel nav a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 8px;
+    text-decoration-color: var(--mustard);
+  }
+  .header-menu-panel .lang-switch {
+    justify-self: start;
+  }
+  @media (max-width: 1050px) {
+    .site-header-inner {
+      gap: 22px;
+      padding-inline: 24px;
+    }
+    .header-nav {
+      gap: 18px;
+    }
+  }
+  @media (max-width: 900px) {
+    .header-nav,
+    .header-tools > .lang-switch {
+      display: none;
+    }
+    .header-menu {
+      display: block;
+    }
+    .site-header-inner {
+      min-height: 68px;
+      gap: 6px;
+      padding: 8px 10px 8px 20px;
+    }
+    .logo {
+      font-size: 34px;
+      margin-right: auto;
+    }
+    .header-tools {
+      gap: 6px;
+    }
+  }
+  @media (max-width: 420px) {
+    .site-header-inner {
+      padding-left: 16px;
+    }
+    .logo {
+      font-size: 30px;
+    }
+    .theme-pill {
+      padding: 0 12px;
+      gap: 6px;
+      font-size: 13px;
+    }
+    .header-round,
+    .header-menu > summary {
+      width: 44px;
+      height: 44px;
+    }
+    .header-round {
+      border: 0;
+    }
+  }
+</style>

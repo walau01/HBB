@@ -22,6 +22,12 @@ const fonts = [
     family: "Noto Serif SC:wght@900",
     cjk: true,
   },
+  // Sign lettering: only the letters painted on the signs (src/config/topics.json).
+  { file: "sign-alfa-slab-one.woff2", family: "Alfa Slab One", sign: true },
+  { file: "sign-fredoka-700.woff2", family: "Fredoka:wght@700", sign: true },
+  { file: "sign-shrikhand.woff2", family: "Shrikhand", sign: true },
+  { file: "sign-zcool-kuaile.woff2", family: "ZCOOL KuaiLe", sign: true },
+  { file: "sign-ma-shan-zheng.woff2", family: "Ma Shan Zheng", sign: true },
 ];
 
 const licences = {
@@ -29,7 +35,26 @@ const licences = {
   "Archivo-OFL.txt": "archivo",
   "IBM-Plex-Mono-OFL.txt": "ibmplexmono",
   "Noto-Serif-SC-OFL.txt": "notoserifsc",
+  "Alfa-Slab-One-OFL.txt": "alfaslabone",
+  "Fredoka-OFL.txt": "fredoka",
+  "Shrikhand-OFL.txt": "shrikhand",
+  "ZCOOL-KuaiLe-OFL.txt": "zcoolkuaile",
+  "Ma-Shan-Zheng-OFL.txt": "mashanzheng",
 };
+
+const topics = JSON.parse(
+  fs.readFileSync(path.join(root, "src/config/topics.json"), "utf8"),
+);
+// Upper and lower case of every sign's text, plus the "101" badge.
+const signText = [
+  ...new Set(
+    topics
+      .flatMap((t) => Object.values(t.signText))
+      .flatMap((s) => [s, s.toUpperCase(), s.toLowerCase()])
+      .join("101")
+      .replace(/\s/g, ""),
+  ),
+].join("");
 
 // Every Chinese string that can be set in a display font: interface copy,
 // menus, topic names, and article titles and headings.
@@ -37,6 +62,7 @@ function displayText() {
   const files = [
     "src/i18n/zh.json",
     "src/config/menu.zh.json",
+    "src/config/topics.json",
     ...fs
       .readdirSync(path.join(root, "src/content"), { recursive: true })
       .filter((f) => f.includes("simplified-chinese") && /\.mdx?$/.test(f))
@@ -81,9 +107,10 @@ async function download(url, file) {
 fs.mkdirSync(outDir, { recursive: true });
 const chars = displayText();
 for (const font of fonts) {
-  const sheet = await css(font.family, font.cjk ? chars : undefined);
+  const text = font.cjk ? chars : font.sign ? signText : undefined;
+  const sheet = await css(font.family, text);
   // Use the block Google labels "latin"; a text= request returns a single block.
-  const block = font.cjk ? sheet : sheet.split("/* latin */")[1] || sheet;
+  const block = text ? sheet : sheet.split("/* latin */")[1] || sheet;
   const url = block.match(/url\((https:[^)]+)\)/)?.[1];
   if (!url) throw new Error(`${font.family}: no font url`);
   await download(url, font.file);

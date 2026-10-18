@@ -1,0 +1,127 @@
+---
+// Review page for the redesign's header, footer, awning and signboards.
+// Hidden from search (noindex, left out of the sitemap and llms files);
+// remove it once the topics row and topic pages use the signs.
+import Base from "@/layouts/Base.astro";
+import Awning from "@/layouts/components/Awning.astro";
+import Signboard from "@/layouts/components/Signboard.astro";
+import { supportedLang } from "@/lib/utils/languageParser";
+import { getCopy, normalizeLang } from "@/lib/journal";
+import { articleCount, topicList } from "@/lib/topics";
+
+export function getStaticPaths() {
+  return supportedLang.map((lang) => ({
+    params: { lang: lang || undefined },
+  }));
+}
+const lang = normalizeLang(Astro.params.lang);
+const c = await getCopy(lang);
+// Article counts from the spec's article → topic table (section 14).
+const counts: Record<string, number> = {
+  "investing-101": 2,
+  "beneath-the-surface": 3,
+  fire: 2,
+  "off-the-clock": 1,
+};
+const label = (id: string, name: string) =>
+  `${name}${lang === "zh" ? "，" : ", "}${articleCount(counts[id], c)}`;
+---
+
+<Base
+  lang={lang}
+  title="Signboards"
+  description="Design review page for the walau01 signboards."
+  noindex
+  currentPath="design/signboards"
+>
+  <section class="sign-review">
+    <p class="sign-review-label">{c.topicsLabel}</p>
+    <div class="shop-row">
+      <div class="shop-row-inner">
+        <Awning topics={topicList} />
+        <div class="shop-signs">
+          {
+            topicList.map((t) => (
+              <div class="shop-unit">
+                <Signboard
+                  topic={t}
+                  lang={lang}
+                  href="#"
+                  label={label(t.id, t.name[lang])}
+                />
+                <p class="shop-count">{articleCount(counts[t.id], c)}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <h2>M</h2>
+    <div class="sign-sizes">
+      {topicList.map((t) => <Signboard topic={t} lang={lang} size="M" />)}
+    </div>
+    <h2>S</h2>
+    <div class="sign-sizes">
+      {topicList.map((t) => <Signboard topic={t} lang={lang} size="S" />)}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sign-review {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 48px 0 0;
+  }
+  .sign-review-label,
+  .sign-review h2 {
+    margin: 0 40px 18px;
+    font: 600 13px/1.4 var(--mono);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+  .sign-review h2 {
+    margin-top: 56px;
+  }
+  .shop-row {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px;
+  }
+  .shop-row-inner {
+    min-width: 960px;
+    padding: 0 15px;
+  }
+  .shop-signs {
+    display: flex;
+  }
+  .shop-unit {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding-top: 12px;
+    scroll-snap-align: center;
+  }
+  .shop-count {
+    font: 600 13px/1 var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+  .sign-sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    padding: 0 40px;
+  }
+  @media (max-width: 650px) {
+    .shop-row-inner {
+      min-width: 0;
+      width: calc(4 * 82vw);
+    }
+  }
+</style>
