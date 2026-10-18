@@ -1,13 +1,11 @@
 ---
 import Base from "@/layouts/Base.astro";
-import TopicsRow from "@/layouts/components/TopicsRow.astro";
-import { getCopy, getPosts, url, type Lang } from "@/lib/journal";
+import { getCopy, url, type Lang } from "@/lib/journal";
 import { getListPage } from "@/lib/contentParser.astro";
 import { render } from "astro:content";
 import config from "@/config/config.json";
 const { lang } = Astro.props as { lang: Lang };
 const c = await getCopy(lang);
-const posts = await getPosts(lang);
 const [about] = await getListPage("about", lang);
 const { Content } = await render(about);
 const profileURL = new URL(url(lang, "about"), config.site.base_url).href;
@@ -55,7 +53,6 @@ const structuredData = {
       <a class="btn btn-secondary" href={url(lang, "blog")}>{c.boardTitle}</a>
     </div>
   </div>
-  <TopicsRow lang={lang} copy={c} posts={posts} size="S" />
 </Base>
 
 <style>

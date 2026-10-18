@@ -1,6 +1,7 @@
 ---
 // One signboard per topic, in four variants (spec 3.4) and three sizes:
-// L (home topics row), M (topic page hero), S (badge on cards and boards).
+// L (home topics row), M (topic page hero), S (small rows, filters),
+// XS (badge on board items and search results).
 // Everything is drawn in em, so the size only changes the font-size.
 // Day: painted / enamel boards. Night: neon, lit by src/styles/neon.css.
 import type { Lang } from "@/lib/journal";
@@ -9,7 +10,7 @@ import type { Topic } from "@/lib/topics";
 interface Props {
   topic: Topic;
   lang: Lang;
-  size?: "L" | "M" | "S";
+  size?: "L" | "M" | "S" | "XS";
   href?: string;
   /** Accessible name; defaults to the topic name. */
   label?: string;
@@ -129,6 +130,9 @@ const bulbs = Array.from({ length: 11 });
     font-size: 15px;
   }
   .sign--S {
+    font-size: 8px;
+  }
+  .sign--XS {
     font-size: 5.5px;
   }
   .board {
@@ -150,6 +154,7 @@ const bulbs = Array.from({ length: 11 });
     outline: 3px solid var(--red-text);
     outline-offset: 6px;
   }
+  .sign--XS .board,
   .sign--S .board {
     box-shadow: 0 0.4em 0 rgb(0 0 0 / 0.28);
   }
@@ -327,6 +332,7 @@ const bulbs = Array.from({ length: 11 });
     stroke-width: 2.4;
     vector-effect: non-scaling-stroke;
   }
+  .sign--XS .wave path,
   .sign--S .wave path {
     stroke-width: 1.4;
   }
@@ -626,7 +632,7 @@ const bulbs = Array.from({ length: 11 });
 
   /* Small badges keep the look but drop the busy motion. */
   :global([data-theme="dark"])
-    .sign--S
+    :is(.sign--S, .sign--XS)
     :is(.wave, .bubble, .bulbs span, .fizz, .flame, .flame-core) {
     animation: none;
   }
