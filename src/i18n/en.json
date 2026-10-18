@@ -76,6 +76,9 @@
     "startTitle": "Start here",
     "topicsTitle": "Topics",
     "topicCount": "{n} articles",
-    "topicCountOne": "1 article"
+    "topicCountOne": "1 article",
+    "latestTitle": "Latest articles",
+    "latestText": "The newest article from each topic.",
+    "allArticlesLink": "See all articles →"
   }
 }

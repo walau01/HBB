@@ -200,10 +200,14 @@ main {
 }
 .section-label {
   margin-bottom: 18px;
-  color: var(--secondary);
-  font: 600 13px/1.4 var(--mono);
-  letter-spacing: 0.2em;
+  color: var(--ink);
+  font: 400 34px/1.1 var(--display);
+  letter-spacing: 0.02em;
   text-transform: uppercase;
+}
+:lang(zh) .section-label {
+  font-weight: 900;
+  font-size: 30px;
 }
 
 /* ── Buttons and links ────────────────────────────────────────── */
@@ -266,23 +270,28 @@ main {
   text-decoration-thickness: 3px;
 }
 .monogram {
-  display: grid;
+  display: flex;
   flex: none;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
   width: 96px;
   height: 96px;
   border-radius: 50%;
   background: var(--red);
   color: var(--on-red);
   font:
-    400 44px/1 var(--font-secondary),
-    serif;
-  padding-bottom: 6px;
+    400 22px/1 var(--font-secondary),
+    sans-serif;
+  letter-spacing: 0.02em;
+}
+.monogram span {
+  color: var(--mustard);
 }
 .monogram--large {
   width: 150px;
   height: 150px;
-  font-size: 72px;
+  font-size: 34px;
 }
 [data-theme="dark"] .monogram {
   background: #c8261d;
@@ -596,7 +605,7 @@ kbd {
   .monogram--large {
     width: 112px;
     height: 112px;
-    font-size: 54px;
+    font-size: 26px;
   }
   .search-results a {
     flex-wrap: wrap;

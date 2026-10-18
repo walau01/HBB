@@ -40,10 +40,10 @@ const bulbs = Array.from({ length: 11 });
         <span class="rivet rivet--br" />
         <span class="chip chip--a" />
         <span class="chip chip--b" />
+        <span class="word">{text}</span>
         <span class="badge">
           <span>101</span>
         </span>
-        <span class="word">{text}</span>
       </span>
     )
   }
@@ -98,18 +98,17 @@ const bulbs = Array.from({ length: 11 });
         </span>
         <span class="drink">
           <svg class="coupe" viewBox="0 0 44 52">
-            <path d="M3 8h34c0 11-7 18-17 18S3 19 3 8Z" />
-            <path d="M20 26v18M10 47h20" />
-            <path class="garnish" d="M30 9l8-8" />
-            <circle class="cherry" cx="31" cy="7" r="3.2" />
+            <path class="liquid" d="M8.5 12.5h27L22 27Z" />
+            <path d="M3 8h38L22 30Z" />
+            <path d="M22 30v15M12 47h20" />
+            <path class="pick" d="M10 1.5 25.5 21" />
+            <circle class="cherry" cx="19" cy="13.5" r="3.4" />
+            <circle class="lemon" cx="38" cy="8" r="5.2" />
+            <path class="lemon-cut" d="M38 3.2v9.6M33.2 8h9.6" />
           </svg>
           <span class="fizz fizz--a" />
           <span class="fizz fizz--b" />
           <span class="fizz fizz--c" />
-          <svg class="clock" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 12V5.5M12 12v4.5" />
-          </svg>
         </span>
         <span class="word">{text}</span>
       </span>
@@ -120,14 +119,14 @@ const bulbs = Array.from({ length: 11 });
 <style>
   .sign {
     display: inline-block;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1;
     vertical-align: top;
     color: inherit;
     text-decoration: none;
   }
   .sign--M {
-    font-size: 13px;
+    font-size: 15px;
   }
   .sign--S {
     font-size: 5.5px;
@@ -210,7 +209,7 @@ const bulbs = Array.from({ length: 11 });
   }
   .chip--b {
     bottom: 1.5em;
-    left: 7.6em;
+    left: 4.6em;
     width: 0.45em;
     height: 0.35em;
   }
@@ -408,15 +407,16 @@ const bulbs = Array.from({ length: 11 });
     overflow: visible;
   }
   .flame path {
-    fill: none;
     stroke-width: 2.6;
     stroke-linejoin: round;
   }
   .flame-outer {
-    stroke: #8c857c;
+    fill: #e2701e;
+    stroke: #f59a3c;
   }
   .flame-core {
-    stroke: #6f6a63;
+    fill: #f2b705;
+    stroke: #ffd75e;
   }
   .sign--flame .words {
     display: flex;
@@ -424,7 +424,8 @@ const bulbs = Array.from({ length: 11 });
     align-items: center;
   }
   .sign--flame .word {
-    color: #ede4d3;
+    color: #f6e7cc;
+    text-shadow: 0.05em 0.05em 0 #c8261d;
     font-family: var(--font-secondary), sans-serif;
     font-size: 7em;
     line-height: 0.95;
@@ -436,7 +437,7 @@ const bulbs = Array.from({ length: 11 });
   }
   .sign--flame .sub {
     margin-top: 0.3em;
-    color: #ede4d3;
+    color: #f2b705;
     font-family: var(--display);
     font-weight: 900;
     font-size: 2em;
@@ -445,6 +446,9 @@ const bulbs = Array.from({ length: 11 });
   :global([data-theme="dark"]) .sign--flame .board {
     border-color: #2d2a27;
     background: #110f0e;
+  }
+  :global([data-theme="dark"]) .flame path {
+    fill: none;
   }
   :global([data-theme="dark"]) .flame-outer {
     stroke: #ff8a3d;
@@ -515,35 +519,31 @@ const bulbs = Array.from({ length: 11 });
     width: 4.4em;
     height: 5.2em;
   }
-  .coupe path {
+  .coupe path,
+  .coupe circle {
     fill: none;
     stroke: #f3e3c0;
-    stroke-width: 2.6;
+    stroke-width: 2.4;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
+  .coupe .liquid {
+    fill: #f2a33a;
+    stroke: none;
+  }
+  .coupe .pick {
+    stroke-width: 1.6;
+  }
   .coupe .cherry {
     fill: #e64a3b;
+    stroke: none;
   }
-  .clock {
-    position: absolute;
-    right: -0.4em;
-    top: -0.3em;
-    width: 2.2em;
-    height: 2.2em;
-    border-radius: 50%;
-    background: #f3e3c0;
+  .coupe .lemon {
+    fill: #f2d24a;
+    stroke-width: 1.8;
   }
-  .clock circle {
-    fill: none;
-    stroke: #1f5a3d;
-    stroke-width: 2.4;
-  }
-  .clock path {
-    fill: none;
-    stroke: #1f5a3d;
-    stroke-width: 2.4;
-    stroke-linecap: round;
+  .coupe .lemon-cut {
+    stroke-width: 1.2;
   }
   .fizz {
     position: absolute;
@@ -554,16 +554,16 @@ const bulbs = Array.from({ length: 11 });
     opacity: 0;
   }
   .fizz--a {
-    left: 1.2em;
-    top: 2.2em;
+    left: 1.7em;
+    top: 2.1em;
   }
   .fizz--b {
-    left: 2em;
-    top: 2.4em;
+    left: 2.2em;
+    top: 2.5em;
   }
   .fizz--c {
-    left: 2.8em;
-    top: 2.2em;
+    left: 2.6em;
+    top: 2.1em;
   }
   .sign--bulbs .word {
     color: #f3e3c0;
@@ -594,16 +594,17 @@ const bulbs = Array.from({ length: 11 });
   :global([data-theme="dark"]) .bulbs span:nth-child(even) {
     animation-delay: 0.45s;
   }
-  :global([data-theme="dark"]) .coupe path {
+  :global([data-theme="dark"]) .coupe :is(path, circle) {
     stroke: #ffe7c2;
+  }
+  :global([data-theme="dark"]) .coupe {
     filter: drop-shadow(0 0 0.3em #ff9a2e);
   }
-  :global([data-theme="dark"]) .clock {
-    background: transparent;
-    box-shadow: 0 0 0.4em #ff9a2e;
+  :global([data-theme="dark"]) .coupe .liquid {
+    fill: rgb(255 154 46 / 0.45);
   }
-  :global([data-theme="dark"]) .clock :is(circle, path) {
-    stroke: #ffe7c2;
+  :global([data-theme="dark"]) .coupe .cherry {
+    fill: #ff5a4a;
   }
   :global([data-theme="dark"]) .fizz {
     background: #fff4dc;
@@ -688,7 +689,7 @@ const bulbs = Array.from({ length: 11 });
       opacity: 1;
     }
     100% {
-      transform: translateY(-1.6em);
+      transform: translateY(-1em);
       opacity: 0;
     }
   }

@@ -89,7 +89,8 @@ export async function getPosts(lang: Lang): Promise<Post[]> {
         (b.date?.getTime() || 0) - (a.date?.getTime() || 0),
     );
 }
-/** Articles grouped by topic in topic order; newest first inside a group. */
+/** Articles grouped by topic in topic order; newest first inside a group
+ * (by date, then by `order`: a higher order is a later article). */
 export function groupByTopic(posts: Post[]) {
   return topicList.map((topic) => ({
     topic,
@@ -98,7 +99,7 @@ export function groupByTopic(posts: Post[]) {
       .sort(
         (a, b) =>
           (b.date?.getTime() || 0) - (a.date?.getTime() || 0) ||
-          a.order - b.order,
+          b.order - a.order,
       ),
   }));
 }

@@ -3,7 +3,6 @@
 import Base from "@/layouts/Base.astro";
 import ArticleBoard from "@/layouts/components/ArticleBoard.astro";
 import Awning from "@/layouts/components/Awning.astro";
-import PriceTag from "@/layouts/components/PriceTag.astro";
 import Signboard from "@/layouts/components/Signboard.astro";
 import TopicsRow from "@/layouts/components/TopicsRow.astro";
 import config from "@/config/config.json";
@@ -12,7 +11,6 @@ import {
   getCopy,
   getPosts,
   groupByTopic,
-  tagCounts,
   url,
   type Lang,
 } from "@/lib/journal";
@@ -77,26 +75,13 @@ const structuredData = {
     </div>
   </header>
 
-  <div class="page-wide">
-    <nav class="tag-filter" aria-label={c.tagsTitle} data-tag-filter>
-      <PriceTag text={c.tagAll} href={url(lang, path)} current dataTag="" />
-      {
-        tagCounts(posts).map((t) => (
-          <PriceTag
-            text={t.label}
-            href={url(lang, `tags/${t.slug}`)}
-            dataTag={t.slug}
-          />
-        ))
-      }
-    </nav>
+  <div class="page-wide topic-board">
     <ArticleBoard
       lang={lang}
       copy={c}
       title={name}
       posts={posts}
       tone={topic.sign}
-      showTags
       id="topic-articles"
     />
   </div>
@@ -110,32 +95,6 @@ const structuredData = {
     label={c.otherTopics}
   />
 </Base>
-
-<script>
-  // With JavaScript, tags filter the list in place; without it they are
-  // plain links to the tag pages.
-  const nav = document.querySelector<HTMLElement>("[data-tag-filter]");
-  const items = document.querySelectorAll<HTMLElement>("[data-board-item]");
-  nav?.addEventListener("click", (event) => {
-    const tag = (event.target as HTMLElement).closest<HTMLAnchorElement>(
-      "a[data-tag]",
-    );
-    if (!tag || event.metaKey || event.ctrlKey) return;
-    event.preventDefault();
-    const wanted = tag.dataset.tag || "";
-    nav
-      .querySelectorAll("a[data-tag]")
-      .forEach((a) =>
-        a === tag
-          ? a.setAttribute("aria-current", "page")
-          : a.removeAttribute("aria-current"),
-      );
-    items.forEach((item) => {
-      item.hidden =
-        !!wanted && !(item.dataset.tags || "").split(" ").includes(wanted);
-    });
-  });
-</script>
 
 <style>
   .topic-hero-body {
@@ -157,11 +116,8 @@ const structuredData = {
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
-  .tag-filter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 10px;
-    margin-bottom: 32px;
+  .topic-board {
+    margin-top: 16px;
   }
   .page-wide + :global(.topics-row) {
     margin-top: 72px;
